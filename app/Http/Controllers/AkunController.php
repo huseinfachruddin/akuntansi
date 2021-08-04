@@ -42,7 +42,7 @@ class AkunController extends Controller
     }
 
     public function getAkunNotCash(){
-        $data =Akun::where('iscash',null)->orWhere('iscash',0)->where('perent_id',null)->get();
+        $data =Akun::where('iscash',null)->orWhere('iscash',0)->get();
 
         $response = [
             'success'=>true,

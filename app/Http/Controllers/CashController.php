@@ -5,50 +5,74 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Validation\Validator;
 
-use App\Models\Cash;
+use App\Models\Cashtransaction;
+use App\Models\Subcashtransaction;
 use App\Models\Akun;
-use App\Models\Cashintrans;
-use App\Models\Cashinakun;
 
 class CashController extends Controller
 {
-    public function Cash(){
-        $cash = Cash::getCash();
+    public function getCash(){
+        $data = Cashtransaction::with('from','to')->get();
         
         $response = [
             'success'=>true,
-            'cash'  =>$cash,
+            'cashtransaction'=>$data,
 
         ];
         
         return response($response,200);
     }
 
-    public function CashInTotal(){
-        $cash = Cash::getCashIn();
+    public function getCashIn(){
+        $data = Cashtransaction::whereNotNull('cashin')->with('from','to')->get();
         
         $response = [
             'success'=>true,
-            'cash'  =>$cash,
+            'cashtransaction'  =>$data,
+
         ];
         
-        return response($response,200);
-    }
-    public function CashDetail($id = null){
-        $cash = Cash::getCashInDetail($id);
-        $transaction = Cashintrans::getCashInTransDetail($id);
-    
-        $response = [
-            'success'=>true,
-            'cash'  =>$cash,
-            'transaction'  =>$transaction,
-    
-        ];
-    
         return response($response,200);
     }
 
-    public function CashInCreate(Request $request){
+    public function getCashOut(){
+        $data = Cashtransaction::whereNotNull('cashout')->with('from','to')->get();
+        
+        $response = [
+            'success'=>true,
+            'cashtransaction'  =>$data,
+
+        ];
+        
+        return response($response,200);
+    }
+
+    public function getCashTransfer(){
+        $data = Cashtransaction::whereNotNull('transfer')->with('from','to')->get();
+        
+        $response = [
+            'success'=>true,
+            'cashtransaction'  =>$data,
+
+        ];
+        
+        return response($response,200);
+    }
+
+    public function getCashTransactionDetail(Request $request){
+        $data = Cashtransaction::where('id',$request->id)->with('from','to','subcashtransaction')->get();
+        
+        $response = [
+            'success'=>true,
+            'cashtransaction'  =>$data,
+
+        ];
+        
+        return response($response,200);
+    }
+
+   
+    public function createCashIn(Request $request){
         $request->validate([
             'to' =>'required',
             'akun_id.*' =>'required',
@@ -56,46 +80,170 @@ class CashController extends Controller
             'total.*'  =>'required|numeric',
         ]);                
 
-        $cashintrans = new Cashintrans;
-        
-        $cashintrans->code = 'CIT'.rand().time();
-        $cashintrans->cash_id = $request->to;
-        $cashintrans->total = 0;
-        $cashintrans->save();
+        $cash = new Cashtransaction;
+        $cash->to = $request->to;
+        $cash->cashin = 0;
+        $cash->save();
+
         $data = $request->akun_id;
         $total = 0;
         foreach ( $data as $key => $value) {
-            $cashinakun = Cashinakun::create([
-                'cashin_id' => $cashintrans->id,
-                'akun_id' => $request->akun_id[$key],
-                'desc' => $request->desc[$key],
-                'total' => $request->total[$key],
-            ]);
-            $total = $total+$request->total[$key];
+            $sub = new Subcashtransaction;
+            $sub->akun_id = $request->akun_id[$key];
+            $sub->desc = $request->desc[$key];
+            $sub->total = $request->total[$key];
+            $sub->save();
+
+            $subtransaction[]= $sub;
+            $akun = Akun::find($sub->akun_id);
+            $akun->total = $akun->total + $request->total[$key];
+            $akun->save();
+
+            $total = $total + $request->total[$key];
             
         }
-        $cashintrans->find($cashintrans->id);
-        $cashintrans->total = $total;
-        $cashintrans->save();
+
+        
+        $cash = Cashtransaction::find($cash->id);
+        $cash->cashin = $cash->cashin + $total;
+        $cash->save();
+        
+        $akun = Akun::find($request->to);
+        $akun->total = $akun->total + $total;
+        $akun->save();
 
         $response = [
             'success'=>true,
-            'cash'  =>$cashintrans,
-            'transaction'  =>$cashinakun,
+            'cashtransaction'  => $cash,
+            'subcashtransaction'  =>$subtransaction,
         ];
 
         return response($response,200);
     }
 
-    public function Cashintrans($id = null){
-        $transaction = Cashintrans::getCashInTransDetail();
+    public function createCashOut(Request $request){
+        $request->validate([
+            'from' =>'required',
+            'akun_id.*' =>'required',
+            'desc.*'  =>'required',
+            'total.*'  =>'required|numeric',
+        ]);                
+
+        $cash = new Cashtransaction;
+        $cash->from = $request->from;
+        $cash->cashout = 0;
+        $cash->save();
+
+        $data = $request->akun_id;
+        $total = 0;
+        foreach ( $data as $key => $value) {
+            $sub = new Subcashtransaction;
+            $sub->akun_id = $request->akun_id[$key];
+            $sub->desc = $request->desc[$key];
+            $sub->total = $request->total[$key];
+            $sub->save();
+
+            $subtransaction[]= $sub;
+            $akun = Akun::find($sub->akun_id);
+            $akun->total = $akun->total + $request->total[$key];
+            $akun->save();
+
+            $total = $total + $request->total[$key];
+            
+        }
+
+        
+        $cash = Cashtransaction::find($cash->id);
+        $cash->cashout = $cash->cashout + $total;
+        $cash->save();
+        
+        $akun = Akun::find($request->from);
+        $akun->total = $akun->total - $total;
+        $akun->save();
 
         $response = [
             'success'=>true,
-            'transaction'  =>$transaction,
+            'cashtransaction'  => $cash,
+            'subcashtransaction'  =>$subtransaction,
         ];
+
         return response($response,200);
     }
 
+        public function createCashTransfer(Request $request){
+        $request->validate([
+            'to' =>'required',
+            'from' =>'required',
+            'total'  =>'required|numeric',
+        ]);                
+
+        $cash = new Cashtransaction;
+        $cash->from = $request->from;
+        $cash->to = $request->to;
+        $cash->transfer = $request->total;
+        $cash->save();
+        
+        $akun = Akun::find($request->from);
+        $akun->total = $akun->total - $request->total;
+        $akun->save();
+
+        $akun = Akun::find($request->to);
+        $akun->total = $akun->total + $request->total;
+        $akun->save();
+
+        $response = [
+            'success'=>true,
+            'cashtransaction'  => $cash,
+        ];
+
+        return response($response,200);
+    }
+
+    public function deleteCashTransaction(Request $request){
+        $data = Cashtransaction::find($request->id);
+        if ($data->cashin) {
+            $sub=$data->subcashtransaction();
+
+            $akun = Akun::find($data->to);
+            $akun->total = $akun->total - $data->cashin;
+            $akun->save();
+
+            foreach ($sub as $key => $value) {
+                $akun = Akun::find($sub->akun_id[$key]);
+                $akun->total = $akun->total - $sub->total[$key];
+                $akun->save(); 
+           }
+           $data->subcashtransaction()->delete();
+        }elseif($data->cashout) {
+            $sub=$data->subcashtransaction();
+
+            $akun = Akun::find($data->from);
+            $akun->total = $akun->total + $data->cashout;
+            $akun->save();
+            foreach ($sub as $key => $value) {
+                $akun = Akun::find($sub->akun_id[$key]);
+                $akun->total = $akun->total - $sub->total[$key];
+                $akun->save(); 
+            }
+            $data->subcashtransaction()->delete();
+
+        }elseif($data->transfer){
+            $akun = Akun::find($data->from);
+            $akun->total = $akun->total + $data->transfer;
+            $akun->save();
+
+            $akun = Akun::find($data->to);
+            $akun->total = $akun->total - $data->transfer;
+            $akun->save();
+        }
+        
+        $data->delete();
+        $response = [
+            'success'=>true,
+            'cashtransaction'  => $data,
+        ];
+ 
+        return response($response,200);
+    }
 
 }

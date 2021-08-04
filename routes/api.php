@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Cash;
-use App\Models\Cashintrans;
+
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
@@ -11,6 +10,7 @@ use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\Auth;
 use App\Http\Controllers\CashController;
+use App\Http\Controllers\AkunController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,18 +33,25 @@ return 'ok';
 
 });
 
-// Route::get('/cash/out',[CashController::class,'Cashout']);
-// Route::get('/cash/out/total',[CashController::class,'CashOutTotal']);
-// Route::get('/cash/{id}/detail',[CashController::class,'CashOutdetail']);
-// Route::post('/cash/out/create',[CashController::class,'CashOutCreate']);
+Route::get('/report',[AkunController::class,'Report']);
+Route::get('/akun',[AkunController::class,'getAkun']);
+Route::get('/akun/iscash',[AkunController::class,'getAkunIsCash']);
+Route::get('/akun/notcash',[AkunController::class,'getAkunNotCash']);
+Route::post('/akun/create',[AkunController::class,'createAkun']);
+Route::put('/akun/edite/{id}',[AkunController::class,'editAkun']);
+Route::delete('/akun/delete/{id}',[AkunController::class,'deleteAkun']);
 
-// Route::get('/cash',[CashController::class,'Cash']);
+Route::get('/cash',[CashController::class,'getCash']);
+Route::get('/cash/in',[CashController::class,'getCashIn']);
+Route::get('/cash/out',[CashController::class,'getCashOut']);
+Route::get('/cash/transfer',[CashController::class,'getCashTransfer']);
+Route::get('/cash/transaction/detail/{id}',[CashController::class,'getCashTransactionDetail']);
 
-// Route::get('/cash/in',[CashController::class,'Cashintrans']);
-// Route::get('/cash/in/total',[CashController::class,'CashinTotal']);
-// Route::get('/cash/{id}/detail',[CashController::class,'Cashdetail']);
-// Route::post('/cash/In/create',[CashController::class,'CashInCreate']);
+Route::post('/cash/in/create',[CashController::class,'createCashIn']);
+Route::post('/cash/out/create',[CashController::class,'createCashOut']);
+Route::post('/cash/transfer/create',[CashController::class,'createCashTransfer']);
 
+Route::delete('/cash/transaction/delete/{id}',[CashController::class,'deleteCashTransaction']);
 
 
 
