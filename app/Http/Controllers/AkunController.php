@@ -9,7 +9,7 @@ class AkunController extends Controller
 {
     
     public function getAkun(){
-        $data =Akun::where('perent_id',null)->with(str_repeat('childern.',10))->get();
+        $data =Akun::where('perent_id',null)->with(str_repeat('nodes.',10))->get();
 
         $response = [
             'success'=>true,

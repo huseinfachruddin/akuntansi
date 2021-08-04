@@ -28,7 +28,7 @@ class Akun extends Model
         return $this->belongsTo(Self::class,'perent_id');
     }
 
-    public function childern(){
+    public function nodes(){
         return $this->hasMany(Self::class,'perent_id');
     }
 }
