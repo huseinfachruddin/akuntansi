@@ -12,7 +12,7 @@ use App\Http\Controllers\Auth\Auth;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,12 +58,12 @@ Route::put('/product/edit/{id}',[ProductController::class,'editProduct']);
 Route::delete('/product/delete/{id}',[ProductController::class,'deleteProduct']);
 
 // SUPPLIER API*********
-Route::get('/supplier',[SupplierController::class,'getSupplier']);
-Route::get('/supplier/detail/{id}',[SupplierController::class,'getSupplierDetail']);
+Route::get('/contact',[ContactController::class,'getContact']);
+Route::get('/contact/detail/{id}',[ContactController::class,'getContactDetail']);
 
-Route::post('/supplier/create',[SupplierController::class,'createSupplier']);
-Route::put('/supplier/edit/{id}',[SupplierController::class,'editSupplier']);
-Route::delete('/supplier/delete/{id}',[SupplierController::class,'deleteSupplier']);
+Route::post('/contact/create',[ContactController::class,'createContact']);
+Route::put('/contact/edit/{id}',[ContactController::class,'editContact']);
+Route::delete('/contact/delete/{id}',[ContactController::class,'deleteContact']);
 
 
 Route::post('/register',[Auth::class,'register']);
