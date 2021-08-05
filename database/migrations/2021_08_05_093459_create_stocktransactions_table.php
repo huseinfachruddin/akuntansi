@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAkunsTable extends Migration
+class CreateStocktransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateAkunsTable extends Migration
      */
     public function up()
     {
-        Schema::create('akuns', function (Blueprint $table) {
+        
+        Schema::create('stocktransactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('perent_id')->nullable();
-            $table->string('name')->nullable();
-            $table->biginteger('total')->nullable();
-            $table->boolean('iscash')->nullable();
-            $table->boolean('isheader')->nullable();
+            $table->biginteger('supplier_id')->nullable();
+            $table->double('total')->nullable();
+            $table->biginteger('cashin_id')->nullable();
+            $table->biginteger('cashout_id')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**
@@ -31,6 +32,6 @@ class CreateAkunsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('akuns');
+        Schema::dropIfExists('stocktransactions');
     }
 }

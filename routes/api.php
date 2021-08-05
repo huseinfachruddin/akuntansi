@@ -11,6 +11,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\Auth;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,22 +25,16 @@ use App\Http\Controllers\AkunController;
 |
 */
 
-Route::get('/test', function(){
-    // Role::create(['name' => 'admin']);
-    // User::find(1)->assignRole('admin');
-    $data = 'CIT'.rand().time();
-    // // $data = CashController::Cashdetail(1);
-    return $data;
-return 'ok';
-
-});
+Route::get('/test',[AkunController::class,'test']);
 
 Route::get('/report',[AkunController::class,'Report']);
 Route::get('/akun',[AkunController::class,'getAkun']);
+Route::get('/akun/list',[AkunController::class,'getAkunList']);
 Route::get('/akun/iscash',[AkunController::class,'getAkunIsCash']);
 Route::get('/akun/notcash',[AkunController::class,'getAkunNotCash']);
+Route::get('/akun/isheader',[AkunController::class,'getAkunIsHeader']);
 Route::post('/akun/create',[AkunController::class,'createAkun']);
-Route::put('/akun/edite/{id}',[AkunController::class,'editAkun']);
+Route::put('/akun/edit/{id}',[AkunController::class,'editAkun']);
 Route::delete('/akun/delete/{id}',[AkunController::class,'deleteAkun']);
 
 Route::get('/cash',[CashController::class,'getCash']);
@@ -53,6 +49,21 @@ Route::post('/cash/transfer/create',[CashController::class,'createCashTransfer']
 
 Route::delete('/cash/transaction/delete/{id}',[CashController::class,'deleteCashTransaction']);
 
+// PRODUCT API*********
+Route::get('/product',[ProductController::class,'getProduct']);
+Route::get('/product/detail/{id}',[ProductController::class,'getProductDetail']);
+
+Route::post('/product/create',[ProductController::class,'createProduct']);
+Route::put('/product/edit/{id}',[ProductController::class,'editProduct']);
+Route::delete('/product/delete/{id}',[ProductController::class,'deleteProduct']);
+
+// SUPPLIER API*********
+Route::get('/supplier',[SupplierController::class,'getSupplier']);
+Route::get('/supplier/detail/{id}',[SupplierController::class,'getSupplierDetail']);
+
+Route::post('/supplier/create',[SupplierController::class,'createSupplier']);
+Route::put('/supplier/edit/{id}',[SupplierController::class,'editSupplier']);
+Route::delete('/supplier/delete/{id}',[SupplierController::class,'deleteSupplier']);
 
 
 Route::post('/register',[Auth::class,'register']);

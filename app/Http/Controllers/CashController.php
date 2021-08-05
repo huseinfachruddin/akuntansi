@@ -60,7 +60,7 @@ class CashController extends Controller
     }
 
     public function getCashTransactionDetail(Request $request){
-        $data = Cashtransaction::where('id',$request->id)->with('from','to','subcashtransaction')->get();
+        $data = Cashtransaction::where('id',$request->id)->with('from','to','subcashtransaction.akun')->get();
         
         $response = [
             'success'=>true,
@@ -89,6 +89,7 @@ class CashController extends Controller
         $total = 0;
         foreach ( $data as $key => $value) {
             $sub = new Subcashtransaction;
+            $sub->cashtransaction_id = $cash->id;
             $sub->akun_id = $request->akun_id[$key];
             $sub->desc = $request->desc[$key];
             $sub->total = $request->total[$key];
@@ -138,6 +139,7 @@ class CashController extends Controller
         $total = 0;
         foreach ( $data as $key => $value) {
             $sub = new Subcashtransaction;
+            $sub->cashtransaction_id = $cash->id;
             $sub->akun_id = $request->akun_id[$key];
             $sub->desc = $request->desc[$key];
             $sub->total = $request->total[$key];
