@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Cash;
-use App\Models\Cashintrans;
+
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
@@ -11,6 +10,9 @@ use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\Auth;
 use App\Http\Controllers\CashController;
+use App\Http\Controllers\AkunController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,29 +25,45 @@ use App\Http\Controllers\CashController;
 |
 */
 
-Route::get('/test', function(){
-    // Role::create(['name' => 'admin']);
-    // User::find(1)->assignRole('admin');
-    $data = 'CIT'.rand().time();
-    // // $data = CashController::Cashdetail(1);
-    return $data;
-return 'ok';
+Route::get('/test',[AkunController::class,'test']);
 
-});
+Route::get('/report',[AkunController::class,'Report']);
+Route::get('/akun',[AkunController::class,'getAkun']);
+Route::get('/akun/list',[AkunController::class,'getAkunList']);
+Route::get('/akun/iscash',[AkunController::class,'getAkunIsCash']);
+Route::get('/akun/notcash',[AkunController::class,'getAkunNotCash']);
+Route::get('/akun/isheader',[AkunController::class,'getAkunIsHeader']);
+Route::post('/akun/create',[AkunController::class,'createAkun']);
+Route::put('/akun/edit/{id}',[AkunController::class,'editAkun']);
+Route::delete('/akun/delete/{id}',[AkunController::class,'deleteAkun']);
 
-// Route::get('/cash/out',[CashController::class,'Cashout']);
-// Route::get('/cash/out/total',[CashController::class,'CashOutTotal']);
-// Route::get('/cash/{id}/detail',[CashController::class,'CashOutdetail']);
-// Route::post('/cash/out/create',[CashController::class,'CashOutCreate']);
+Route::get('/cash',[CashController::class,'getCash']);
+Route::get('/cash/in',[CashController::class,'getCashIn']);
+Route::get('/cash/out',[CashController::class,'getCashOut']);
+Route::get('/cash/transfer',[CashController::class,'getCashTransfer']);
+Route::get('/cash/transaction/detail/{id}',[CashController::class,'getCashTransactionDetail']);
 
-// Route::get('/cash',[CashController::class,'Cash']);
+Route::post('/cash/in/create',[CashController::class,'createCashIn']);
+Route::post('/cash/out/create',[CashController::class,'createCashOut']);
+Route::post('/cash/transfer/create',[CashController::class,'createCashTransfer']);
 
-// Route::get('/cash/in',[CashController::class,'Cashintrans']);
-// Route::get('/cash/in/total',[CashController::class,'CashinTotal']);
-// Route::get('/cash/{id}/detail',[CashController::class,'Cashdetail']);
-// Route::post('/cash/In/create',[CashController::class,'CashInCreate']);
+Route::delete('/cash/transaction/delete/{id}',[CashController::class,'deleteCashTransaction']);
 
+// PRODUCT API*********
+Route::get('/product',[ProductController::class,'getProduct']);
+Route::get('/product/detail/{id}',[ProductController::class,'getProductDetail']);
 
+Route::post('/product/create',[ProductController::class,'createProduct']);
+Route::put('/product/edit/{id}',[ProductController::class,'editProduct']);
+Route::delete('/product/delete/{id}',[ProductController::class,'deleteProduct']);
+
+// SUPPLIER API*********
+Route::get('/supplier',[SupplierController::class,'getSupplier']);
+Route::get('/supplier/detail/{id}',[SupplierController::class,'getSupplierDetail']);
+
+Route::post('/supplier/create',[SupplierController::class,'createSupplier']);
+Route::put('/supplier/edit/{id}',[SupplierController::class,'editSupplier']);
+Route::delete('/supplier/delete/{id}',[SupplierController::class,'deleteSupplier']);
 
 
 Route::post('/register',[Auth::class,'register']);

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Akun;
 use App\Models\Subcashtransaction;
+
 class Cashtransaction extends Model
 {
     use HasFactory;
@@ -22,6 +23,7 @@ class Cashtransaction extends Model
     public function subcashtransaction(){
         return $this->hasMany(Subcashtransaction::class,'cashtransaction_id');
     }
+
 
 
 
