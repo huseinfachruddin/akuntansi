@@ -8,7 +8,7 @@ use App\Models\Product;
 class ProductController extends Controller
 {
     public function getProduct(){
-        $data = Product::all();
+        $data = Product::with('producttype')->get();
         
         $response = [
             'success'=>true,
@@ -19,7 +19,7 @@ class ProductController extends Controller
     }
 
     public function getProductDetail(Request $request){
-        $data = Product::find($request->id);
+        $data = Product::find($request->id)->with('producttype')->first();
         
         $response = [
             'success'=>true,
@@ -35,6 +35,7 @@ class ProductController extends Controller
             'unit'  =>'required',
             'purchase_price'  =>'required',
             'selling_price'  =>'required',
+            'producttype'  =>'required',
         ]);
 
         $data = new Product;
@@ -43,6 +44,7 @@ class ProductController extends Controller
         $data->unit = $request->unit;
         $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;
+        $data->producttype = $request->producttype;
         $data->save();
         
         $response = [
@@ -59,6 +61,7 @@ class ProductController extends Controller
             'unit'  =>'required',
             'purchase_price'  =>'required',
             'selling_price'  =>'required',
+            'producttype'  =>'required',
         ]);
 
         $data = Product::find($request->id);
@@ -66,6 +69,7 @@ class ProductController extends Controller
         $data->unit = $request->unit;
         $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;
+        $data->producttype = $request->producttype;
         $data->save();
         
         $response = [

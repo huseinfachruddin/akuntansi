@@ -13,6 +13,7 @@ use App\Http\Controllers\CashController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProducttypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +58,16 @@ Route::post('/product/create',[ProductController::class,'createProduct']);
 Route::put('/product/edit/{id}',[ProductController::class,'editProduct']);
 Route::delete('/product/delete/{id}',[ProductController::class,'deleteProduct']);
 
-// SUPPLIER API*********
+
+// PRODUCT TYPE API*********
+Route::get('/producttype',[ProducttypeController::class,'getProducttype']);
+Route::get('/producttype/detail/{id}',[ProducttypeController::class,'getProducttypeDetail']);
+
+Route::post('/producttype/create',[ProducttypeController::class,'createProducttype']);
+Route::put('/producttype/edit/{id}',[ProducttypeController::class,'editProducttype']);
+Route::delete('/producttype/delete/{id}',[ProducttypeController::class,'deleteProducttype']);
+
+// CONTACT API*********
 Route::get('/contact',[ContactController::class,'getContact']);
 Route::get('/contact/detail/{id}',[ContactController::class,'getContactDetail']);
 

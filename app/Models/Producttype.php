@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Producttype;
+use App\Models\Product;
 
-class Product extends Model
+class Producttype extends Model
 {
     use HasFactory;
     protected $fillable = ['*'];
 
-    public function producttype(){
-        return $this->belongsTo(Producttype::class,'producttype');
+    public function product(){
+        return $this->hasMany(Producttype::class,'producttype');
     }
-
 }
