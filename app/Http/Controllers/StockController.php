@@ -38,7 +38,7 @@ class StockController extends Controller
 
         $request->validate([
             'contact_id' =>'required',
-            'contact_id' =>'required',
+            'cashout_id' =>'required',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
