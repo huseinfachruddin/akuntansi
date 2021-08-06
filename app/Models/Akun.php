@@ -39,7 +39,7 @@ class Akun extends Model
     }
 
     public function children(){
-        return $this->hasMany(Self::class,'perent_id')->sum('total');
+        return $this->hasMany(Self::class,'perent_id');
     }
 
     public static function getReport(){
