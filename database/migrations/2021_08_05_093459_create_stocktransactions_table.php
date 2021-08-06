@@ -16,10 +16,10 @@ class CreateStocktransactionsTable extends Migration
         
         Schema::create('stocktransactions', function (Blueprint $table) {
             $table->id();
-            $table->biginteger('supplier_id')->nullable();
-            $table->double('total')->nullable();
+            $table->biginteger('contact_id')->nullable()->nullable();
             $table->biginteger('cashin_id')->nullable();
             $table->biginteger('cashout_id')->nullable();
+            $table->double('total')->nullable();
             $table->timestamps();
         });
 

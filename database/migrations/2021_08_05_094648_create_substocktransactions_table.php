@@ -15,9 +15,10 @@ class CreateSubstocktransactionsTable extends Migration
     {
         Schema::create('substocktransactions', function (Blueprint $table) {
             $table->id();
-            $table->biginteger('product_id');
-            $table->double('qty');
-            $table->double('total');
+            $table->biginteger('stocktransaction_id')->nullable();
+            $table->biginteger('product_id')->nullable();
+            $table->double('qty')->nullable();
+            $table->double('total')->nullable();
             $table->timestamps();
         });
     }

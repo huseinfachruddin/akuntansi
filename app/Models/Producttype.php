@@ -8,8 +8,8 @@ use App\Models\Product;
 
 class Producttype extends Model
 {
-    use HasFactory;
     protected $fillable = ['*'];
+    use HasFactory;
 
     public function product(){
         return $this->hasMany(Producttype::class,'producttype');

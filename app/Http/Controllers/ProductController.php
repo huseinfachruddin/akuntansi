@@ -41,6 +41,7 @@ class ProductController extends Controller
         $data = new Product;
         $data->code = 'P'.rand(100,999).time();
         $data->name = $request->name;
+        $data->qty = 0;
         $data->unit = $request->unit;
         $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;

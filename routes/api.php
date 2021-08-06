@@ -14,6 +14,7 @@ use App\Http\Controllers\AkunController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProducttypeController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,22 @@ Route::get('/contact/detail/{id}',[ContactController::class,'getContactDetail'])
 Route::post('/contact/create',[ContactController::class,'createContact']);
 Route::put('/contact/edit/{id}',[ContactController::class,'editContact']);
 Route::delete('/contact/delete/{id}',[ContactController::class,'deleteContact']);
+
+
+
+// STOCK ******
+
+Route::get('/stock/transaction',[StockController::class,'getStockTransaction']);
+Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTransactionDetail']);
+
+Route::post('/stock/in/create',[StockController::class,'createStockIn']);
+Route::post('/stock/out/create',[StockController::class,'createStockOut']);
+
+
+Route::delete('/stock/transaction/delete/{id}',[CashController::class,'deleteCashTransaction']);
+
+
+
 
 
 Route::post('/register',[Auth::class,'register']);

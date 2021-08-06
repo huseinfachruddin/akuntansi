@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Cashtransaction;
 use App\Models\Subcashtransaction;
+use App\Models\Stocktransaction;
 
 class Akun extends Model
 {
@@ -22,6 +23,14 @@ class Akun extends Model
 
     public function subcashtransaction(){
         return $this->hasMany(Subcashtransaction::class,'akun_id');
+    }
+
+    public function stocktransactioncashin(){
+        return $this->hasMany(Stocktransaction::class,'cashin_id');
+    }
+
+    public function stocktransactioncashout(){
+        return $this->hasMany(Stocktransaction::class,'cashout_id');
     }
 
         public function perent(){
