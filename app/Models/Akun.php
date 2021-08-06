@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Cashtransaction;
 use App\Models\Subcashtransaction;
 use App\Models\Stocktransaction;
+use Illuminate\Support\Facades\DB;
 
 class Akun extends Model
 {
@@ -38,6 +39,15 @@ class Akun extends Model
     }
 
     public function children(){
-        return $this->hasMany(Self::class,'perent_id');
+        return $this->hasMany(Self::class,'perent_id')->sum('total');
+    }
+
+    public static function getReport(){
+        $query = DB::table('Akuns as A')
+        ->join('Akuns as P','P.perent_id','=','A.id')
+        ->select('P.perent_id',DB::raw('sum(A.total) as total'))
+        ->groupBy('P.perent_id')
+        ->get();
+        return $query;
     }
 }

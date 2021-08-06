@@ -8,13 +8,11 @@ use App\Models\Akun;
 class AkunController extends Controller
 {
     public function test(){
-        
-        
-        
-        $ke = 'P'.rand(100,999).time();
+          
+        $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
         $response = [
             'success'=>true,
-            'akun'  =>$ke,
+            'data'  =>$data,
         ];
 
         return response($response,200);
