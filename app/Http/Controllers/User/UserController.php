@@ -23,6 +23,8 @@ class UserController extends Controller
             'akun'  =>$user ,
             'role'  =>$role,
         ];
+        return response($response,200);
+
     }
 
     public function getUser(){
@@ -33,5 +35,8 @@ class UserController extends Controller
             'success'=>true,
             'akun'  =>$user ,
         ];
+
+        return response($response,200);
+
     }
 }

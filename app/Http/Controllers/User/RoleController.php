@@ -8,13 +8,15 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    public function role(){
+    public function getRole(){
         $data = Role::all();
 
         $response = [
             'success'=>true,
             'akun'  =>$data   ,
         ];
+        return response($response,200);
+
     }
 
     public function createRole(Request $request){
@@ -31,6 +33,9 @@ class RoleController extends Controller
             'success'=>true,
             'akun'  =>$data   ,
         ];
+
+        return response($response,200);
+
     }
 
     public function editRole(Request $request){
@@ -47,6 +52,9 @@ class RoleController extends Controller
             'success'=>true,
             'akun'  =>$data   ,
         ];
+
+        return response($response,200);
+
     }
 
     public function deleteRole(Request $request){
@@ -58,5 +66,8 @@ class RoleController extends Controller
             'success'=>true,
             'akun'  =>$data   ,
         ];
+
+        return response($response,200);
+
     }
 }
