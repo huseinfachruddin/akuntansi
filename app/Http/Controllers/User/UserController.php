@@ -20,7 +20,7 @@ class UserController extends Controller
 
         $response = [
             'success'=>true,
-            'akun'  =>$user ,
+            'user'  =>$user ,
             'role'  =>$role,
         ];
         return response($response,200);
@@ -33,7 +33,7 @@ class UserController extends Controller
 
         $response = [
             'success'=>true,
-            'akun'  =>$user ,
+            'user'  =>$user ,
         ];
 
         return response($response,200);

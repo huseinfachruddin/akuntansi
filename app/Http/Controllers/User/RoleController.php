@@ -13,7 +13,7 @@ class RoleController extends Controller
 
         $response = [
             'success'=>true,
-            'akun'  =>$data   ,
+            'role'  =>$data   ,
         ];
         return response($response,200);
 
@@ -31,7 +31,7 @@ class RoleController extends Controller
 
         $response = [
             'success'=>true,
-            'akun'  =>$data   ,
+            'role'  =>$data   ,
         ];
 
         return response($response,200);
@@ -50,7 +50,7 @@ class RoleController extends Controller
 
         $response = [
             'success'=>true,
-            'akun'  =>$data   ,
+            'role'  =>$data   ,
         ];
 
         return response($response,200);
@@ -64,7 +64,7 @@ class RoleController extends Controller
 
         $response = [
             'success'=>true,
-            'akun'  =>$data   ,
+            'role'  =>$data   ,
         ];
 
         return response($response,200);
