@@ -42,8 +42,8 @@ class AkunController extends Controller
 
     public function Report(){
         // $data =Akun::whereNotNull('total')->Where('total','<>',0)->with(str_repeat('perent.',10))->get();
-        // $data =Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
-        $data = Akun::with('children')->withSum('children','total')->get();
+        $data =Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
+        // $data = Akun::with('children')->withSum('children','total')->get();
 
         $response = [
             'success'=>true,
