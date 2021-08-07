@@ -112,15 +112,15 @@ Route::post('/login',[Auth::class,'login']);
 
 Route::group(['middleware'=>'auth:sanctum'],function(){ 
     Route::get('/logout',[Auth::class,'logout']);
-
-
-
-
+    
     Route::get('/profile',function(Request $request){
-        return $request->user();
+        return $request->user()->with('roles');
     });
+    Route::get('/admin',function(Request $request){
+
+
+
     Route::group(['middleware' => ['role:admin']], function () {
-        Route::get('/admin',function(Request $request){
             return 'Ok';
         });
     });
