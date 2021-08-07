@@ -41,20 +41,20 @@ class AkunController extends Controller
         return response($response,200);
     }
 
-    // private function count_sum($data) {
-    //     $this->total=0
-    //     foreach ($data as $data) {
-    //         $this->total = $data->total;
-    //         $this->count_sum($data->children);
-            
-    //     }
-    //     return $this->total;
-    // }
+    private function count_sum($data) {
 
-    public function Report(){
-        $data = Akun::where('name','harta')->with(str_repeat('children.',10))->get();
+        foreach ($data as $key => $value) {
+            $this->count_sum($data[$key]->children);
+            $this->total += $data[$key]->total;
+        }
+                
+        $data->total=$this->total;
+        return $data;
+    }
 
-        // $data = $this->count_sum($data);
+    public function Report(Request $request){
+        $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
+
         $response = [
             'success'=>true,
             'akun'  =>$data,

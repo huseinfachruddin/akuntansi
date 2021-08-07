@@ -31,7 +31,8 @@ use App\Http\Controllers\StockController;
 
 Route::get('/test',[AkunController::class,'test']);
 
-Route::get('/report',[AkunController::class,'Report']);
+Route::get('/report/{name}',[AkunController::class,'Report']);
+
 Route::get('/akun',[AkunController::class,'getAkun']);
 Route::get('/akun/list',[AkunController::class,'getAkunList']);
 Route::get('/akun/iscash',[AkunController::class,'getAkunIsCash']);
