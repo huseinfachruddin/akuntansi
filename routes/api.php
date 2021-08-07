@@ -97,7 +97,7 @@ Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteSt
 Route::get('/role',[RoleController::class,'getRole']);
 Route::post('/role/create',[RoleController::class,'createRole']);
 Route::post('/role/edit/{id}',[RoleController::class,'editRole']);
-Route::post('/role/delete/{id}',[RoleController::class,'deleteRole']);
+Route::delete('/role/delete/{id}',[RoleController::class,'deleteRole']);
 
 Route::get('/user',[UserController::class,'getUser']);
 Route::post('/user/role',[UserController::class,'createUserRole']);
