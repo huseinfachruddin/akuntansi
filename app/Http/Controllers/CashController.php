@@ -24,7 +24,7 @@ class CashController extends Controller
     }
 
     public function getCashIn(){
-        $data = Cashtransaction::whereNotNull('cashin')->with('from','to')->get();
+        $data = Cashtransaction::whereNotNull('cashin')->with('to')->get();
         
         $response = [
             'success'=>true,
@@ -36,7 +36,7 @@ class CashController extends Controller
     }
 
     public function getCashOut(){
-        $data = Cashtransaction::whereNotNull('cashout')->with('from','to')->get();
+        $data = Cashtransaction::whereNotNull('cashout')->with('from')->get();
         
         $response = [
             'success'=>true,
