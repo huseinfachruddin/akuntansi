@@ -14,9 +14,9 @@ class UserController extends Controller
             'role' =>'required',
         ]);
 
-        $user = User::find($request->id)->first();
+        $user = User::where('id',$request->id)->first();
         $user = $user->assignRole($request->role);
-
+ 
         $response = [
             'success'=>true,
             'user'  =>$user,
