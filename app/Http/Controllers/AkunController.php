@@ -7,6 +7,7 @@ use App\Models\Akun;
 
 class AkunController extends Controller
 {
+    private $total;
     public function test(){
           
         $data = Akun::with('children')->withSum('children','total')->get();
@@ -40,17 +41,20 @@ class AkunController extends Controller
         return response($response,200);
     }
 
-    public function sum($data){
-        $dataSum = 0;
-        if($data->children){
-            $dataSum = sum($data->children);
-        }
-        return $data['value']+$dataSum;
-    }
-    public function Report(){
-        $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
+    // private function count_sum($data) {
+    //     $this->total=0
+    //     foreach ($data as $data) {
+    //         $this->total = $data->total;
+    //         $this->count_sum($data->children);
+            
+    //     }
+    //     return $this->total;
+    // }
 
-        $data = sum($data);
+    public function Report(){
+        $data = Akun::where('name','harta')->with(str_repeat('children.',10))->get();
+
+        // $data = $this->count_sum($data);
         $response = [
             'success'=>true,
             'akun'  =>$data,
