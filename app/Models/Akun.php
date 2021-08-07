@@ -34,20 +34,11 @@ class Akun extends Model
         return $this->hasMany(Stocktransaction::class,'cashout_id');
     }
 
-        public function perent(){
+    public function perent(){
         return $this->belongsTo(Self::class,'perent_id');
     }
 
     public function children(){
         return $this->hasMany(Self::class,'perent_id');
-    }
-
-    public static function getReport(){
-        $query = DB::table('Akuns as A')
-        ->join('Akuns as P','P.perent_id','=','A.id')
-        ->select('P.perent_id',DB::raw('sum(A.total) as total'))
-        ->groupBy('P.perent_id')
-        ->get();
-        return $query;
     }
 }

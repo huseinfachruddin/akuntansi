@@ -9,6 +9,8 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Auth\Auth;
+use App\Http\Controllers\User\RoleController;
+
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\ProductController;
@@ -91,6 +93,15 @@ Route::post('/stock/out/create',[StockController::class,'createStockOut']);
 
 Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteStockTransaction']);
 
+// #ROLES****
+Route::get('/role',[RoleController::class,'getRole']);
+Route::post('/role/create',[RoleController::class,'createRole']);
+Route::post('/role/edit/{id}',[RoleController::class,'editRole']);
+Route::post('/role/delete/{id}',[RoleController::class,'deleteRole']);
+
+Route::get('/user',[UserController::class,'getUser']);
+Route::post('/user/role',[UserController::class,'createUserRole']);
+
 
 
 
@@ -100,6 +111,9 @@ Route::post('/login',[Auth::class,'login']);
 
 Route::group(['middleware'=>'auth:sanctum'],function(){ 
     Route::get('/logout',[Auth::class,'logout']);
+
+
+
 
     Route::get('/profile',function(Request $request){
         return $request->user();

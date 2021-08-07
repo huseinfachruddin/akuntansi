@@ -10,6 +10,7 @@ use App\Models\Akun;
 
 class StockController extends Controller
 {
+    
     public function getStockTransaction(){
         $data = Stocktransaction::with('contact','cashin','cashout')->get();
         
