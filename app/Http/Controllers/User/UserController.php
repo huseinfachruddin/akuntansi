@@ -15,7 +15,7 @@ class UserController extends Controller
         ]);
 
         $user = User::where('id',$request->id)->first();
-        $user = $user->assignRole($request->role);
+        $user = $user->syncRoles($request->role);
  
         $response = [
             'success'=>true,
