@@ -96,7 +96,7 @@ Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteSt
 // #ROLES****
 Route::get('/role',[RoleController::class,'getRole']);
 Route::post('/role/create',[RoleController::class,'createRole']);
-Route::post('/role/edit/{id}',[RoleController::class,'editRole']);
+Route::put('/role/edit/{id}',[RoleController::class,'editRole']);
 Route::delete('/role/delete/{id}',[RoleController::class,'deleteRole']);
 
 Route::get('/user',[UserController::class,'getUser']);
