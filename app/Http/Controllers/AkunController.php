@@ -63,6 +63,17 @@ class AkunController extends Controller
         return response($response,200);
     }
 
+    public function reportName(Request $request){
+        $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
+
+        $response = [
+            'success'=>true,
+            'akun'  =>$data,
+        ];
+
+        return response($response,200);
+    }
+
     public function getAkunIsCash(){
         $data =Akun::where('iscash',true)->get();
 
