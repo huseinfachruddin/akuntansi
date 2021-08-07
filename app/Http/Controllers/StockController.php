@@ -143,7 +143,7 @@ class StockController extends Controller
         $stock = Stocktransaction::find($request->id);
         if ($stock->cashin_id) {
 
-            $akun = Akun::find($request->cashin_id);
+            $akun = Akun::find($stock->cashin_id);
             $akun->total = $akun->total - $stock->total;
             $akun->save();
 
@@ -155,7 +155,7 @@ class StockController extends Controller
            }
            $stock->substocktransaction()->delete();
         }elseif ($stock->cashout_id) {
-            $akun = Akun::find($request->cashout_id);
+            $akun = Akun::find($stock->cashout_id);
             $akun->total = $akun->total + $stock->total;
             $akun->save();
 

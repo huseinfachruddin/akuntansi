@@ -87,7 +87,7 @@ Route::post('/stock/in/create',[StockController::class,'createStockIn']);
 Route::post('/stock/out/create',[StockController::class,'createStockOut']);
 
 
-Route::delete('/stock/transaction/delete/{id}',[CashController::class,'deleteCashTransaction']);
+Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteStockTransaction']);
 
 
 
