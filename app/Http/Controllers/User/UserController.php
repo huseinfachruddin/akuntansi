@@ -9,19 +9,33 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function createUserRole(){
+    public function createUserRole(Request $request){
         $request->validate([
-            'user_id' =>'required',
             'role' =>'required',
         ]);
 
         $user = User::find($request->id);
-        $role = $user->assignRole($request->name);
+        $user = $user->assignRole($request->role);
 
         $response = [
             'success'=>true,
-            'user'  =>$user ,
-            'role'  =>$role,
+            'user'  =>$user,
+        ];
+        return response($response,200);
+
+    }
+
+    public function deleteUserRole(Request $request){
+        $request->validate([
+            'role' =>'required',
+        ]);
+
+        $user = User::find($request->id);
+        $user = $user->removeRole($request->role);
+
+        $response = [
+            'success'=>true,
+            'user'  =>$user,
         ];
         return response($response,200);
 
@@ -29,7 +43,7 @@ class UserController extends Controller
 
     public function getUser(){
 
-        $user = User::all();
+        $user = User::with('roles')->get();
 
         $response = [
             'success'=>true,

@@ -100,7 +100,8 @@ Route::put('/role/edit/{id}',[RoleController::class,'editRole']);
 Route::delete('/role/delete/{id}',[RoleController::class,'deleteRole']);
 
 Route::get('/user',[UserController::class,'getUser']);
-Route::post('/user/role',[UserController::class,'createUserRole']);
+Route::post('/user/role/create/{id}',[UserController::class,'createUserRole']);
+Route::delete('/user/role/delete/{id}',[UserController::class,'deleteUserRole']);
 
 
 
