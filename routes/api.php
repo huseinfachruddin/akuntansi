@@ -114,14 +114,15 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
     Route::get('/logout',[Auth::class,'logout']);
     
     Route::get('/profile',function(Request $request){
-        return $request->user()->with('roles');
+        $data = $request->user();
+        return User::find($data->id)->with('roles');
     });
-    Route::get('/admin',function(Request $request){
-
-
-
+    
+    
+    
     Route::group(['middleware' => ['role:admin']], function () {
-            return 'Ok';
+        Route::get('/admin',function(Request $request){
+        return 'Ok';
         });
     });
     Route::group(['middleware' => ['role:admin']], function () {
