@@ -22,6 +22,30 @@ class StockController extends Controller
         return response($response,200);
     }
 
+    public function getStockIn(){
+        $data = Stocktransaction::whereNotNull('cashout_id')->with('contact','cashout')->get();
+        
+        $response = [
+            'success'=>true,
+            'stocktransaction'=>$data,
+
+        ];
+        
+        return response($response,200);
+    }
+
+    public function getStockOut(){
+        $data = Stocktransaction::whereNotNull('cashin_id')->with('contact','cashin')->get();
+        
+        $response = [
+            'success'=>true,
+            'stocktransaction'=>$data,
+
+        ];
+        
+        return response($response,200);
+    }
+
     public function getStockTransactionDetail(Request $request){
         $data = Stocktransaction::find($request->id)->with('contact','cashin','cashout','substocktransaction.product')->get();
         
