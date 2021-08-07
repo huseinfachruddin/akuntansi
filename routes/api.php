@@ -113,10 +113,8 @@ Route::post('/login',[Auth::class,'login']);
 Route::group(['middleware'=>'auth:sanctum'],function(){ 
     Route::get('/logout',[Auth::class,'logout']);
     
-    Route::get('/profile',function(Request $request){
-        $data = $request->user();
-        return User::find($data->id)->with('roles');
-    });
+    Route::get('/profile',[UserController::class,'Profile']);
+
     
     
     

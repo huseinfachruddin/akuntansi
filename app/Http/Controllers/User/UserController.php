@@ -53,4 +53,18 @@ class UserController extends Controller
         return response($response,200);
 
     }
+
+    public function Profile(Request $request){
+
+        $user = User::where('id',$request->user()->id)->with('roles')->get();
+        // $user = $request->user()->id;
+
+        $response = [
+            'success'=>true,
+            'user'  =>$user ,
+        ];
+
+        return response($response,200);
+
+    }
 }
