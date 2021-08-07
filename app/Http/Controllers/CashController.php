@@ -214,8 +214,8 @@ class CashController extends Controller
                 $akun = Akun::find($sub->akun_id[$key]);
                 $akun->total = $akun->total - $sub->total[$key];
                 $akun->save(); 
+                $data->subcashtransaction()->delete();
            }
-           $data->subcashtransaction()->delete();
         }elseif($data->cashout) {
             $sub=$data->subcashtransaction();
 
@@ -226,8 +226,8 @@ class CashController extends Controller
                 $akun = Akun::find($sub->akun_id[$key]);
                 $akun->total = $akun->total - $sub->total[$key];
                 $akun->save(); 
+                $data->subcashtransaction()->delete();
             }
-            $data->subcashtransaction()->delete();
 
         }elseif($data->transfer){
             $akun = Akun::find($data->from);

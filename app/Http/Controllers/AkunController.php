@@ -157,6 +157,9 @@ class AkunController extends Controller
     public function deleteAkun(Request $request){
 
         $data = Akun::find($request->id);
+        if ($request->name=='Harta') {
+            # code...
+        }
         Akun::where('perent_id', '=', $data->id)->update(array('perent_id' => null));
         $data->delete();
 
