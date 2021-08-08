@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Akun;
 
 
 use Illuminate\Support\Facades\Route;
@@ -49,7 +50,7 @@ Route::get('/test',function(Request $request){
 
     $akun = Akun::where('name','Harga Pokok Penjualan')->first();
     $akun = Akun::find($akun->id);
-    $akun->total = 0;
+    $akun->total = null;
     $akun->save();
 
     return 'Ok';
