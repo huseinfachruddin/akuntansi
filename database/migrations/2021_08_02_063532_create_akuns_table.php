@@ -20,6 +20,7 @@ class CreateAkunsTable extends Migration
             $table->biginteger('total')->nullable();
             $table->boolean('iscash')->nullable();
             $table->boolean('isheader')->nullable();
+            $table->boolean('iscashout')->nullable();
             $table->timestamps();
         });
     }

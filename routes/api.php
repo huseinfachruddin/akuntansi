@@ -51,6 +51,7 @@ Route::get('/akun',[AkunController::class,'getAkun']);
 Route::get('/akun/list/{name}',[AkunController::class,'getAkunHead']);
 
 Route::get('/akun/list',[AkunController::class,'getAkunList']);
+Route::get('/akun/iscashout',[AkunController::class,'getAkunIsCashOut']);
 Route::get('/akun/iscash',[AkunController::class,'getAkunIsCash']);
 Route::get('/akun/notcash',[AkunController::class,'getAkunNotCash']);
 Route::get('/akun/isheader',[AkunController::class,'getAkunIsHeader']);

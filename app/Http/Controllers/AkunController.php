@@ -71,6 +71,18 @@ class AkunController extends Controller
 
         return response($response,200);
     }
+
+    public function getAkunIsCashOut(){
+        $data =Akun::where('iscashout',true)->get();
+
+        $response = [
+            'success'=>true,
+            'akun'  =>$data,
+        ];
+
+        return response($response,200);
+    }
+
     public function getAkunIsCash(){
         $data =Akun::where('iscash',true)->get();
 
@@ -110,6 +122,8 @@ class AkunController extends Controller
             'name' =>'required|unique:akuns',
             'isheader' =>'boolean',
             'iscash' =>'boolean',
+            'iscashout' =>'boolean',
+
         ]);
 
         $data = new Akun;
@@ -117,6 +131,7 @@ class AkunController extends Controller
         $data->name = $request->name;
         $data->isheader= $request->isheader;
         $data->iscash = $request->iscash;
+        $data->iscashout = $request->iscashout;
         $data->save();
 
         $response = [
@@ -133,7 +148,8 @@ class AkunController extends Controller
             'name' =>'required',
             'isheader' =>'boolean',
             'iscash' =>'boolean',
-            
+            'iscashout' =>'boolean',
+
         ]);
 
         $data = Akun::find($request->id);
@@ -141,6 +157,7 @@ class AkunController extends Controller
         $data->name = $request->name;
         $data->isheader= $request->isheader;
         $data->iscash = $request->iscash;
+        $data->iscashout = $request->iscashout;
         $data->save();
 
         $response = [
