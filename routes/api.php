@@ -50,7 +50,7 @@ Route::get('/test',function(Request $request){
 
     $akun = Akun::where('name','Harga Pokok Penjualan')->first();
     $akun = Akun::find($akun->id);
-    $akun->total = null;
+    $akun->total = 0;
     $akun->save();
 
     return 'Ok';
