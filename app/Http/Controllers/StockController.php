@@ -178,7 +178,7 @@ class StockController extends Controller
                 $product->qty = $product->qty + $sub->qty[$key];
                 $product->save(); 
            }
-           $stock->substocktransaction()->delete();
+           Substocktransaction::where('stocktransaction_id',$stock->id)->delete();
         }elseif ($stock->cashout_id) {
             $akun = Akun::find($stock->cashout_id);
             $akun->total = $akun->total + $stock->total;
@@ -190,7 +190,7 @@ class StockController extends Controller
                 $product->qty = $product->qty - $sub->qty[$key];
                 $product->save(); 
            }
-           $stock->substocktransaction()->delete();
+           Substocktransaction::where('stocktransaction_id',$stock->id)->delete();
         }
         $stock->delete();
         $response = [
