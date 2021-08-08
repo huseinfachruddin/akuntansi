@@ -34,6 +34,10 @@ Route::get('/setup/awal',function(Request $request){
     $role->name='admin';
     $role->save();
 
+    $role = new Akun;
+    $role->name='admin';
+    $role->save();
+
     $user = User::create([
         'name' => 'admin awal',
         'email' => 'admin@admin.com',
@@ -54,6 +58,8 @@ Route::get('/akun/list/{name}',[AkunController::class,'getAkunHead']);
 
 Route::get('/akun/list',[AkunController::class,'getAkunList']);
 Route::get('/akun/iscashout',[AkunController::class,'getAkunIsCashOut']);
+Route::get('/akun/iscashin',[AkunController::class,'getAkunIsCashIn']);
+
 Route::get('/akun/iscash',[AkunController::class,'getAkunIsCash']);
 Route::get('/akun/notcash',[AkunController::class,'getAkunNotCash']);
 Route::get('/akun/isheader',[AkunController::class,'getAkunIsHeader']);

@@ -62,8 +62,8 @@ class AkunController extends Controller
         return response($response,200);
     }
 
-    public function getAkunHead(Request $request){
-        $data = Akun::where('name',$request->name)->get();
+    public function getAkunIsCashIn(Request $request){
+        $data =Akun::where('iscashin',true)->get();
         $response = [
             'success'=>true,
             'akun'  =>$data,

@@ -21,6 +21,8 @@ class CreateAkunsTable extends Migration
             $table->boolean('iscash')->nullable();
             $table->boolean('isheader')->nullable();
             $table->boolean('iscashout')->nullable();
+            $table->boolean('iscasin')->nullable();
+
             $table->timestamps();
         });
     }
