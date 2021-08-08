@@ -10,7 +10,19 @@ use App\Models\Akun;
 
 class StockController extends Controller
 {
-    
+    public function akunStock(){
+        $data = Akun::where('name','=','Persediaan barang')->first();
+        if ($data) {
+            $data = new Akun;
+            $data->name = 'Persediaan barang';
+            $data->save();
+        }
+        $data = Akun::where('name','=','Persediaan barang')->first();
+
+        $jml=Stocktransaction::akunStock();
+        $data->total;
+        $data->save();
+    }
     public function getStockTransaction(){
         $data = Stocktransaction::with('contact','cashin','cashout')->get();
         
@@ -153,7 +165,6 @@ class StockController extends Controller
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
         $stock->save();
-
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,

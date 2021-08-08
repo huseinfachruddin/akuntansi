@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Substocktransaction;
 use App\Models\Contact;
 use App\Models\Akun;
+use Illuminate\Support\Facades\DB;
 
 class Stocktransaction extends Model
 {
@@ -27,5 +28,13 @@ class Stocktransaction extends Model
 
     public function cashout(){
         return $this->belongsTo(Akun::class,'cashout_id');
+    }
+
+    public static function akunStock(){
+        $query=DB::table('products')
+        ->select(DB::raw('sum(qty*purchase_price) as total'))
+        ->get();
+
+        return $query;
     }
 }
