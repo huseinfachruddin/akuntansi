@@ -34,9 +34,6 @@ Route::get('/setup/awal',function(Request $request){
     $role->name='admin';
     $role->save();
 
-    $role = new Akun;
-    $role->name='admin';
-    $role->save();
 
     $user = User::create([
         'name' => 'admin awal',
