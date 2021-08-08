@@ -141,6 +141,7 @@ class StockController extends Controller
 
         $data = $request->product_id;
         $total = 0;
+        $totalhpp=0;
         foreach ( $data as $key => $value) {
             $sub = new Substocktransaction;
             $sub->stocktransaction_id = $stock->id;
@@ -155,8 +156,19 @@ class StockController extends Controller
             $product->qty = $product->qty - $sub->qty;
             $product->save();
 
+            $totalhpp = $totalhpp + ($product->purchase_price * $sub->qty);
             $total = $total + $request->total[$key];
         }      
+
+        $akun = Akun::where('name','Pendapatan Penjualan')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total + $total;
+        $akun->save();
+
+        $akun = Akun::where('name','Harga Pokok Penjualan')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total + $totalhpp;
+        $akun->save();
 
         $akun = Akun::find($request->cashin_id);
         $akun->total = $akun->total + $total;
@@ -184,11 +196,25 @@ class StockController extends Controller
             $akun->save();
 
             $sub = $stock->substocktransaction();
+            $totalhpp=0;
             foreach ($sub as $key => $value) {
                 $product = Product::find($sub->product_id[$key])->first();
                 $product->qty = $product->qty + $sub->qty[$key];
                 $product->save(); 
-           }
+
+                $totalhpp = $totalhpp + ($product->purchase_price * $sub->qty);
+                
+            }
+           $akun = Akun::where('name','Pendapatan Penjualan')->first();
+           $akun = Akun::find($akun->id);
+           $akun->total = $akun->total - $stock->total;
+           $akun->save();
+
+           $akun = Akun::where('name','Harga Pokok Penjualan')->first();
+           $akun = Akun::find($akun->id);
+           $akun->total = $akun->total - $totalhpp;
+           $akun->save();
+
            Substocktransaction::where('stocktransaction_id',$stock->id)->delete();
         }elseif ($stock->cashout_id) {
             $akun = Akun::find($stock->cashout_id);
