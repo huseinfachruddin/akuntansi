@@ -10,7 +10,7 @@ use App\Models\Akun;
 
 class StockController extends Controller
 {
-    public function saveAkun(){
+    private function saveAkun(){
         $data=Product::total();
 
         $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
