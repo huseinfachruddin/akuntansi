@@ -13,7 +13,7 @@ class StockController extends Controller
     private function saveAkun(){
         $data=Product::total();
 
-        $data=Akun::where('name','=','Persediaan barang')->update(array('total' => $data->total));
+        $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
 
         $response = [
             'success'=>true,
