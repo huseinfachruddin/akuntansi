@@ -204,27 +204,27 @@ class CashController extends Controller
     public function deleteCashTransaction(Request $request){
         $data = Cashtransaction::find($request->id);
         if ($data->cashin) {
-            $sub = $data->subcashtransaction();
+            $sub = Subcashtransaction::where('cashtransaction_id',$request->id)->get();
 
             $akun = Akun::find($data->to);
             $akun->total = $akun->total - $data->cashin;
             $akun->save();
 
             foreach ($sub as $key => $value) {
-                $akun = Akun::find($sub->akun_id[$key]);
-                $akun->total = $akun->total - $sub->total[$key];
+                $akun = Akun::find($value->akun_id);
+                $akun->total = $akun->total - $value->total;
                 $akun->save(); 
            }
            Subcashtransaction::where('cashtransaction_id',$request->id)->delete();
         }elseif($data->cashout) {
-            $sub = $data->subcashtransaction();
+            $sub = Subcashtransaction::where('cashtransaction_id',$request->id)->get();
 
             $akun = Akun::find($data->from);
             $akun->total = $akun->total + $data->cashout;
             $akun->save();
             foreach ($sub as $key => $value) {
-                $akun = Akun::find($sub->akun_id[$key]);
-                $akun->total = $akun->total - $sub->total[$key];
+                $akun = Akun::find($value->akun_id);
+                $akun->total = $akun->total - $value->total;
                 $akun->save(); 
             }
             Subcashtransaction::where('cashtransaction_id',$request->id)->delete();
