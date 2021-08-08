@@ -53,7 +53,7 @@ Route::get('/test',function(Request $request){
     $akun->total = 0;
     $akun->save();
 
-    return 'Ok';
+    return $akun;
 });
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);
