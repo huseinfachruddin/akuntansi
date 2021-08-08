@@ -4,20 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Akun;
+use App\Models\Product;
+
 
 class AkunController extends Controller
 {
     private $total;
-    public function test(){
-          
-        $data = Akun::with('children')->withSum('children','total')->get();
-        $response = [
-            'success'=>true,
-            'data'  =>$data,
-        ];
 
-        return response($response,200);
-    }
 
     public function getAkun(){
         $data =Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();

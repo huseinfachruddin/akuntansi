@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Producttype;
 use App\Models\Substocktransaction;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -18,6 +19,14 @@ class Product extends Model
 
     public function substocktransaction(){
         return $this->hasMany(Substocktransaction::class,'product_id');
+    }
+
+    public static function total(){
+        $query=DB::table('products')
+        ->select(DB::raw('sum(qty*purchase_price) as total'))
+        ->first();
+
+        return $query;
     }
 
     

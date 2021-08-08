@@ -10,26 +10,25 @@ use App\Models\Akun;
 
 class StockController extends Controller
 {
-    public function akunStock(){
-        $data = Akun::where('name','=','Persediaan barang')->first();
-        if ($data) {
-            $data = new Akun;
-            $data->name = 'Persediaan barang';
-            $data->save();
-        }
-        $data = Akun::where('name','=','Persediaan barang')->first();
+    private function saveAkun(){
+        $data=Product::total();
 
-        $jml=Stocktransaction::akunStock();
-        $data->total;
-        $data->save();
+        $data=Akun::where('name','=','Persediaan barang')->update(array('total' => $data->total));
+
+        $response = [
+            'success'=>true,
+            'product'=>$data,
+        ];
+        
+        return response($response,200);
     }
     public function getStockTransaction(){
         $data = Stocktransaction::with('contact','cashin','cashout')->get();
-        
+        $this->saveAkun();
+
         $response = [
             'success'=>true,
             'stocktransaction'=>$data,
-
         ];
         
         return response($response,200);
@@ -104,6 +103,7 @@ class StockController extends Controller
             $product->save();
 
             $total = $total + $request->total[$key];
+
         }      
 
         $akun = Akun::find($request->cashout_id);
@@ -113,7 +113,7 @@ class StockController extends Controller
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
         $stock->save();
-
+        $this->saveAkun();
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,
@@ -170,7 +170,7 @@ class StockController extends Controller
             'stockktransaction'=>$stock,
             'substocktransaction'=>$substocktransaction,
         ];
-
+        $this->saveAkun();
         return response($response,200);
     }
 

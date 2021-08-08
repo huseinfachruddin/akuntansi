@@ -45,7 +45,7 @@ Route::get('/setup/awal',function(Request $request){
     return 'Ok';
     });
 
-    Route::get('/test',[StockController::class,'akunStock']);
+    Route::get('/test',[StockController::class,'saveAkun']);
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);
 Route::get('/report',[AkunController::class,'Report']);
