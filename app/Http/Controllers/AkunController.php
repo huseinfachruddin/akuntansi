@@ -123,7 +123,7 @@ class AkunController extends Controller
             'isheader' =>'boolean',
             'iscash' =>'boolean',
             'iscashout' =>'boolean',
-
+            'iscashin' =>'boolean',
         ]);
 
         $data = new Akun;
@@ -132,6 +132,8 @@ class AkunController extends Controller
         $data->isheader= $request->isheader;
         $data->iscash = $request->iscash;
         $data->iscashout = $request->iscashout;
+        $data->iscashin = $request->iscashin;
+
         $data->save();
 
         $response = [
