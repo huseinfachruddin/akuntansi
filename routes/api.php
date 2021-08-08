@@ -30,7 +30,9 @@ use App\Http\Controllers\StockController;
 */
 
 Route::get('/setup/awal',function(Request $request){
- 
+    $role = new Role;
+    $role->name='admin';
+    $role->save();
 
     $role = new Akun;
     $role->name='admin';
