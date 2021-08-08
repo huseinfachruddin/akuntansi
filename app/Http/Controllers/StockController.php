@@ -17,7 +17,7 @@ class StockController extends Controller
 
         $response = [
             'success'=>true,
-            'product'=>$data->total,
+            'product'=>$data,
         ];
         
         return response($response,200);
