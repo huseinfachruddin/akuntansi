@@ -208,7 +208,7 @@ class StockController extends Controller
                 $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
-                $totalhpp = $totalhpp + ($product->purchase_price * $sub->qty);
+                $totalhpp = $totalhpp + ($product->purchase_price * $value->qty);
 
             }
            $akun = Akun::where('name','Pendapatan Penjualan')->first();

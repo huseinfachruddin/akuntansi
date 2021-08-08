@@ -75,13 +75,15 @@ class CashController extends Controller
     public function createCashIn(Request $request){
         $request->validate([
             'to' =>'required',
+            'keterangan' =>'required',
             'akun_id.*' =>'required',
-            'desc.*'  =>'required',
+            'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
         ]);                
 
         $cash = new Cashtransaction;
         $cash->to = $request->to;
+        $cash->desc = $request->keterangan;
         $cash->cashin = 0;
         $cash->save();
 
@@ -125,13 +127,15 @@ class CashController extends Controller
     public function createCashOut(Request $request){
         $request->validate([
             'from' =>'required',
+            'keterangan' =>'required',
             'akun_id.*' =>'required',
-            'desc.*'  =>'required',
+            'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
         ]);                
 
         $cash = new Cashtransaction;
         $cash->from = $request->from;
+        $cash->desc = $request->keterangan;
         $cash->cashout = 0;
         $cash->save();
 

@@ -45,7 +45,15 @@ Route::get('/setup/awal',function(Request $request){
     return 'Ok';
     });
 
-    Route::get('/test',[StockController::class,'saveAkun']);
+Route::get('/test',function(Request $request){
+
+    $akun = Akun::where('name','Harga Pokok Penjualan')->first();
+    $akun = Akun::find($akun->id);
+    $akun->total = 0;
+    $akun->save();
+
+    return 'Ok';
+});
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);
 Route::get('/report',[AkunController::class,'Report']);
