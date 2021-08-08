@@ -52,7 +52,7 @@ class AkunController extends Controller
     }
 
     public function reportName(Request $request){
-        $data = Akun::where('name',$request->name)->get();
+        $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
 
         $response = [
             'success'=>true,
