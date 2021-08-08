@@ -10,7 +10,7 @@ use App\Models\Akun;
 
 class StockController extends Controller
 {
-    private function saveAkun(){
+    public function saveAkun(){
         $data=Product::total();
 
         $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
@@ -203,7 +203,7 @@ class StockController extends Controller
                 $product->save(); 
 
                 $totalhpp = $totalhpp + ($product->purchase_price * $sub->qty);
-                
+
             }
            $akun = Akun::where('name','Pendapatan Penjualan')->first();
            $akun = Akun::find($akun->id);
