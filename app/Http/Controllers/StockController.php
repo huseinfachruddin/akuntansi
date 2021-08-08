@@ -12,8 +12,11 @@ class StockController extends Controller
 {
     private function saveAkun(){
         $data=Product::total();
-
-        $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
+        if ($data->total) {
+            $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
+        }else {
+            $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => 0));
+        }
 
         $response = [
             'success'=>true,
@@ -30,7 +33,8 @@ class StockController extends Controller
             'success'=>true,
             'stocktransaction'=>$data,
         ];
-        
+        $this->saveAkun();
+
         return response($response,200);
     }
 
@@ -42,7 +46,8 @@ class StockController extends Controller
             'stocktransaction'=>$data,
 
         ];
-        
+        $this->saveAkun();
+
         return response($response,200);
     }
 
@@ -54,7 +59,8 @@ class StockController extends Controller
             'stocktransaction'=>$data,
 
         ];
-        
+        $this->saveAkun();
+
         return response($response,200);
     }
 
@@ -198,8 +204,8 @@ class StockController extends Controller
             $sub = $stock->substocktransaction();
             $totalhpp=0;
             foreach ($sub as $key => $value) {
-                $product = Product::find($sub->product_id[$key])->first();
-                $product->qty = $product->qty + $sub->qty[$key];
+                $product = Product::find($value->product_id)->first();
+                $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
                 $totalhpp = $totalhpp + ($product->purchase_price * $sub->qty);
@@ -223,8 +229,8 @@ class StockController extends Controller
 
             $sub = $stock->substocktransaction();
             foreach ($sub as $key => $value) {
-                $product = Product::find($sub->product_id[$key])->first();
-                $product->qty = $product->qty - $sub->qty[$key];
+                $product = Product::find($value->product_id)->first();
+                $product->qty = $product->qty - $value->qty;
                 $product->save(); 
            }
            Substocktransaction::where('stocktransaction_id',$stock->id)->delete();
