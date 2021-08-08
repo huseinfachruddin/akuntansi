@@ -41,20 +41,8 @@ class AkunController extends Controller
         return response($response,200);
     }
 
-    private function count_sum($data) {
-        $this->total=0;
-        foreach ($data as $key => $value) {
-            $this->count_sum($data[$key]->children);
-            $this->total += $data[$key]->total;
-        }
-                
-        $data=$data->total+$this->total;
-        return $data;
-    }
-
     public function Report(Request $request){
         $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
-        $data = $this->count_sum($data);
         $response = [
             'success'=>true,
             'akun'  =>$data,
@@ -75,7 +63,7 @@ class AkunController extends Controller
     }
 
     public function getAkunHead(Request $request){
-        $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
+        $data = Akun::where('name',$request->name)->get();
         $response = [
             'success'=>true,
             'akun'  =>$data,
