@@ -55,7 +55,7 @@ Route::get('/test',function(Request $request){
     }else {
         $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => 0));
     }
-    $data=Product::whereNotNull('name')->update(array('total' => 0));
+    $data=Product::whereNotNull('name')->update(array('qty' => 0));
     $data=Akun::whereNotNull('name')->update(array('total' => 0));
 
     return $data;
