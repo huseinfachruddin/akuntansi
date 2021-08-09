@@ -236,6 +236,7 @@ class StockController extends Controller
            Substocktransaction::where('stocktransaction_id',$stock->id)->delete();
         }
         $stock->delete();
+        $this->saveAkun();
         $response = [
             'success'=>true,
             'stocktransaction'=>$stock,

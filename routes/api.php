@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Akun;
+use App\Models\Product;
 
 
 use Illuminate\Support\Facades\Route;
@@ -48,12 +49,16 @@ Route::get('/setup/awal',function(Request $request){
 
 Route::get('/test',function(Request $request){
 
-    $akun = Akun::where('name','Harga Pokok Penjualan')->first();
-    $akun = Akun::find($akun->id);
-    $akun->total = 0;
-    $akun->save();
+    $data=Product::total();
+    if ($data->total) {
+        $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
+    }else {
+        $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => 0));
+    }
+    $data=Product::all()->update(array('total' => 0));
 
-    return $akun;
+
+    return $data;
 });
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);

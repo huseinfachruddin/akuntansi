@@ -23,6 +23,18 @@ class AkunController extends Controller
         return response($response,200);
     }
 
+    public function setAkunLaba(Request $request){
+        $data =Akun::where('name','Laba Tahun Berjalan',)->first();
+        $data=find($data->id);
+    $
+        $response = [
+            'success'=>true,
+            'akun'  =>$data,
+        ];
+
+        return response($response,200);
+    }
+
     public function getAkunList(){
         $data =Akun::all();
 
