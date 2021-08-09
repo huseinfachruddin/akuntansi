@@ -77,6 +77,7 @@ Route::get('/akun/isheader',[AkunController::class,'getAkunIsHeader']);
 Route::post('/akun/create',[AkunController::class,'createAkun']);
 Route::put('/akun/edit/{id}',[AkunController::class,'editAkun']);
 Route::delete('/akun/delete/{id}',[AkunController::class,'deleteAkun']);
+Route::post('/akun/setlaba',[AkunController::class,'setLabaTahun']);
 
 Route::get('/cash',[CashController::class,'getCash']);
 Route::get('/cash/in',[CashController::class,'getCashIn']);
