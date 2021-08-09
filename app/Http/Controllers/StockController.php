@@ -201,7 +201,7 @@ class StockController extends Controller
             $akun->total = $akun->total - $stock->total;
             $akun->save();
 
-            Subcashtransaction::where('stocktransaction_id',$request->id)->get();
+            $sub =Substocktransaction::where('stocktransaction_id',$request->id)->get();
             $totalhpp=0;
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id)->first();
@@ -228,7 +228,7 @@ class StockController extends Controller
             $akun->total = $akun->total + $stock->total;
             $akun->save();
 
-            Subcashtransaction::where('stocktransaction_id',$request->id)->get();
+            $sub =Substocktransaction::where('stocktransaction_id',$request->id)->get();
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id)->first();
                 $product->qty = $product->qty - $value->qty;
