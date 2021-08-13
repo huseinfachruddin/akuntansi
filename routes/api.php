@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Akun;
 use App\Models\Product;
+use App\Models\Substocktransaction;
 
 
 use Illuminate\Support\Facades\Route;
@@ -53,16 +54,8 @@ Route::get('/clean',function(Request $request){
     return $akun;
 });
 
-Route::get('/test',function(Request $request){
-
-    $data=Product::total();
-    if ($data->total) {
-        $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
-    }else {
-        $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => 0));
-    }
-    $data=Product::whereNotNull('name')->update(array('qty' => 0));
-    $data=Akun::whereNotNull('name')->update(array('total' => 0));
+Route::get('/test/{id}',function(Request $request){
+    $data=Substocktransaction::where('stocktransaction_id','=',$request->id)->get();
 
     return $data;
 });

@@ -209,7 +209,6 @@ class StockController extends Controller
                 $product->save(); 
 
                 $totalhpp = $totalhpp + ($product->purchase_price * $value->qty);
-
             }
            $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
            $akun = Akun::find($akun->id);
@@ -234,6 +233,7 @@ class StockController extends Controller
                 $product->qty = $product->qty - $value->qty;
                 $product->save(); 
            }
+           
            $this->saveAkun();
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
@@ -245,7 +245,7 @@ class StockController extends Controller
             'success'=>true,
             'stocktransaction'=>$stock,
         ];
-        
+
         return response($response,200);
     }
 }
