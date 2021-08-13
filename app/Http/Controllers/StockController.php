@@ -166,12 +166,12 @@ class StockController extends Controller
             $total = $total + $request->total[$key];
         }      
 
-        $akun = Akun::where('name','Pendapatan Penjualan')->first();
+        $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total + $total;
         $akun->save();
 
-        $akun = Akun::where('name','Harga Pokok Penjualan')->first();
+        $akun = Akun::where('name','=','Harga Pokok Penjualan')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total + $totalhpp;
         $akun->save();
@@ -201,7 +201,7 @@ class StockController extends Controller
             $akun->total = $akun->total - $stock->total;
             $akun->save();
 
-            $sub =Substocktransaction::where('stocktransaction_id',$request->id)->get();
+            $sub =Substocktransaction::where('stocktransaction_id','=',$request->id)->get();
             $totalhpp=0;
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id)->first();
@@ -211,24 +211,24 @@ class StockController extends Controller
                 $totalhpp = $totalhpp + ($product->purchase_price * $value->qty);
 
             }
-           $akun = Akun::where('name','Pendapatan Penjualan')->first();
+           $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
            $akun = Akun::find($akun->id);
            $akun->total = $akun->total - $stock->total;
            $akun->save();
 
-           $akun = Akun::where('name','Harga Pokok Penjualan')->first();
+           $akun = Akun::where('name','=','Harga Pokok Penjualan')->first();
            $akun = Akun::find($akun->id);
            $akun->total = $akun->total - $totalhpp;
            $akun->save();
            $this->saveAkun();
 
-           Substocktransaction::where('stocktransaction_id',$stock->id)->delete();
+           Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }elseif ($stock->cashout_id) {
             $akun = Akun::find($stock->cashout_id);
             $akun->total = $akun->total + $stock->total;
             $akun->save();
 
-            $sub =Substocktransaction::where('stocktransaction_id',$request->id)->get();
+            $sub =Substocktransaction::where('stocktransaction_id','=',$request->id)->get();
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id)->first();
                 $product->qty = $product->qty - $value->qty;
@@ -236,7 +236,7 @@ class StockController extends Controller
            }
            $this->saveAkun();
 
-           Substocktransaction::where('stocktransaction_id',$stock->id)->delete();
+           Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }
         $stock->delete();
         

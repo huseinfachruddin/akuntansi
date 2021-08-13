@@ -46,6 +46,11 @@ Route::get('/setup/awal',function(Request $request){
 
     return 'Ok';
     });
+Route::get('/akun/clean',function(Request $request){
+    $akun = Akun::whereNotNull('name')->update(array('total' => 0));
+    
+    return $akun;
+});
 
 Route::get('/test',function(Request $request){
 
