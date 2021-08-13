@@ -60,7 +60,7 @@ Route::get('/test/{id}',function(Request $request){
         $product = Product::find($value->product_id)->first();
         $productset[]=$product;
    }
-    return $productset;
+    return [$sub,$productset];
 });
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);
