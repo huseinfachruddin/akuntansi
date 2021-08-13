@@ -104,7 +104,7 @@ class StockController extends Controller
 
             $substocktransaction[]= $sub;
 
-            $product = Product::find($request->product_id);
+            $product = Product::find($sub->product_id);
             $product->qty = $product->qty + $sub->qty;
             $product->save();
 
@@ -158,7 +158,7 @@ class StockController extends Controller
 
             $substocktransaction[]= $sub;
 
-            $product = Product::find($request->product_id);
+            $product = Product::find($sub->product_id);
             $product->qty = $product->qty - $sub->qty;
             $product->save();
 
