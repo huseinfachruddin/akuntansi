@@ -57,7 +57,7 @@ Route::get('/clean',function(Request $request){
 Route::get('/test/{id}',function(Request $request){
     $sub=Substocktransaction::where('stocktransaction_id','=',$request->id)->get();
     foreach ($sub as $key => $value) {
-        $product = Product::find($value->product_id)->first();
+        $product = Product::find($value->product_id);
         $productset[]=$product;
    }
     return [$sub,$productset];
