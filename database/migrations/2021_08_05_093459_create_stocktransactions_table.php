@@ -19,6 +19,7 @@ class CreateStocktransactionsTable extends Migration
             $table->biginteger('contact_id')->nullable()->nullable();
             $table->biginteger('cashin_id')->nullable();
             $table->biginteger('cashout_id')->nullable();
+            $table->string('staff')->nullable();
             $table->double('total')->nullable();
             $table->timestamps();
         });
