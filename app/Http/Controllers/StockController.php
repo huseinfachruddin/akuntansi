@@ -81,7 +81,7 @@ class StockController extends Controller
         $request->validate([
             'contact_id' =>'required',
             'cashout_id' =>'required',
-
+            'staff' =>'required',
             'product_id.*' =>'required',
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
@@ -90,6 +90,8 @@ class StockController extends Controller
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
+        $stock->staff = $request->staff;
+
         $stock->save();
 
         $data = $request->product_id;

@@ -76,6 +76,7 @@ class CashController extends Controller
         $request->validate([
             'to' =>'required',
             'keterangan' =>'nullable',
+            'staff' =>'nullable',
             'akun_id.*' =>'required',
             'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
@@ -83,6 +84,7 @@ class CashController extends Controller
 
         $cash = new Cashtransaction;
         $cash->to = $request->to;
+        $cash->staff = $request->staff;
         $cash->desc = $request->keterangan;
         $cash->cashin = 0;
         $cash->save();
@@ -128,6 +130,7 @@ class CashController extends Controller
         $request->validate([
             'from' =>'required',
             'keterangan' =>'nullable',
+            'staff' =>'nullable',
             'akun_id.*' =>'required',
             'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
@@ -135,6 +138,7 @@ class CashController extends Controller
 
         $cash = new Cashtransaction;
         $cash->from = $request->from;
+        $cash->staff = $request->staff;
         $cash->desc = $request->keterangan;
         $cash->cashout = 0;
         $cash->save();
@@ -180,12 +184,14 @@ class CashController extends Controller
         $request->validate([
             'to' =>'required',
             'from' =>'required',
+            'staff' =>'required',
             'total'  =>'required|numeric',
         ]);                
 
         $cash = new Cashtransaction;
         $cash->from = $request->from;
         $cash->to = $request->to;
+        $cash->staff = $request->staff;
         $cash->transfer = $request->total;
         $cash->save();
         

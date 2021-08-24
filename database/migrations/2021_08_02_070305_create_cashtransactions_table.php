@@ -20,6 +20,7 @@ class CreateCashtransactionsTable extends Migration
             $table->biginteger('cashin')->nullable();
             $table->biginteger('cashout')->nullable();
             $table->biginteger('transfer')->nullable();
+            $table->string('staff')->nullable();
             $table->string('desc')->nullable();
             $table->timestamps();
         });
