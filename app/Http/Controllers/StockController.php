@@ -233,7 +233,7 @@ class StockController extends Controller
                 $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
-                $totalhpp = $totalhpp + $sub->hpp;
+                $totalhpp = $totalhpp + $value->hpp;
             }
 
             $akun = Akun::where('name','=','Persediaan Barang')->first();
