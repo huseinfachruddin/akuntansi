@@ -179,9 +179,12 @@ class StockController extends Controller
                     $sibin->save();
 
                     $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
-
                 }
+                
             }
+            $sibin = Substocktransaction::find($value->id);
+            $sibin->hpp = $totalhpp;
+            $sibin->save();
 
             $total = $total + $sub->total;
             
@@ -227,15 +230,35 @@ class StockController extends Controller
             $akun->save();
 
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
-            $totalhpp=0;
+
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id);
                 $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
-                $data = Substocktransaction::find($value->id);
-                $data->left = $data->left + $value->qty;
-                $data->save();
+                $qty = $sub->qty;
+                $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$sub->product_id)->orderBy('id','desc')->get();
+                foreach ($subin as $key => $value) {
+                    
+                    if ($qty <= $value->qty) {
+    
+                        $set = $value->left + $qty;
+                        
+                        $sibin = Substocktransaction::find($value->id);
+                        $sibin->left = $set;
+                        $sibin->save();
+                        break;
+                    }else{
+                        $set = $value->qty;
+                        $qty = $qty - $value->qty;
+    
+                        $sibin = Substocktransaction::find($value->id);
+                        $sibin->left = $set;
+                        $sibin->save();
+    
+                    }
+                    
+                }
 
                 $totalhpp = $totalhpp + $value->hpp;
             }
@@ -255,24 +278,27 @@ class StockController extends Controller
            $akun->total = $akun->total - $totalhpp;
            $akun->save();
 
-
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
+
         }elseif ($stock->cashout_id) {
             $akun = Akun::find($stock->cashout_id);
             $akun->total = $akun->total + $stock->total;
             $akun->save();
 
-            $akun = Akun::where('name','=','Persediaan Barang')->first();
-            $akun = Akun::find($akun->id);
-            $akun->total = $akun->total-$stock->total;
-            $akun->save();
-
+            $totalhpp=0;
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id);
-                $product->qty = $product->qty - $value->qty;
+                $product->qty = $product->qty - $value->left;
                 $product->save(); 
-           }
+
+                $totalhpp = $totalhpp + ($value->left * $value->purchase_price);
+            }
+
+            $akun = Akun::where('name','=','Persediaan Barang')->first();
+            $akun = Akun::find($akun->id);
+            $akun->total = $akun->total - $totalhpp;
+            $akun->save();
 
 
 
