@@ -182,7 +182,7 @@ class StockController extends Controller
                 }
                 
             }
-            $sibin = Substocktransaction::find($value->id);
+            $sibin = Substocktransaction::find($sub->id);
             $sibin->hpp = $totalhpp;
             $sibin->save();
 
