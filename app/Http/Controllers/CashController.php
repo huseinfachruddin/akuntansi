@@ -95,7 +95,7 @@ class CashController extends Controller
             $sub = new Subcashtransaction;
             $sub->cashtransaction_id = $cash->id;
             $sub->akun_id = $request->akun_id[$key];
-            $sub->desc = $request->desc[$key];
+            $sub->desc = null;
             $sub->total = $request->total[$key];
             $sub->save();
 
