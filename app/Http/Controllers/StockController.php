@@ -236,10 +236,10 @@ class StockController extends Controller
                 $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
+                $totalhpp = $totalhpp + $value->hpp;
                 $qty = $value->qty;
                 $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->orderBy('id','desc')->get();
                 foreach ($subin as $key => $value) {
-                    $totalhpp = $totalhpp + $value->hpp;
                     
                     if ($qty <= $value->qty) {
     
