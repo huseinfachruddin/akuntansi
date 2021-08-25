@@ -184,6 +184,7 @@ class CashController extends Controller
         $request->validate([
             'to' =>'required',
             'from' =>'required',
+            'desc' =>'nullable',
             'staff' =>'required',
             'total'  =>'required|numeric',
         ]);                
@@ -192,6 +193,7 @@ class CashController extends Controller
         $cash->from = $request->from;
         $cash->to = $request->to;
         $cash->staff = $request->staff;
+        $cash->desc = $request->desc;
         $cash->transfer = $request->total;
         $cash->save();
         
