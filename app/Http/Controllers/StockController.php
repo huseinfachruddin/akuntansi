@@ -173,12 +173,12 @@ class StockController extends Controller
                 }else{
                     $set = 0;
                     $qty = $qty - $value->left;
+                    $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
 
                     $sibin = Substocktransaction::find($value->id);
                     $sibin->left = $set;
                     $sibin->save();
 
-                    $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
                 }
                 
             }
@@ -239,6 +239,7 @@ class StockController extends Controller
                 $qty = $value->qty;
                 $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->orderBy('id','desc')->get();
                 foreach ($subin as $key => $value) {
+                    $totalhpp = $totalhpp + $value->hpp;
                     
                     if ($qty <= $value->qty) {
     
@@ -260,7 +261,6 @@ class StockController extends Controller
                     
                 }
 
-                $totalhpp = $totalhpp + $value->hpp;
             }
 
             $akun = Akun::where('name','=','Persediaan Barang')->first();
