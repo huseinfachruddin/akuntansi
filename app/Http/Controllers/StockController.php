@@ -230,7 +230,7 @@ class StockController extends Controller
             $akun->save();
 
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
-
+            $totalhpp=0;
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id);
                 $product->qty = $product->qty + $value->qty;
