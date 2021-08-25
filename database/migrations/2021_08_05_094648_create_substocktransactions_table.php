@@ -18,6 +18,8 @@ class CreateSubstocktransactionsTable extends Migration
             $table->biginteger('stocktransaction_id')->nullable();
             $table->biginteger('product_id')->nullable();
             $table->double('qty')->nullable();
+            $table->double('left')->nullable();
+            $table->double('purchase_price')->nullable();
             $table->double('total')->nullable();
             $table->timestamps();
         });

@@ -54,13 +54,10 @@ Route::get('/clean',function(Request $request){
     return $akun;
 });
 
-Route::get('/test/{id}',function(Request $request){
-    $sub=Substocktransaction::where('stocktransaction_id','=',$request->id)->get();
-    foreach ($sub as $key => $value) {
-        $product = Product::find($value->product_id);
-        $productset[]=$product;
-   }
-    return [$sub,$productset];
+Route::get('/test',function(Request $request){
+    $subin = Substocktransaction::where('left','>',0)->where('product_id','=',1)->get();
+
+    return $subin;
 });
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);

@@ -10,30 +10,13 @@ use App\Models\Akun;
 
 class StockController extends Controller
 {
-    private function saveAkun(){
-        $data=Product::total();
-        if ($data->total) {
-            $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => $data->total));
-        }else {
-            $data=Akun::where('name','=','Persediaan Barang')->update(array('total' => 0));
-        }
-
-        $response = [
-            'success'=>true,
-            'product'=>$data,
-        ];
-        
-        return response($response,200);
-    }
     public function getStockTransaction(){
         $data = Stocktransaction::with('contact','cashin','cashout')->get();
-        $this->saveAkun();
 
         $response = [
             'success'=>true,
             'stocktransaction'=>$data,
         ];
-        $this->saveAkun();
 
         return response($response,200);
     }
@@ -46,7 +29,6 @@ class StockController extends Controller
             'stocktransaction'=>$data,
 
         ];
-        $this->saveAkun();
 
         return response($response,200);
     }
@@ -59,7 +41,6 @@ class StockController extends Controller
             'stocktransaction'=>$data,
 
         ];
-        $this->saveAkun();
 
         return response($response,200);
     }
@@ -82,8 +63,10 @@ class StockController extends Controller
             'contact_id' =>'required',
             'cashout_id' =>'required',
             'staff' =>'required',
+
             'product_id.*' =>'required',
             'qty.*'  =>'required',
+            'purchase_price.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
 
@@ -91,7 +74,7 @@ class StockController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
         $stock->staff = $request->staff;
-
+        
         $stock->save();
 
         $data = $request->product_id;
@@ -101,6 +84,8 @@ class StockController extends Controller
             $sub->stocktransaction_id = $stock->id;
             $sub->product_id = $request->product_id[$key];
             $sub->qty = $request->qty[$key];
+            $sub->purchase_price = $request->purchase_price[$key];
+            $sub->left = $request->left[$key];
             $sub->total = $request->total[$key];
             $sub->save();
 
@@ -118,10 +103,14 @@ class StockController extends Controller
         $akun->total = $akun->total - $total;
         $akun->save();
 
+        $akun = Akun::where('name','=','Persediaan Barang')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total + $total;
+        $akun->save();
+
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
         $stock->save();
-        $this->saveAkun();
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,
@@ -167,9 +156,31 @@ class StockController extends Controller
             $product->qty = $product->qty - $sub->qty;
             $product->save();
 
-            $totalhpp = $totalhpp + ($product->purchase_price * $sub->qty);
+                $subin = Substocktransaction::where('left','>',0)->where('product_id','=',$product_id->id)->get();
+                    $total=0;
+                    if ($product->qty > 0) {
+                        foreach ($subin as $key => $value) {
+                            $temp = $sub->qty;
+                            $sub->qty = $sub->qty - $value->left;
+                            if ($sub->qty > 0) {
+                                $update = 0;
+                                $totalhpp = $totalhpp + ($subin->purchase_price * $value->left);
+                            }else{
+                                $update = $value->left-$temp;
+                                $totalhpp = $totalhpp + ($subin->purchase_price * $sub->qty);
+                            }
+                            $data = Substocktransaction::find($value->id);
+                            $data->left = $update;
+                            $data->save();
+                        }
+                    }
             $total = $total + $request->total[$key];
         }      
+
+        $akun = Akun::where('name','=','Persediaan Barang')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total - $total;
+        $akun->save();
 
         $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
         $akun = Akun::find($akun->id);
@@ -193,7 +204,6 @@ class StockController extends Controller
             'stockktransaction'=>$stock,
             'substocktransaction'=>$substocktransaction,
         ];
-        $this->saveAkun();
         return response($response,200);
     }
 
@@ -215,6 +225,12 @@ class StockController extends Controller
 
                 $totalhpp = $totalhpp + ($product->purchase_price * $value->qty);
             }
+
+            $akun = Akun::where('name','=','Persediaan Barang')->first();
+            $akun = Akun::find($akun->id);
+            $akun->total = $akun->total + $total;
+            $akun->save();
+
            $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
            $akun = Akun::find($akun->id);
            $akun->total = $akun->total - $stock->total;
@@ -224,12 +240,17 @@ class StockController extends Controller
            $akun = Akun::find($akun->id);
            $akun->total = $akun->total - $totalhpp;
            $akun->save();
-           $this->saveAkun();
+
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }elseif ($stock->cashout_id) {
             $akun = Akun::find($stock->cashout_id);
             $akun->total = $akun->total + $stock->total;
+            $akun->save();
+
+            $akun = Akun::where('name','=','Persediaan Barang')->first();
+            $akun = Akun::find($akun->id);
+            $akun->total = $akun->total - $total;
             $akun->save();
 
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
@@ -239,13 +260,12 @@ class StockController extends Controller
                 $product->save(); 
            }
 
-           $this->saveAkun();
+
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }
         $stock->delete();
         
-        $this->saveAkun();
         $response = [
             'success'=>true,
             'stocktransaction'=>$stock,
