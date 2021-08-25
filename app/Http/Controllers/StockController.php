@@ -181,11 +181,15 @@ class StockController extends Controller
                         }
                     }
             $total = $total + $sub->total;
+            
+            $data = Substocktransaction::find($sub->id);
+            $data->hpp = $totalhpp;
+            $data->save();
         }      
 
         $akun = Akun::where('name','=','Persediaan Barang')->first();
         $akun = Akun::find($akun->id);
-        $akun->total = $akun->total - $total;
+        $akun->total = $akun->total - $totalhpp;
         $akun->save();
 
         $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
@@ -229,12 +233,12 @@ class StockController extends Controller
                 $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
-                $totalhpp = $totalhpp + ($product->purchase_price * $value->qty);
+                $totalhpp = $totalhpp + $sub->hpp;
             }
 
             $akun = Akun::where('name','=','Persediaan Barang')->first();
             $akun = Akun::find($akun->id);
-            $akun->total = $akun->total + $stock->total;
+            $akun->total = $akun->total + $totalhpp;
             $akun->save();
 
            $akun = Akun::where('name','=','Pendapatan Penjualan')->first();

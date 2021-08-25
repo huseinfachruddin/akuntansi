@@ -20,6 +20,7 @@ class CreateSubstocktransactionsTable extends Migration
             $table->double('qty')->nullable();
             $table->double('left')->nullable();
             $table->double('purchase_price')->nullable();
+            $table->double('hpp')->nullable();
             $table->double('total')->nullable();
             $table->timestamps();
         });
