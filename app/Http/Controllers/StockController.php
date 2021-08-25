@@ -162,6 +162,7 @@ class StockController extends Controller
                         foreach ($subin as $key => $value) {
                             $temp = $sub->qty;
                             $sub->qty = $sub->qty - $value->left;
+                            
                                 if ($sub->qty > 0) {
                                     $update = 0;
                                     $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
@@ -171,7 +172,7 @@ class StockController extends Controller
                                     $data->save();
                                 }else{
                                     $update = $value->left - $temp;
-                                    $totalhpp = $totalhpp + ($value->purchase_price * ($sub->qty*-1));
+                                    $totalhpp = $totalhpp + ($value->purchase_price * $temp);
 
                                     $data = Substocktransaction::find($value->id);
                                     $data->left = $update;
