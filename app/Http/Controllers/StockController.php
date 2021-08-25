@@ -236,7 +236,7 @@ class StockController extends Controller
                 $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
-                $qty = $sub->qty;
+                $qty = $value->qty;
                 $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$sub->product_id)->orderBy('id','desc')->get();
                 foreach ($subin as $key => $value) {
                     
