@@ -156,7 +156,7 @@ class StockController extends Controller
             $product->qty = $product->qty - $sub->qty;
             $product->save();
 
-                $subin = Substocktransaction::where('left','>',0)->where('product_id','=',$sub->$product_id->id)->get();
+                $subin = Substocktransaction::where('left','>',0)->where('product_id','=',$sub->product_id->id)->get();
                     $total=0;
                     if ($product->qty > 0) {
                         foreach ($subin as $key => $value) {
