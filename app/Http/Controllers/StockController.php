@@ -174,7 +174,7 @@ class StockController extends Controller
                             $data->save();
                         }
                     }
-            $total = $total + $request->total[$key];
+            $total = $total + $sub->total;
         }      
 
         $akun = Akun::where('name','=','Persediaan Barang')->first();
