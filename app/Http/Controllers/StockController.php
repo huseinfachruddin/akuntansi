@@ -85,7 +85,7 @@ class StockController extends Controller
             $sub->product_id = $request->product_id[$key];
             $sub->qty = $request->qty[$key];
             $sub->purchase_price = $request->purchase_price[$key];
-            $sub->left = $request->left[$key];
+            $sub->left = $request->qty[$key];
             $sub->total = $request->total[$key];
             $sub->save();
 
