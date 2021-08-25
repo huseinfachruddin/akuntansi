@@ -170,6 +170,7 @@ class StockController extends Controller
                                     $data = Substocktransaction::find($value->id);
                                     $data->left = $update;
                                     $data->save();
+                                    
                                 }else{
                                     $update = $value->left - $temp;
                                     $totalhpp = $totalhpp + ($value->purchase_price * $temp);
