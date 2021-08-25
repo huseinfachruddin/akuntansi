@@ -156,37 +156,35 @@ class StockController extends Controller
             $product->qty = $product->qty - $sub->qty;
             $product->save();
             
-            $total=0;
-                $subin = Substocktransaction::where('left','>',0)->where('product_id','=',$sub->product_id)->get();
-                    if ($product->qty > 0) {
-                        foreach ($subin as $key => $value) {
-                            $temp = $sub->qty;
-                            $sub->qty = $sub->qty - $value->left;
-                            
-                                if ($sub->qty > 0) {
-                                    $update = 0;
-                                    $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
-                                    
-                                    $data = Substocktransaction::find($value->id);
-                                    $data->left = 0;
-                                    $data->save();
-                                    break;
-                                }else{
-                                    $update = $value->left - $temp;
-                                    $totalhpp = $totalhpp + ($value->purchase_price * $temp);
+            $qty = $sub->qty;
+            $subin = Substocktransaction::where('left','>',0)->where('product_id','=',$sub->product_id)->get();
+            foreach ($subin as $key => $value) {
 
-                                    $data = Substocktransaction::find($value->id);
-                                    $data->left = $update;
-                                    $data->save();
-                                    break;
-                                }
-                        }
-                    }
+                if ($qty <= $value->left) {
+
+                    $set = $value->left-$qty;
+                    
+                    $sibin = Substocktransaction::find($value->id);
+                    $sibin->left = $set;
+                    $sibin->save();
+
+                    $totalhpp = $totalhpp +($value->purchase_price * $qty);
+                    break;
+                }else{
+                    $set = 0;
+                    $qty = $qty - $value->left;
+
+                    $sibin = Substocktransaction::find($value->id);
+                    $sibin->left = $set;
+                    $sibin->save();
+
+                    $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
+
+                }
+            }
+
             $total = $total + $sub->total;
             
-            $data = Substocktransaction::find($sub->id);
-            $data->hpp = $totalhpp;
-            $data->save();
         }      
 
         $akun = Akun::where('name','=','Persediaan Barang')->first();
