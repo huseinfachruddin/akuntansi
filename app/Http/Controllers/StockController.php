@@ -155,23 +155,29 @@ class StockController extends Controller
             $product = Product::find($sub->product_id);
             $product->qty = $product->qty - $sub->qty;
             $product->save();
-
+            
+            $total=0;
                 $subin = Substocktransaction::where('left','>',0)->where('product_id','=',$sub->product_id)->get();
-                    $total=0;
                     if ($product->qty > 0) {
                         foreach ($subin as $key => $value) {
                             $temp = $sub->qty;
                             $sub->qty = $sub->qty - $value->left;
-                            if ($sub->qty > 0) {
-                                $update = 0;
-                                $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
-                            }else{
-                                $update = $value->left-$temp;
-                                $totalhpp = $totalhpp + ($value->purchase_price * $sub->qty);
-                            }
-                            $data = Substocktransaction::find($value->id);
-                            $data->left = $update;
-                            $data->save();
+                                if ($sub->qty > 0) {
+                                    $update = 0;
+                                    $totalhpp = $totalhpp + ($value->purchase_price * $value->left);
+
+                                    $data = Substocktransaction::find($value->id);
+                                    $data->left = $update;
+                                    $data->save();
+                                }else{
+                                    $update = $value->left - $temp;
+                                    $totalhpp = $totalhpp + ($value->purchase_price * $sub->qty);
+
+                                    $data = Substocktransaction::find($value->id);
+                                    $data->left = $update;
+                                    $data->save();
+                                    break;
+                                }
                         }
                     }
             $total = $total + $sub->total;
