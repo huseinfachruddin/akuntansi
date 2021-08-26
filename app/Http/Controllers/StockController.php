@@ -148,6 +148,7 @@ class StockController extends Controller
         $data = $request->product_id;
         $total = 0;
         $totalhpp=0;
+        $lasthb=0;
         foreach ( $data as $key => $value) {
             $sub = new Substocktransaction;
             $sub->stocktransaction_id = $stock->id;
@@ -186,13 +187,13 @@ class StockController extends Controller
                     $sibin->save();
                 }
                 
-                $lastpp=$value->purchase_price;
+                $lasthb=$value->purchase_price;
             }
 
             if ($qty > 0) {
-                $totalhpp = $totalhpp + ($lastpp * $qty);
+                $totalhpp = $totalhpp + ($lasthb * $qty);
             }
-            
+
             $sibin = Substocktransaction::find($sub->id);
             $sibin->hpp = $totalhpp;
             $sibin->save();
