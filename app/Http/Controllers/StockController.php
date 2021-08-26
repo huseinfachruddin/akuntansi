@@ -264,7 +264,6 @@ class StockController extends Controller
         $credit->stocktransaction_id = $stock->id;
         $credit->cashin_id = $request->cashin_id;
         $credit->total = $request->total;
-        $credit->payment_due = $request->payment_due;
         $credit->save();
 
         $response = [
