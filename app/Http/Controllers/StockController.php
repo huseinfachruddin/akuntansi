@@ -233,7 +233,8 @@ class StockController extends Controller
     public function editStockTransaction(Request $request){
         $request->validate([
             'paid' =>'required',
-            'payment_due' =>'required',
+            'cashin_id' =>'required',
+            'total' =>'required',
         ]);
         
         $stock = Stocktransaction::find($request->id);
@@ -242,13 +243,13 @@ class StockController extends Controller
         $stock->payment_due = $request->payment_due;
         $stock->save();
 
-        $akun = Akun::find($stock->cashin_id);
-        $akun->total = $akun->total + ($stock->paid - $paidold);
+        $akun = Akun::find($request->cashin_id);
+        $akun->total = $akun->total + $request->total;
         $akun->save();
         
         $akun = Akun::where('name','=','Piutang Penjualan')->first();
         $akun = Akun::find($akun->id);
-        $akun->total = $akun->total - ($stock->paid - $paidold);
+        $akun->total = $akun->total - $request->total;
         $akun->save();
 
         $response = [
