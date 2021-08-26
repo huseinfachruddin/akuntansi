@@ -127,6 +127,7 @@ Route::get('/stock/out',[StockController::class,'getStockOut']);
 Route::post('/stock/in/create',[StockController::class,'createStockIn']);
 Route::post('/stock/out/create',[StockController::class,'createStockOut']);
 
+Route::put('/stock/edit/{id}',[StockController::class,'editStockTransaction']);
 
 Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteStockTransaction']);
 

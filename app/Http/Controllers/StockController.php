@@ -126,6 +126,8 @@ class StockController extends Controller
             'contact_id' =>'required',
             'cashin_id' =>'required',
             'staff' =>'required',
+            'paid' =>'required',
+            'payment_due' =>'required',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
@@ -136,6 +138,8 @@ class StockController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
+        $stock->paid = $request->paid;
+        $stock->payment_due = $request->payment_due;
 
         $stock->save();
 
@@ -217,6 +221,24 @@ class StockController extends Controller
             'stockktransaction'=>$stock,
             'substocktransaction'=>$substocktransaction,
         ];
+        return response($response,200);
+    }
+
+    public function editStockTransaction(Request $request){
+        $request->validate([
+            'paid' =>'required',
+            'payment_due' =>'required',
+        ]);
+        
+        $stock = Stocktransaction::find($request->id);
+        $stock->paid = $request->paid;
+        $stock->payment_due = $request->payment_due;
+        $stock->save();
+
+        $response = [
+            'stockktransaction'=>$stock,
+        ];
+
         return response($response,200);
     }
 
