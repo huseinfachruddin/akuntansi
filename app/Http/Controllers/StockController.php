@@ -209,13 +209,19 @@ class StockController extends Controller
         $akun->total = $akun->total + $totalhpp;
         $akun->save();
 
-        $akun = Akun::find($request->cashin_id);
-        $akun->total = $akun->total + $total;
-        $akun->save();
-
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
         $stock->save();
+        
+        $akun = Akun::find($request->cashin_id);
+        $akun->total = $akun->total + $stock->paid;
+        $akun->save();
+        
+        $akun = Akun::where('name','=','Piutang Penjualan')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total + ($total-$stock->paid);
+        $akun->save();
+
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,
@@ -231,9 +237,19 @@ class StockController extends Controller
         ]);
         
         $stock = Stocktransaction::find($request->id);
+        $paidold = $stock->paid;
         $stock->paid = $request->paid;
         $stock->payment_due = $request->payment_due;
         $stock->save();
+
+        $akun = Akun::find($stock->cashin_id);
+        $akun->total = $akun->total + ($stock->paid - $paidold);
+        $akun->save();
+        
+        $akun = Akun::where('name','=','Piutang Penjualan')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total - ($stock->paid - $paidold);
+        $akun->save();
 
         $response = [
             'stockktransaction'=>$stock,
@@ -248,7 +264,12 @@ class StockController extends Controller
         if ($stock->cashin_id) {
 
             $akun = Akun::find($stock->cashin_id);
-            $akun->total = $akun->total - $stock->total;
+            $akun->total = $akun->total - $stock->paid;
+            $akun->save();
+
+            $akun = Akun::where('name','=','Piutang Penjualan')->first();
+            $akun = Akun::find($akun->id);
+            $akun->total = $akun->total - ($stock->paid - $stock->paid);
             $akun->save();
 
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
