@@ -7,6 +7,8 @@ use App\Models\Stocktransaction;
 use App\Models\Substocktransaction;
 use App\Models\Product;
 use App\Models\Akun;
+use App\Models\Credit;
+
 
 class StockController extends Controller
 {
@@ -34,7 +36,7 @@ class StockController extends Controller
     }
 
     public function getStockOut(){
-        $data = Stocktransaction::whereNotNull('cashin_id')->with('contact','cashin')->get();
+        $data = Stocktransaction::whereNotNull('cashin_id')->with('contact','cashin','credit')->get();
         
         $response = [
             'success'=>true,
@@ -46,7 +48,7 @@ class StockController extends Controller
     }
 
     public function getStockTransactionDetail(Request $request){
-        $data = Stocktransaction::where('id',$request->id)->with('contact','cashin','cashout','substocktransaction','substocktransaction.product')->get();
+        $data = Stocktransaction::where('id',$request->id)->with('contact','cashin','cashout','substocktransaction','substocktransaction.product','credit','credit.cashin')->get();
         
         $response = [
             'success'=>true,
@@ -222,6 +224,13 @@ class StockController extends Controller
         $akun->total = $akun->total + ($total-$stock->paid);
         $akun->save();
 
+        $akun = new Credit;
+        $akun->stocktransaction_id = $stock->id;
+        $akun->cashin_id = $stock->paid;
+        $akun->total = $stock->paid;
+
+        $akun->save();
+
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,
@@ -323,6 +332,8 @@ class StockController extends Controller
            $akun->save();
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
+           Credit::where('stocktransaction_id','=',$stock->id)->delete();
+
 
         }elseif ($stock->cashout_id) {
             $akun = Akun::find($stock->cashout_id);
@@ -343,8 +354,6 @@ class StockController extends Controller
             $akun = Akun::find($akun->id);
             $akun->total = $akun->total - $stock->total;
             $akun->save();
-
-
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }

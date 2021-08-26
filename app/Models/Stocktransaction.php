@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Substocktransaction;
 use App\Models\Contact;
 use App\Models\Akun;
+use App\Models\Credit;
 
 class Stocktransaction extends Model
 {
@@ -15,6 +16,10 @@ class Stocktransaction extends Model
 
     public function substocktransaction(){
         return $this->hasMany(Substocktransaction::class,'stocktransaction_id');
+    }
+
+    public function credit(){
+        return $this->hasMany(Credit::class,'stocktransaction_id');
     }
 
     public function contact(){
