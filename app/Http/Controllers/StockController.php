@@ -184,10 +184,15 @@ class StockController extends Controller
                     $sibin = Substocktransaction::find($value->id);
                     $sibin->left = $set;
                     $sibin->save();
-
                 }
                 
+                $lastpp=$value->purchase_price;
             }
+
+            if ($qty > 0) {
+                $totalhpp = $totalhpp + ($lastpp * $qty);
+            }
+            
             $sibin = Substocktransaction::find($sub->id);
             $sibin->hpp = $totalhpp;
             $sibin->save();
