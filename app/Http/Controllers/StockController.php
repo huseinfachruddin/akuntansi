@@ -228,8 +228,7 @@ class StockController extends Controller
         $credit->stocktransaction_id = $stock->id;
         $credit->cashin_id = $stock->paid;
         $credit->total = $stock->paid;
-
-        $akun->save();
+        $credit->save();
 
         $response = [
             'success'=>true,
@@ -266,7 +265,7 @@ class StockController extends Controller
         $credit->cashin_id = $request->cashin_id;
         $credit->total = $request->total;
         $credit->payment_due = $request->payment_due;
-        $akun->save();
+        $credit->save();
 
         $response = [
             'stockktransaction'=>$stock,
