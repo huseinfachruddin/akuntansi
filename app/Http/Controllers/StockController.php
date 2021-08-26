@@ -226,7 +226,7 @@ class StockController extends Controller
 
         $credit = new Credit;
         $credit->stocktransaction_id = $stock->id;
-        $credit->cashin_id = $stock->paid;
+        $credit->cashin_id = $stock->cashin_id;
         $credit->total = $stock->paid;
         $credit->save();
 
