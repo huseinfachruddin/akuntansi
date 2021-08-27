@@ -72,7 +72,7 @@ class UserController extends Controller
     public function editUser(Request $request){
         $request->validate([
             'name'  =>'required',
-            'email' =>'required|email|unique:users,email',
+            'email' =>'required|email',
         ]);
 
         $user = User::find($request->id);
