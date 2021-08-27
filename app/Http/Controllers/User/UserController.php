@@ -91,7 +91,7 @@ class UserController extends Controller
     public function editPasswordUser(Request $request){
         $request->validate([
             'password'  =>'required',
-            'newPassword' =>'required|email|unique:users,email',
+            'newPassword' =>'required|min:6',
             'rePassword'  =>'required|min:6|same:newPassword',
         ]);
 
