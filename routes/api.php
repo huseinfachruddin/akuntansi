@@ -55,7 +55,7 @@ Route::get('/clean',function(Request $request){
 });
 
 Route::get('/test',function(Request $request){
-    $subin = Substocktransaction::where('left','>',0)->where('product_id','=',1)->get();
+    $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->orderBy('id','desc')->get();
 
     return $subin;
 });
