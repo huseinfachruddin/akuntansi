@@ -77,6 +77,7 @@ class UserController extends Controller
         $user = User::find($request->id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->save();
 
         $response = [
             'success'=>true,
@@ -104,6 +105,7 @@ class UserController extends Controller
         }
 
         $user->password = bcrypt($request->newPassword);
+        $user->save();
 
         $response = [
             'success'=>true,
