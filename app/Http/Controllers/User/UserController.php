@@ -67,4 +67,50 @@ class UserController extends Controller
         return response($response,200);
 
     }
+
+    public function editUser(Request $request){
+        $request->validate([
+            'name'  =>'required',
+            'email' =>'required|email|unique:users,email',
+        ]);
+
+        $user = User::find($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        $response = [
+            'success'=>true,
+            'user'  =>$user ,
+        ];
+
+        return response($response,200);
+
+    }
+
+    public function editPasswordUser(Request $request){
+        $request->validate([
+            'password'  =>'required',
+            'newPassword' =>'required|email|unique:users,email',
+            'rePassword'  =>'required|min:6|same:newPassword',
+        ]);
+
+        $user = User::find($request->id);
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'success'   => false,
+                'errors' => ['auth'=> 'Incorrect password']
+            ], 404);
+        }
+
+        $user->password = bcrypt($request->newPassword);
+
+        $response = [
+            'success'=>true,
+            'user'  =>$user ,
+        ];
+
+        return response($response,200);
+
+    }
 }

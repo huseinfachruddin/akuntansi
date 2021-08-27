@@ -189,19 +189,19 @@ class StockController extends Controller
                 
                 $lasthb=$value->purchase_price;
             }
-
-            if ($qty > 0) {
-                $totalhpp = $totalhpp + ($lasthb * $qty);
-            }
-
+            
             $sibin = Substocktransaction::find($sub->id);
             $sibin->hpp = $totalhpp;
             $sibin->save();
-
+            
             $total = $total + $sub->total;
             
-        }      
-
+        }
+              
+        if ($qty > 0) {
+            $totalhpp = $totalhpp + ($lasthb * $qty);
+        }
+        
         $akun = Akun::where('name','=','Persediaan Barang')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total - $totalhpp;

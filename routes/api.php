@@ -141,20 +141,17 @@ Route::get('/user',[UserController::class,'getUser']);
 Route::post('/user/role/create/{id}',[UserController::class,'createUserRole']);
 Route::delete('/user/role/delete/{id}',[UserController::class,'deleteUserRole']);
 
-
-
-
+Route::put('/user/edit/{id}',[UserController::class,'editUser']);
+Route::put('/user/edit/password/{id}',[UserController::class,'editPasswordUser']);
 
 Route::post('/register',[Auth::class,'register']);
 Route::post('/login',[Auth::class,'login']);
 
-Route::group(['middleware'=>'auth:sanctum'],function(){ 
+Route::group(['middleware'=>'auth:sanctum'],function(){
+
     Route::get('/logout',[Auth::class,'logout']);
-    
     Route::get('/profile',[UserController::class,'Profile']);
 
-    
-    
     
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/admin',function(Request $request){
@@ -167,6 +164,8 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
         });
     });
 });
+
+
 
 
 
