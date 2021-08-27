@@ -62,6 +62,32 @@ class Auth extends Controller
         return response($response, 200);
     }
 
+    public function editPasswordUser(Request $request){
+        $request->validate([
+            'password'  =>'required',
+            'newPassword' =>'required|min:6',
+            'rePassword'  =>'required|min:6|same:newPassword',
+        ]);
+
+        $user = User::find($request->id);
+        
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'success'   => false,
+                'errors' => ['auth'=> 'Incorrect password']
+            ], 404);
+        }
+        
+        $user->password = bcrypt($request->newPassword);
+        $user->save();
+
+        $response = [
+            'success'=>true,
+            'user'  =>$user ,
+        ];
+
+        return response($response,200);
+    }
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

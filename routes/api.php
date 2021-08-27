@@ -146,7 +146,7 @@ Route::post('/register',[Auth::class,'register']);
 Route::post('/login',[Auth::class,'login']);
 
 Route::put('/user/edit/{id}',[UserController::class,'editUser']);
-Route::put('/edit/password/{id}',[UserController::class,'editPasswordUser']);
+Route::put('/edit/password/{id}',[Auth::class,'editPasswordUser']);
 
 Route::group(['middleware'=>'auth:sanctum'],function(){
     
