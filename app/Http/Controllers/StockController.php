@@ -355,7 +355,7 @@ class StockController extends Controller
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id);
-                $product->qty = $product->qty - $value->left;
+                $product->qty = $product->qty - $value->qty;
                 $product->save(); 
 
                 $totalhpp = $totalhpp + ($value->left * $value->purchase_price);
