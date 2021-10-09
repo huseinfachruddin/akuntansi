@@ -18,6 +18,7 @@ use App\Http\Controllers\CashController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContacttypeController;
 use App\Http\Controllers\ProducttypeController;
 use App\Http\Controllers\StockController;
 
@@ -116,10 +117,15 @@ Route::post('/contact/create',[ContactController::class,'createContact']);
 Route::put('/contact/edit/{id}',[ContactController::class,'editContact']);
 Route::delete('/contact/delete/{id}',[ContactController::class,'deleteContact']);
 
+// CONTACTTYPE API*********
+Route::get('/contacttype',[ContacttypeController::class,'getContacttype']);
+Route::get('/contacttype/detail/{id}',[ContacttypeController::class,'getContacttypeDetail']);
 
+Route::post('/contacttype/create',[ContacttypeController::class,'createContacttype']);
+Route::put('/contacttype/edit/{id}',[ContacttypeController::class,'editContacttype']);
+Route::delete('/contacttype/delete/{id}',[ContacttypeController::class,'deleteContacttype']);
 
 // STOCK ******
-
 Route::get('/stock/transaction',[StockController::class,'getStockTransaction']);
 Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTransactionDetail']);
 Route::get('/stock/in',[StockController::class,'getStockIn']);

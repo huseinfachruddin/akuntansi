@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contacttype extends Model
 {
+    protected $fillable = ['*'];
     use HasFactory;
 }
