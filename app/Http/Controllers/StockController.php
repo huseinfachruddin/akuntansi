@@ -8,6 +8,8 @@ use App\Models\Substocktransaction;
 use App\Models\Product;
 use App\Models\Akun;
 use App\Models\Credit;
+use App\Models\Contact;
+
 
 
 class StockController extends Controller
@@ -72,6 +74,7 @@ class StockController extends Controller
             'total.*'  =>'required|numeric',
         ]); 
 
+        
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
@@ -135,6 +138,16 @@ class StockController extends Controller
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
+
+        $contact = Contact::where('id',$request->contact_id)->first();
+        $sum = 0;
+        foreach ( $request->total as $key => $value) {
+            $sum = $sum+ $request->total[$key];
+        }
+
+        if ($sum > $contact->maxdebt) {
+            return response(['error'=>'Hutang Melebihi maxmal hutang customer'],400);
+        }
 
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;

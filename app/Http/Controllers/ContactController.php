@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Contact;
+use App\Models\Contacttype;
 
 use Illuminate\Http\Request;
 
@@ -9,6 +10,17 @@ class ContactController extends Controller
 {
     public function getContact(){
         $data = Contact::all();
+        
+        $response = [
+            'success'=>true,
+            'contact'=>$data,
+        ];
+        
+        return response($response,200);
+    }
+
+    public function getContactCustomer(){
+        $data = Contact::whereNotNull('maxdebt')->get();
         
         $response = [
             'success'=>true,
@@ -44,6 +56,11 @@ class ContactController extends Controller
         $data->address = $request->address;
         $data->contact = $request->contact;
         $data->type = $request->type;
+        $contacttype = Contacttype::where('name',$data->type)->first();
+        if (!empty($contacttype->maxdebt)) {
+            $data->type = $contacttype->maxdebt;
+        }
+
         $data->save();
         
         $response = [

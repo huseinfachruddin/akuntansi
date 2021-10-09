@@ -109,6 +109,7 @@ Route::delete('/producttype/delete/{id}',[ProducttypeController::class,'deletePr
 
 // CONTACT API*********
 Route::get('/contact',[ContactController::class,'getContact']);
+Route::get('/contact/customer',[ContactController::class,'getContactCustomer']);
 Route::get('/contact/detail/{id}',[ContactController::class,'getContactDetail']);
 
 Route::post('/contact/create',[ContactController::class,'createContact']);
