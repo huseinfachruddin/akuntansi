@@ -81,6 +81,8 @@ class StockController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
         $stock->staff = $request->staff;
+        $stock->paid = $request->paid;
+        $stock->payment_due = $request->payment_due;
         
         $stock->save();
 
@@ -167,7 +169,7 @@ class StockController extends Controller
         $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
         $stock->paid = $request->paid;
-        $stock->payment_due = $request->payment_due;
+        $stock->payment_due = date("Y-m-d H:i:s", strtotime($request->payment_due));
 
         $stock->save();
 
