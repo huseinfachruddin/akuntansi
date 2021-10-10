@@ -17,7 +17,10 @@ class AddDateToStocktransactionTable extends Migration
             $table->dropColumn('payment_due');
         });
         Schema::table('stocktransactions', function (Blueprint $table) {
-            $table->date('payment_due')->nullable()->before('created_at');
+            $table->string('payment_due')->nullable()->after('paid');
+        });
+        Schema::table('stocktransactions', function (Blueprint $table) {
+            $table->date('payment_due')->nullable()->change();
         });
     }
 
@@ -29,6 +32,7 @@ class AddDateToStocktransactionTable extends Migration
     public function down()
     {
         Schema::table('stocktransactions', function (Blueprint $table) {
+            $table->string('payment_due')->nullable()->change();
         });
     }
 }
