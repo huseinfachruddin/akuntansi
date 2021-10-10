@@ -26,7 +26,7 @@ class StockController extends Controller
     }
 
     public function getStockIn(){
-        $data = Stocktransaction::whereNotNull('cashout_id')->with('contact','cashout')->get();
+        $data = Stocktransaction::whereNotNull('cashout_id')->with('contact','cashout')->orderBy('created_at','DESC')->get();
         
         $response = [
             'success'=>true,
@@ -38,7 +38,7 @@ class StockController extends Controller
     }
 
     public function getStockOut(){
-        $data = Stocktransaction::whereNotNull('cashin_id')->with('contact','cashin','credit')->get();
+        $data = Stocktransaction::whereNotNull('cashin_id')->with('contact','cashin','credit')->orderBy('created_at','DESC')->get();
         
         $response = [
             'success'=>true,
@@ -82,7 +82,7 @@ class StockController extends Controller
         $stock->cashout_id = $request->cashout_id;
         $stock->staff = $request->staff;
         $stock->paid = $request->paid;
-        $stock->payment_due = $request->payment_due;
+        $stock->payment_due = date("Y-m-d H:i:s", strtotime($request->payment_due));
         
         $stock->save();
 

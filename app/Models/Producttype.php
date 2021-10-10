@@ -14,4 +14,12 @@ class Producttype extends Model
     public function product(){
         return $this->hasMany(Producttype::class,'producttype');
     }
+
+    public function getCreatedAtAttribute(){
+        return \Carbon\Carbon::parse($this->attributes['created_at'])->format('d-m-Y H:i');
+        }
+    
+    public function getUpdatedAtAttribute(){
+            return \Carbon\Carbon::parse($this->attributes['updated_at'])->format('d-M-Y H:i');
+        }
 }

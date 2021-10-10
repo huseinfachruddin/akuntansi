@@ -14,4 +14,12 @@ class Contact extends Model
     public function stocktransaction(){
         return $this->hasMany(Stocktransaction::class,'contact_id');
     }
+
+    public function getCreatedAtAttribute(){
+        return \Carbon\Carbon::parse($this->attributes['created_at'])->format('d-m-Y H:i');
+        }
+    
+    public function getUpdatedAtAttribute(){
+            return \Carbon\Carbon::parse($this->attributes['updated_at'])->format('d-M-Y H:i');
+        }
 }
