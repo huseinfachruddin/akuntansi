@@ -69,6 +69,7 @@ class StockController extends Controller
             'staff' =>'required',
             'paid' =>'required',
             'payment_due' =>'required',
+            'date' =>'required',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
@@ -81,6 +82,7 @@ class StockController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
         $stock->staff = $request->staff;
+        $stock->date = $request->date;
         $stock->paid = $request->paid;
         $stock->payment_due = date("Y-m-d H:i:s", strtotime($request->payment_due));
         
@@ -147,6 +149,7 @@ class StockController extends Controller
             'cashin_id' =>'required',
             'staff' =>'required',
             'paid' =>'required',
+            'date' =>'required',
             'payment_due' =>'required',
 
             'product_id.*' =>'required',
@@ -168,6 +171,7 @@ class StockController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
+        $stock->date = $request->date;
         $stock->paid = $request->paid;
         $stock->payment_due = date("Y-m-d H:i:s", strtotime($request->payment_due));
 

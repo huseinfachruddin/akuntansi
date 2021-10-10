@@ -52,6 +52,7 @@ class StockNonMoneyController extends Controller
             'contact_id' =>'required',
             'akun_id' =>'required',
             'staff' =>'required',
+            'date' =>'required',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
@@ -63,6 +64,8 @@ class StockNonMoneyController extends Controller
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
         $stock->staff = $request->staff;
+        $stock->date = $request->date;
+
         $stock->nonmoney = 'in';
         
         $stock->save();
@@ -118,6 +121,7 @@ class StockNonMoneyController extends Controller
             'cashin_id' =>'required',
             'staff' =>'required',
             'paid' =>'required',
+            'date' =>'required',
             'payment_due' =>'required',
 
             'product_id.*' =>'required',
@@ -127,19 +131,13 @@ class StockNonMoneyController extends Controller
 
         $contact = Contact::where('id',$request->contact_id)->first();
         $sum = 0;
-        foreach ( $request->total as $key => $value) {
-            $sum = $sum+ $request->total[$key];
-        }
-
-        if ($sum > $contact->maxdebt) {
-            return response(['error'=>'Hutang Melebihi maxmal hutang customer'],400);
-        }
 
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
         $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
         $stock->paid = $request->paid;
+        $stock->date = $request->date;
         $stock->payment_due = $request->payment_due;
 
         $stock->save();
