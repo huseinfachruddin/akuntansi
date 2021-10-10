@@ -14,12 +14,6 @@ class AddDateToStocktransactionTable extends Migration
     public function up()
     {
         Schema::table('stocktransactions', function (Blueprint $table) {
-            $table->dropColumn('payment_due');
-        });
-        Schema::table('stocktransactions', function (Blueprint $table) {
-            $table->string('payment_due')->nullable()->after('paid');
-        });
-        Schema::table('stocktransactions', function (Blueprint $table) {
             $table->date('payment_due')->nullable()->change();
         });
     }
