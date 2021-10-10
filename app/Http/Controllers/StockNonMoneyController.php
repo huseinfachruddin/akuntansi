@@ -10,47 +10,32 @@ use App\Models\Akun;
 use App\Models\Credit;
 use App\Models\Contact;
 
-
-
-class StockController extends Controller
+class StockNonMoneyController extends Controller
 {
-    public function getStockTransaction(){
-        $data = Stocktransaction::with('contact','cashin','cashout')->get();
-
-        $response = [
-            'success'=>true,
-            'stocktransaction'=>$data,
-        ];
-
-        return response($response,200);
-    }
-
     public function getStockIn(){
-        $data = Stocktransaction::whereNotNull('cashout_id')->with('contact','cashout')->get();
-        
+        $data = Stocktransaction::where('nonmoney','in')->get();
+
         $response = [
             'success'=>true,
             'stocktransaction'=>$data,
-
         ];
 
         return response($response,200);
     }
 
     public function getStockOut(){
-        $data = Stocktransaction::whereNotNull('cashin_id')->with('contact','cashin','credit')->get();
-        
+        $data = Stocktransaction::where('nonmoney','out')->get();
+
         $response = [
             'success'=>true,
             'stocktransaction'=>$data,
-
         ];
 
         return response($response,200);
     }
 
     public function getStockTransactionDetail(Request $request){
-        $data = Stocktransaction::where('id',$request->id)->with('contact','cashin','cashout','substocktransaction','substocktransaction.product','credit','credit.cashin')->get();
+        $data = Stocktransaction::where('id',$request->id)->with('contact','substocktransaction','substocktransaction.product')->get();
         
         $response = [
             'success'=>true,
@@ -60,15 +45,13 @@ class StockController extends Controller
         
         return response($response,200);
     }
-
+    
     public function createStockIn(Request $request){
 
         $request->validate([
             'contact_id' =>'required',
-            'cashout_id' =>'required',
+            'akun_id' =>'required',
             'staff' =>'required',
-            'paid' =>'required',
-            'payment_due' =>'required',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
@@ -79,8 +62,8 @@ class StockController extends Controller
         
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
-        $stock->cashout_id = $request->cashout_id;
         $stock->staff = $request->staff;
+        $stock->nonmoney = 'in';
         
         $stock->save();
 
@@ -106,29 +89,19 @@ class StockController extends Controller
 
         }      
 
-        $akun = Akun::find($request->cashout_id);
-        $akun->total = $akun->total - $total;
-        $akun->save();
-
         $akun = Akun::where('name','=','Persediaan Barang')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total + $total;
         $akun->save();
 
-        $credit = new Credit;
-        $credit->stocktransaction_id = $stock->id;
-        $credit->cashout_id = $stock->cashout_id;
-        $credit->total = $stock->paid;
-        $credit->save();
-
-        $akun = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
-        $akun = Akun::find($akun->id);
-        $akun->total = $akun->total + ($total - $stock->paid);
+        $akun = Akun::find($request->akun_id);
+        $akun->total = $akun->total + $total;
         $akun->save();
 
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
         $stock->save();
+
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,
@@ -155,10 +128,10 @@ class StockController extends Controller
         $contact = Contact::where('id',$request->contact_id)->first();
         $sum = 0;
         foreach ( $request->total as $key => $value) {
-            $sum = $sum + $request->total[$key];
+            $sum = $sum+ $request->total[$key];
         }
-        $hutang = $sum - $request->paid;
-        if ($hutang > $contact->maxdebt && $contact->maxdebt!=null) {
+
+        if ($sum > $contact->maxdebt) {
             return response(['error'=>'Hutang Melebihi maxmal hutang customer'],400);
         }
 
@@ -215,11 +188,6 @@ class StockController extends Controller
                 
                 $lasthb=$value->purchase_price;
             }
-            
-            $sibin = Substocktransaction::find($sub->id);
-            $sibin->hpp = $totalhpp;
-            $sibin->save();
-            
             $total = $total + $sub->total;
             
         }
@@ -233,12 +201,7 @@ class StockController extends Controller
         $akun->total = $akun->total - $totalhpp;
         $akun->save();
 
-        $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
-        $akun = Akun::find($akun->id);
-        $akun->total = $akun->total + $total;
-        $akun->save();
-
-        $akun = Akun::where('name','=','Harga Pokok Penjualan')->first();
+        $akun = Akun::where('name','=','Kerugian Barang Keluar Tanpa Penjualan')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total + $totalhpp;
         $akun->save();
@@ -246,21 +209,6 @@ class StockController extends Controller
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
         $stock->save();
-        
-        $akun = Akun::find($request->cashin_id);
-        $akun->total = $akun->total + $stock->paid;
-        $akun->save();
-        
-        $akun = Akun::where('name','=','Piutang Penjualan')->first();
-        $akun = Akun::find($akun->id);
-        $akun->total = $akun->total + ($total-$stock->paid);
-        $akun->save();
-
-        $credit = new Credit;
-        $credit->stocktransaction_id = $stock->id;
-        $credit->cashin_id = $stock->cashin_id;
-        $credit->total = $stock->paid;
-        $credit->save();
 
         $response = [
             'success'=>true,
@@ -270,53 +218,13 @@ class StockController extends Controller
         return response($response,200);
     }
 
-    public function editStockTransaction(Request $request){
-        $request->validate([
-            'cashin_id' =>'required',
-            'total' =>'required',
-            'payment_due' =>'required',
-
-        ]);
-        
-        $stock = Stocktransaction::find($request->id);
-        $stock->paid = $stock->paid + $request->total;
-        $stock->payment_due = $request->payment_due;
-        $stock->save();
-
-        $akun = Akun::find($request->cashin_id);
-        $akun->total = $akun->total + $request->total;
-        $akun->save();
-        
-        $akun = Akun::where('name','=','Piutang Penjualan')->first();
-        $akun = Akun::find($akun->id);
-        $akun->total = $akun->total - $request->total;
-        $akun->save();
-
-        $credit = new Credit;
-        $credit->stocktransaction_id = $stock->id;
-        $credit->cashin_id = $request->cashin_id;
-        $credit->total = $request->total;
-        $credit->save();
-
-        $response = [
-            'stockktransaction'=>$stock,
-        ];
-
-        return response($response,200);
-    }
-
     public function deleteStockTransaction(Request $request){
 
         $stock = Stocktransaction::find($request->id);
-        if ($stock->cashin_id) {
+        if ($stock->nonmoney == "out") {
 
             $akun = Akun::find($stock->cashin_id);
             $akun->total = $akun->total - $stock->paid;
-            $akun->save();
-
-            $akun = Akun::where('name','=','Piutang Penjualan')->first();
-            $akun = Akun::find($akun->id);
-            $akun->total = $akun->total - ($stock->total - $stock->paid);
             $akun->save();
 
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
@@ -358,24 +266,9 @@ class StockController extends Controller
             $akun->total = $akun->total + $totalhpp;
             $akun->save();
 
-           $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
-           $akun = Akun::find($akun->id);
-           $akun->total = $akun->total - $stock->total;
-           $akun->save();
-
-           $akun = Akun::where('name','=','Harga Pokok Penjualan')->first();
-           $akun = Akun::find($akun->id);
-           $akun->total = $akun->total - $totalhpp;
-           $akun->save();
-
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
-           Credit::where('stocktransaction_id','=',$stock->id)->delete();
 
-
-        }elseif ($stock->cashout_id) {
-            $akun = Akun::find($stock->cashout_id);
-            $akun->total = $akun->total + $stock->total;
-            $akun->save();
+        }elseif ($stock->nonmoney == "in") {
 
             $totalhpp=0;
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();

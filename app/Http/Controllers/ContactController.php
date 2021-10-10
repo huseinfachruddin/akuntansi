@@ -30,6 +30,17 @@ class ContactController extends Controller
         return response($response,200);
     }
 
+    public function getContactSupplier(){
+        $data = Contact::whereNull('maxdebt')->get();
+        
+        $response = [
+            'success'=>true,
+            'contact'=>$data,
+        ];
+        
+        return response($response,200);
+    }
+
     public function getContactDetail(Request $request){
         $data = Contact::find($request->id);
         

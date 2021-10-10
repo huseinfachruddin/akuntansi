@@ -21,6 +21,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContacttypeController;
 use App\Http\Controllers\ProducttypeController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockNonMoneyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +112,7 @@ Route::delete('/producttype/delete/{id}',[ProducttypeController::class,'deletePr
 // CONTACT API*********
 Route::get('/contact',[ContactController::class,'getContact']);
 Route::get('/contact/customer',[ContactController::class,'getContactCustomer']);
+Route::get('/contact/supplier',[ContactController::class,'getContactSupplier']);
 Route::get('/contact/detail/{id}',[ContactController::class,'getContactDetail']);
 
 Route::post('/contact/create',[ContactController::class,'createContact']);
@@ -137,6 +139,18 @@ Route::post('/stock/out/create',[StockController::class,'createStockOut']);
 Route::put('/stock/edit/{id}',[StockController::class,'editStockTransaction']);
 
 Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteStockTransaction']);
+
+// STOCK Non Money******
+
+Route::get('/stocknonmoney/transaction/detail/{id}',[StockNonMoneyController::class,'getStockTransactionDetail']);
+Route::get('/stocknonmoney/in',[StockNonMoneyController::class,'getStockIn']);
+Route::get('/stocknonmoney/out',[StockNonMoneyController::class,'getStockOut']);
+
+Route::post('/stocknonmoney/in/create',[StockNonMoneyController::class,'createStockIn']);
+Route::post('/stocknonmoney/out/create',[StockNonMoneyController::class,'createStockOut']);
+
+Route::delete('/stocknonmoney/transaction/delete/{id}',[StockNonMoneyController::class,'deleteStockTransaction']);
+
 
 // #ROLES****
 Route::get('/role',[RoleController::class,'getRole']);
