@@ -30,11 +30,11 @@ class Product extends Model
     }
 
     public function getCreatedAtAttribute(){
-        return \Carbon\Carbon::parse($this->attributes['created_at'])->format('d-m-Y H:i');
+        return \Carbon\Carbon::parse($this->attributes['created_at'])->format('Y-d-m H:i');
         }
     
     public function getUpdatedAtAttribute(){
-            return \Carbon\Carbon::parse($this->attributes['updated_at'])->format('d-M-Y H:i');
+            return \Carbon\Carbon::parse($this->attributes['updated_at'])->format('Y-d-m H:i');
         }
 
     
