@@ -14,7 +14,7 @@ class AddCashoutidToCreditTable extends Migration
     public function up()
     {
         Schema::table('credits', function (Blueprint $table) {
-            $table->biginteger("cashout_id");
+            $table->biginteger("cashout_id")->nullable();
         });
     }
 

@@ -195,10 +195,9 @@ class StockController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
-        $stock->date = date("Y-m-d", strtotime($request->date));;
+        $stock->date = date("Y-m-d", strtotime($request->date));
         $stock->paid = $request->paid;
         $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
-
         $stock->save();
 
         $data = $request->product_id;
@@ -310,7 +309,7 @@ class StockController extends Controller
         
         $stock = Stocktransaction::find($request->id);
         $stock->paid = $stock->paid + $request->total;
-        $stock->payment_due = $request->payment_due;
+        $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
         $stock->save();
 
         $akun = Akun::find($request->cashin_id);
