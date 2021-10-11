@@ -118,7 +118,7 @@ class CashController extends Controller
         $cash->to = $request->to;
         $cash->staff = $request->staff;
         $cash->desc = $request->keterangan;
-        $cash->date = $request->date;
+        $cash->date = date("Y-m-d", strtotime($request->date));
 
         $cash->cashin = 0;
         $cash->save();
@@ -176,7 +176,7 @@ class CashController extends Controller
         $cash->from = $request->from;
         $cash->staff = $request->staff;
         $cash->desc = $request->keterangan;
-        $cash->date = $request->date;
+        $cash->date = date("Y-m-d", strtotime($request->date));
 
         $cash->cashout = 0;
         $cash->save();
@@ -234,7 +234,7 @@ class CashController extends Controller
         $cash->to = $request->to;
         $cash->staff = $request->staff;
         $cash->desc = $request->desc;
-        $cash->date = $request->date;
+        $cash->date = date("Y-m-d", strtotime($request->date));
         $cash->transfer = $request->total;
         $cash->save();
         
