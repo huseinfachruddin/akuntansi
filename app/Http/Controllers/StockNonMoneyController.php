@@ -12,8 +12,16 @@ use App\Models\Contact;
 
 class StockNonMoneyController extends Controller
 {
-    public function getStockIn(){
-        $data = Stocktransaction::where('nonmoney','in')->get();
+    public function getStockIn(Request $request){
+        
+        $data = Stocktransaction::where('nonmoney','in');
+        
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+        $data = $data->get();
 
         $response = [
             'success'=>true,
@@ -23,8 +31,16 @@ class StockNonMoneyController extends Controller
         return response($response,200);
     }
 
-    public function getStockOut(){
-        $data = Stocktransaction::where('nonmoney','out')->get();
+    public function getStockOut(Request $request){
+        $data = Stocktransaction::where('nonmoney','out');
+        
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+
+        $data = $data->get();
 
         $response = [
             'success'=>true,

@@ -5,7 +5,7 @@ use App\Models\User;
 use App\Models\Akun;
 use App\Models\Product;
 use App\Models\Substocktransaction;
-
+use App\Models\Stocktransaction;
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
@@ -57,7 +57,8 @@ Route::get('/clean',function(Request $request){
 });
 
 Route::get('/test',function(Request $request){
-    $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
+    // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
+    $subin = Stocktransaction::whereMonth('created_at','=',10)->get();
 
     return $subin;
 });

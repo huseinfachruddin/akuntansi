@@ -14,8 +14,16 @@ use App\Models\Contact;
 
 class StockController extends Controller
 {
-    public function getStockTransaction(){
-        $data = Stocktransaction::with('contact','cashin','cashout')->get();
+    public function getStockTransaction(Request $request){
+        $data = Stocktransaction::with('contact','cashin','cashout');
+
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+
+        $data = $data->get();
 
         $response = [
             'success'=>true,
@@ -25,8 +33,17 @@ class StockController extends Controller
         return response($response,200);
     }
 
-    public function getStockIn(){
-        $data = Stocktransaction::whereNotNull('cashout_id')->with('contact','cashout')->orderBy('created_at','DESC')->get();
+    public function getStockIn(Request $request){
+        
+        $data = Stocktransaction::whereNotNull('cashout_id');
+        
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+
+        $data = $data->with('contact','cashout')->orderBy('created_at','DESC')->get();
         
         $response = [
             'success'=>true,
@@ -37,8 +54,16 @@ class StockController extends Controller
         return response($response,200);
     }
 
-    public function getStockOut(){
-        $data = Stocktransaction::whereNotNull('cashin_id')->with('contact','cashin','credit')->orderBy('created_at','DESC')->get();
+    public function getStockOut(Request $request){
+        $data = Stocktransaction::whereNotNull('cashin_id');
+
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+
+        $data = $data->with('contact','cashin','credit')->orderBy('created_at','DESC')->get();
         
         $response = [
             'success'=>true,

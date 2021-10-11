@@ -11,8 +11,17 @@ use App\Models\Akun;
 
 class CashController extends Controller
 {
-    public function getCash(){
-        $data = Cashtransaction::with('from','to')->get();
+    public function getCash(Request $request){
+
+        $data = Cashtransaction::with('from','to');
+
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+
+        $data =$data->get();
         
         $response = [
             'success'=>true,
@@ -23,8 +32,16 @@ class CashController extends Controller
         return response($response,200);
     }
 
-    public function getCashIn(){
-        $data = Cashtransaction::whereNotNull('cashin')->with('to')->get();
+    public function getCashIn(Request $request){
+
+        
+        $data = Cashtransaction::whereNotNull('cashin');
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+        $data =$data->with('to')->get();
         
         $response = [
             'success'=>true,
@@ -35,8 +52,15 @@ class CashController extends Controller
         return response($response,200);
     }
 
-    public function getCashOut(){
-        $data = Cashtransaction::whereNotNull('cashout')->with('from')->get();
+    public function getCashOut(Request $request){
+
+        $data = Cashtransaction::whereNotNull('cashout');
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+        $data =$data->with('from')->get();
         
         $response = [
             'success'=>true,
@@ -47,8 +71,14 @@ class CashController extends Controller
         return response($response,200);
     }
 
-    public function getCashTransfer(){
-        $data = Cashtransaction::whereNotNull('transfer')->with('from','to')->get();
+    public function getCashTransfer(Request $request){
+        $data = Cashtransaction::whereNotNull('transfer');
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+        $data=$data->with('from','to')->get();
         
         $response = [
             'success'=>true,
