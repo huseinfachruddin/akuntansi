@@ -136,9 +136,7 @@ class StockNonMoneyController extends Controller
             'contact_id' =>'required',
             'cashin_id' =>'required',
             'staff' =>'required',
-            'paid' =>'required',
             'date' =>'required',
-            'payment_due' =>'required',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
@@ -152,9 +150,7 @@ class StockNonMoneyController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
-        $stock->paid = $request->paid;
         $stock->date = $request->date;
-        $stock->payment_due = $request->payment_due;
 
         $stock->save();
 

@@ -101,15 +101,14 @@ class StockController extends Controller
             'purchase_price.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
-
         
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
         $stock->staff = $request->staff;
-        $stock->date = $request->date;
+        $stock->date = date("Y-m-d", strtotime($request->date));
         $stock->paid = $request->paid;
-        $stock->payment_due = date("Y-m-d H:i:s", strtotime($request->payment_due));
+        $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
         
         $stock->save();
 
@@ -196,9 +195,9 @@ class StockController extends Controller
         $stock->contact_id = $request->contact_id;
         $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
-        $stock->date = $request->date;
+        $stock->date = date("Y-m-d", strtotime($request->date));;
         $stock->paid = $request->paid;
-        $stock->payment_due = date("Y-m-d H:i:s", strtotime($request->payment_due));
+        $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
 
         $stock->save();
 
