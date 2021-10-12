@@ -105,6 +105,7 @@ Route::delete('/product/delete/{id}',[ProductController::class,'deleteProduct'])
 // PRODUCT TYPE API*********
 Route::get('/producttype',[ProducttypeController::class,'getProducttype']);
 Route::get('/producttype/detail/{id}',[ProducttypeController::class,'getProducttypeDetail']);
+Route::post('/producttype/detail/{id}',[ProducttypeController::class,'getProducttypeDetail']);
 
 Route::post('/producttype/create',[ProducttypeController::class,'createProducttype']);
 Route::put('/producttype/edit/{id}',[ProducttypeController::class,'editProducttype']);

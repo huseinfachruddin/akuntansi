@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Contact;
+use App\Models\Priceproduct;
 
 class ProductController extends Controller
 {
     public function getProduct(){
-        $data = Product::with('producttype')->get();
+        $data = Product::with('producttype','price')->get();
         
         $response = [
             'success'=>true,
@@ -19,8 +21,15 @@ class ProductController extends Controller
     }
 
     public function getProductDetail(Request $request){
-        $data = Product::find($request->id)->with('producttype')->first();
-        
+        $data = Product::find($request->id)->with('producttype','price')->first();
+
+        if (isset($request->contact_id)) {
+            $customer = Contact::where('id',$request->contact_id)->first();
+            $price = Priceproduct::where('product_id',$request->id)->where('name',$customer->type)->get();
+            if (!empty($price)) {
+                $data->selling_price=$price->total;
+            }
+        }
         $response = [
             'success'=>true,
             'product'=>$data,
@@ -85,8 +94,9 @@ class ProductController extends Controller
     public function deleteProduct(Request $request){
 
         $data = Product::find($request->id);
+        $data->price()->delete();
         $data->delete();
-        
+
         $response = [
             'success'=>true,
             'product'=>$data,

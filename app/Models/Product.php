@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Producttype;
+use App\Models\Priceproduct;
 use App\Models\Substocktransaction;
 use Illuminate\Support\Facades\DB;
 
@@ -27,6 +28,10 @@ class Product extends Model
         ->first();
 
         return $query;
+    }
+
+    public function price(){
+        return $this->hasMany(Priceproduct::class,'product_id');
     }
 
     public function getCreatedAtAttribute(){
