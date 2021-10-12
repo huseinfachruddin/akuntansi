@@ -133,7 +133,7 @@ Route::delete('/contacttype/delete/{id}',[ContacttypeController::class,'deleteCo
 Route::get('/stock/transaction',[StockController::class,'getStockTransaction']);
 Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTransactionDetail']);
 Route::get('/stock/in',[StockController::class,'getStockIn']);
-Route::get('/stock/out',[StockController::class,'getStockOut']);
+Route::get('/stock/out/debt',[StockController::class,'getStockOutDontPaid']);
 
 Route::post('/stock/in/create',[StockController::class,'createStockIn']);
 Route::post('/stock/out/create',[StockController::class,'createStockOut']);

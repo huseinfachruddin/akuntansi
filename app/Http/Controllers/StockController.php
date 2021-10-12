@@ -59,6 +59,8 @@ class StockController extends Controller
         return response($response,200);
     }
 
+    
+
     public function getStockOut(Request $request){
         $data = Stocktransaction::whereNotNull('cashin_id');
 
@@ -71,6 +73,28 @@ class StockController extends Controller
         }
 
         $data = $data->with('contact','cashin','credit')->orderBy('created_at','DESC')->get();
+        
+        $response = [
+            'success'=>true,
+            'stocktransaction'=>$data,
+
+        ];
+
+        return response($response,200);
+    }
+
+    public function getStockOutDontPaid(Request $request){
+        $data = Stocktransaction::whereNotNull('cashin_id');
+
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $request->start_date=date("Y-m-d", strtotime($request->start_date));
+            $request->end_date=date("Y-m-d", strtotime($request->end_date));
+            $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+
+        $data = $data->whereRaw('total > paid')->with('contact','cashin','credit')->orderBy('created_at','DESC')->get();
         
         $response = [
             'success'=>true,
