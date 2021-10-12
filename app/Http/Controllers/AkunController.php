@@ -129,7 +129,7 @@ class AkunController extends Controller
     public function createAkun(Request $request){
         $request->validate([
             'perent_id' =>'nullable',
-            'name' =>'required|unique:akuns',
+            'name' =>'required|unique:akuns,name',
             'isheader' =>'boolean',
             'iscash' =>'boolean',
             'iscashout' =>'boolean',

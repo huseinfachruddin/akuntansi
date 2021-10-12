@@ -59,8 +59,6 @@ class StockController extends Controller
         return response($response,200);
     }
 
-    
-
     public function getStockOut(Request $request){
         $data = Stocktransaction::whereNotNull('cashin_id');
 
@@ -166,7 +164,7 @@ class StockController extends Controller
         }      
 
         $akun = Akun::find($request->cashout_id);
-        $akun->total = $akun->total - $total;
+        $akun->total = $akun->total - $stock->paid;
         $akun->save();
 
         $akun = Akun::where('name','=','Persediaan Barang')->first();
@@ -330,7 +328,7 @@ class StockController extends Controller
         return response($response,200);
     }
 
-    public function editStockTransaction(Request $request){
+    public function paidStockOut(Request $request){
         $request->validate([
             'cashin_id' =>'required',
             'total' =>'required',
@@ -339,6 +337,9 @@ class StockController extends Controller
         ]);
         
         $stock = Stocktransaction::find($request->id);
+        if ($stock->total<($stock->paid + $request->total)) {
+            return response(['error'=>'kelebihan dalam pembayaran'],400);
+        }
         $stock->paid = $stock->paid + $request->total;
         $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
         $stock->save();
@@ -359,6 +360,51 @@ class StockController extends Controller
         $credit->save();
 
         $response = [
+            'success'=> true,
+            'stockktransaction'=>$stock,
+        ];
+
+        return response($response,200);
+    }
+
+    public function paidStockIn(Request $request){
+        $request->validate([
+            'cashout_id' =>'required',
+            'total' =>'required',
+            'payment_due' =>'required',
+
+        ]);
+        
+        $stock = Stocktransaction::find($request->id);
+        if ($stock->total<($stock->paid + $request->total)) {
+            return response(['error'=>'kelebihan dalam pembayaran'],400);
+        }
+        $stock->paid = $stock->paid + $request->total;
+        $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
+        $stock->save();
+
+        $akun = Akun::find($request->cashin_id);
+        $akun->total = $akun->total + $request->total;
+        $akun->save();
+        
+        $akun = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total - $request->total;
+        $akun->save();
+
+        $akun = Akun::where('name','=','Piutang Penjualan')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total - $request->total;
+        $akun->save();
+
+        $credit = new Credit;
+        $credit->stocktransaction_id = $stock->id;
+        $credit->cashin_id = $request->cashin_id;
+        $credit->total = $request->total;
+        $credit->save();
+
+        $response = [
+            'success'=> true,
             'stockktransaction'=>$stock,
         ];
 
@@ -455,6 +501,7 @@ class StockController extends Controller
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }
         $stock->delete();
+        $stock->credit()->delete();
         
         $response = [
             'success'=>true,

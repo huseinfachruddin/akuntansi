@@ -70,7 +70,6 @@ class StockNonMoneyController extends Controller
 
         $request->validate([
             'contact_id' =>'required',
-            'akun_id' =>'required',
             'staff' =>'required',
             'date' =>'required',
 
@@ -117,7 +116,8 @@ class StockNonMoneyController extends Controller
         $akun->total = $akun->total + $total;
         $akun->save();
 
-        $akun = Akun::find($request->akun_id);
+        $akun = Akun::where('name','=','Pendapatan Barang')->first();
+        $akun = Akun::find($akun->id);
         $akun->total = $akun->total + $total;
         $akun->save();
 
@@ -137,8 +137,6 @@ class StockNonMoneyController extends Controller
     public function createStockOut(Request $request){
 
         $request->validate([
-            'contact_id' =>'required',
-            'cashin_id' =>'required',
             'staff' =>'required',
             'date' =>'required',
 
@@ -151,10 +149,9 @@ class StockNonMoneyController extends Controller
         $sum = 0;
 
         $stock = new Stocktransaction;
-        $stock->contact_id = $request->contact_id;
-        $stock->cashin_id = $request->cashin_id;
         $stock->staff = $request->staff;
         $stock->date = $request->date;
+        $stock->nonmoney = 'out';
 
         $stock->save();
 
@@ -237,10 +234,6 @@ class StockNonMoneyController extends Controller
         $stock = Stocktransaction::find($request->id);
         if ($stock->nonmoney == "out") {
 
-            $akun = Akun::find($stock->cashin_id);
-            $akun->total = $akun->total - $stock->paid;
-            $akun->save();
-
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
             $totalhpp=0;
             foreach ($sub as $key => $value) {
@@ -295,6 +288,11 @@ class StockNonMoneyController extends Controller
             }
 
             $akun = Akun::where('name','=','Persediaan Barang')->first();
+            $akun = Akun::find($akun->id);
+            $akun->total = $akun->total - $stock->total;
+            $akun->save();
+
+            $akun = Akun::where('name','=','Pendapatan Barang')->first();
             $akun = Akun::find($akun->id);
             $akun->total = $akun->total - $stock->total;
             $akun->save();
