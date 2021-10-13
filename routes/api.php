@@ -85,6 +85,12 @@ Route::post('/cash',[CashController::class,'getCash']);
 Route::post('/cash/in',[CashController::class,'getCashIn']);
 Route::post('/cash/out',[CashController::class,'getCashOut']);
 Route::post('/cash/transfer',[CashController::class,'getCashTransfer']);
+
+Route::get('/cash',[CashController::class,'getCash']);
+Route::get('/cash/in',[CashController::class,'getCashIn']);
+Route::get('/cash/out',[CashController::class,'getCashOut']);
+Route::get('/cash/transfer',[CashController::class,'getCashTransfer']);
+
 Route::get('/cash/transaction/detail/{id}',[CashController::class,'getCashTransactionDetail']);
 
 Route::post('/cash/in/create',[CashController::class,'createCashIn']);
@@ -132,9 +138,14 @@ Route::delete('/contacttype/delete/{id}',[ContacttypeController::class,'deleteCo
 // STOCK ******
 Route::get('/stock/transaction',[StockController::class,'getStockTransaction']);
 Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTransactionDetail']);
+
 Route::post('/stock/in',[StockController::class,'getStockIn']);
+Route::post('/stock/out',[StockController::class,'getStockOut']);
+Route::get('/stock/in',[StockController::class,'getStockIn']);
 Route::get('/stock/out',[StockController::class,'getStockOut']);
+
 Route::get('/stock/out/debt',[StockController::class,'getStockOutDontPaid']);
+Route::post('/stock/out/debt',[StockController::class,'getStockOutDontPaid']);
 
 
 Route::post('/stock/in/create',[StockController::class,'createStockIn']);
@@ -148,6 +159,9 @@ Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteSt
 // STOCK Non Money******
 
 Route::get('/stock/nonmony/detail/{id}',[StockNonMoneyController::class,'getStockTransactionDetail']);
+
+Route::post('/stock/in/nonmoney',[StockNonMoneyController::class,'getStockIn']);
+Route::post('/stock/out/nonmoney',[StockNonMoneyController::class,'getStockOut']);
 Route::get('/stock/in/nonmoney',[StockNonMoneyController::class,'getStockIn']);
 Route::get('/stock/out/nonmoney',[StockNonMoneyController::class,'getStockOut']);
 
