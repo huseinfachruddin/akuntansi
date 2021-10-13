@@ -147,7 +147,7 @@ Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteSt
 
 // STOCK Non Money******
 
-Route::get('/stock/transaction/detail/{id}',[StockNonMoneyController::class,'getStockTransactionDetail']);
+Route::get('/stock/nonmony/detail/{id}',[StockNonMoneyController::class,'getStockTransactionDetail']);
 Route::get('/stock/in/nonmoney',[StockNonMoneyController::class,'getStockIn']);
 Route::get('/stock/out/nonmoney',[StockNonMoneyController::class,'getStockOut']);
 
