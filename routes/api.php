@@ -147,14 +147,14 @@ Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteSt
 
 // STOCK Non Money******
 
-Route::get('/stocknonmoney/transaction/detail/{id}',[StockNonMoneyController::class,'getStockTransactionDetail']);
-Route::get('/stocknonmoney/in',[StockNonMoneyController::class,'getStockIn']);
-Route::get('/stocknonmoney/out',[StockNonMoneyController::class,'getStockOut']);
+Route::get('/stock/transaction/detail/{id}',[StockNonMoneyController::class,'getStockTransactionDetail']);
+Route::get('/stock/in/nonmoney',[StockNonMoneyController::class,'getStockIn']);
+Route::get('/stock/out/nonmoney',[StockNonMoneyController::class,'getStockOut']);
 
-Route::post('/stocknonmoney/in/create',[StockNonMoneyController::class,'createStockIn']);
-Route::post('/stocknonmoney/out/create',[StockNonMoneyController::class,'createStockOut']);
+Route::post('/stock/in/nonmoney/create',[StockNonMoneyController::class,'createStockIn']);
+Route::post('/stock/out/nonmoney/create',[StockNonMoneyController::class,'createStockOut']);
 
-Route::delete('/stocknonmoney/transaction/delete/{id}',[StockNonMoneyController::class,'deleteStockTransaction']);
+Route::delete('/stock/nonmoney/delete/{id}',[StockNonMoneyController::class,'deleteStockTransaction']);
 
 
 // #ROLES****
