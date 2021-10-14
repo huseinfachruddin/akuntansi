@@ -9,9 +9,18 @@ use App\Models\Priceproduct;
 
 class ProductController extends Controller
 {
-    public function getProduct(){
+    public function getProduct(Request $request){
         $data = Product::with('producttype','price')->get();
-        
+        if (isset($request->contact_id)) {
+            $customer = Contact::where('id',$request->contact_id)->first();
+            foreach ($data as $key => $value) {
+                $price = Priceproduct::where('product_id',$value->id)->where('name',$customer->type)->first();
+                if (!empty($price)) {
+                    $value->selling_price=$price->total;
+                }
+            }
+        }
+
         $response = [
             'success'=>true,
             'product'=>$data,
@@ -23,13 +32,6 @@ class ProductController extends Controller
     public function getProductDetail(Request $request){
         $data = Product::find($request->id)->with('producttype','price')->first();
 
-        if (isset($request->contact_id)) {
-            $customer = Contact::where('id',$request->contact_id)->first();
-            $price = Priceproduct::where('product_id',$request->id)->where('name',$customer->type)->get();
-            if (!empty($price)) {
-                $data->selling_price=$price->total;
-            }
-        }
         $response = [
             'success'=>true,
             'product'=>$data,
