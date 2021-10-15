@@ -21,7 +21,9 @@ class ContactController extends Controller
 
     public function getContactCustomer(){
         $data = Contact::whereNotNull('maxdebt')->get();
-        
+        whereHas('', function ($query) {
+            return $query->where('IDUser', '=', 1);
+        })->get();
         $response = [
             'success'=>true,
             'contact'=>$data,
@@ -69,11 +71,11 @@ class ContactController extends Controller
         $data->type = $request->type;
         $contacttype = Contacttype::where('name',$data->type)->first();
         if (!empty($contacttype->maxdebt)) {
-            $data->type = $contacttype->maxdebt;
+            $data->maxdebt = $contacttype->maxdebt;
         }
+        $data->category = $contacttype->category;
 
         $data->save();
-        
         $response = [
             'success'=>true,
             'contact'=>$data,
@@ -97,6 +99,11 @@ class ContactController extends Controller
         $data->address = $request->address;
         $data->contact = $request->contact;
         $data->type = $request->type;
+        $contacttype = Contacttype::where('name',$data->type)->first();
+        if (!empty($contacttype->maxdebt)) {
+            $data->maxdebt = $contacttype->maxdebt;
+        }
+        $data->category = $contacttype->category;
         $data->save();
         
         $response = [

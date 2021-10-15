@@ -17,6 +17,7 @@ use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PriceproductController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContacttypeController;
 use App\Http\Controllers\ProducttypeController;
@@ -115,6 +116,10 @@ Route::post('/producttype/create',[ProducttypeController::class,'createProductty
 Route::put('/producttype/edit/{id}',[ProducttypeController::class,'editProducttype']);
 Route::delete('/producttype/delete/{id}',[ProducttypeController::class,'deleteProducttype']);
 
+// Price Product.........
+Route::post('/product/price/detail/{id}',[PriceproductController::class,'detailProductPrice']);
+Route::post('/product/price/create',[PriceproductController::class,'cratePrice']);
+Route::delete('/product/price/delete/{id}',[PriceproductController::class,'deletePrice']);
 // CONTACT API*********
 Route::get('/contact',[ContactController::class,'getContact']);
 Route::get('/contact/customer',[ContactController::class,'getContactCustomer']);
@@ -132,7 +137,6 @@ Route::get('/contacttype/detail/{id}',[ContacttypeController::class,'getContactt
 Route::post('/contacttype/create',[ContacttypeController::class,'createContacttype']);
 Route::put('/contacttype/edit/{id}',[ContacttypeController::class,'editContacttype']);
 Route::delete('/contacttype/delete/{id}',[ContacttypeController::class,'deleteContacttype']);
-
 // STOCK ******
 Route::get('/stock/transaction',[StockController::class,'getStockTransaction']);
 Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTransactionDetail']);
@@ -141,7 +145,6 @@ Route::match(['get','post'], '/stock/in', [StockController::class,'getStockIn'])
 Route::match(['get','post'], '/stock/out', [StockController::class,'getStockOut']);
 
 Route::match(['get','post'], '/stock/out/debt', [StockController::class,'getStockOutDontPaid']);
-
 
 Route::post('/stock/in/create',[StockController::class,'createStockIn']);
 Route::post('/stock/out/create',[StockController::class,'createStockOut']);
