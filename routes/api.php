@@ -22,6 +22,8 @@ use App\Http\Controllers\ContacttypeController;
 use App\Http\Controllers\ProducttypeController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockNonMoneyController;
+use App\Http\Controllers\StockorderController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -104,7 +106,6 @@ Route::post('/product/create',[ProductController::class,'createProduct']);
 Route::put('/product/edit/{id}',[ProductController::class,'editProduct']);
 Route::delete('/product/delete/{id}',[ProductController::class,'deleteProduct']);
 
-
 // PRODUCT TYPE API*********
 Route::get('/producttype',[ProducttypeController::class,'getProducttype']);
 Route::get('/producttype/detail/{id}',[ProducttypeController::class,'getProducttypeDetail']);
@@ -164,6 +165,16 @@ Route::post('/stock/out/nonmoney/create',[StockNonMoneyController::class,'create
 
 Route::delete('/stock/nonmoney/delete/{id}',[StockNonMoneyController::class,'deleteStockTransaction']);
 
+// STOCK Order leter******
+Route::get('/stock/pending/detail/{id}',[StockorderController::class,'getStockTransactionDetail']);
+
+Route::match(['get','post'], '/stock/pending/in', [StockorderController::class,'getStockIn']);
+Route::match(['get','post'], '/stock/pending/out', [StockorderController::class,'getStockOut']);
+
+Route::post('/stock/in/pending/create',[StockorderController::class,'createStockIn']);
+Route::post('/stock/out/pending/create',[StockorderController::class,'createStockOut']);
+
+Route::delete('/stock/pending/delete/{id}',[StockorderController::class,'deleteStockTransaction']);
 
 // #ROLES****
 Route::get('/role',[RoleController::class,'getRole']);

@@ -121,6 +121,7 @@ class StockController extends Controller
             'cashout_id' =>'required',
             'staff' =>'required',
             'paid' =>'required',
+            'discount' =>'nullable',
             'payment_due' =>'required',
             'date' =>'required',
 
@@ -130,7 +131,7 @@ class StockController extends Controller
             'total.*'  =>'required|numeric',
         ]); 
         
-        $stock = new Stocktransaction;
+        $stock = new Stocktransaction;  
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
         $stock->staff = $request->staff;
@@ -183,7 +184,13 @@ class StockController extends Controller
         $akun->total = $akun->total + ($total - $stock->paid);
         $akun->save();
 
+        $akun = Akun::where('name','=','Potongan Pembelian')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total + $request->discount;
+        $akun->save();
+        
         $stock = Stocktransaction::find($stock->id);
+        $stock->discount = $stock->discount + $request->discount;
         $stock->total = $total;
         $stock->save();
         $response = [
@@ -204,6 +211,7 @@ class StockController extends Controller
             'paid' =>'required',
             'date' =>'required',
             'payment_due' =>'required',
+            'discount' =>'nullable',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
@@ -302,7 +310,13 @@ class StockController extends Controller
         $akun->total = $akun->total + $totalhpp;
         $akun->save();
 
+        $akun = Akun::where('name','=','Potongan Penjualan')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total + $request->discount;
+        $akun->save();
+
         $stock = Stocktransaction::find($stock->id);
+        $stock->discount = $stock->discount + $request->discount;
         $stock->total = $total;
         $stock->save();
         
@@ -475,6 +489,11 @@ class StockController extends Controller
            $akun->total = $akun->total - $totalhpp;
            $akun->save();
 
+           $akun = Akun::where('name','=','Potongan Penjualan')->first();
+           $akun = Akun::find($akun->id);
+           $akun->total = $akun->total - $stock->discount;
+           $akun->save();
+
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
            Credit::where('stocktransaction_id','=',$stock->id)->delete();
 
@@ -497,6 +516,11 @@ class StockController extends Controller
             $akun = Akun::where('name','=','Persediaan Barang')->first();
             $akun = Akun::find($akun->id);
             $akun->total = $akun->total - $stock->total;
+            $akun->save();
+
+            $akun = Akun::where('name','=','Potongan Pembelian')->first();
+            $akun = Akun::find($akun->id);
+            $akun->total = $akun->total - $stock->discount;
             $akun->save();
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();

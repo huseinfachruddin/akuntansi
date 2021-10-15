@@ -111,7 +111,7 @@ class StockorderController extends Controller
 
         $akun = Akun::where('name','=','Uang Muka Pesanan Pembelian')->first();
         $akun = Akun::find($akun->id);
-        $akun->total = $akun->total + ($total - $stock->paid);
+        $akun->total = $akun->total +  $stock->paid;
         $akun->save();
 
         $stock = Stocktransaction::find($stock->id);
@@ -174,17 +174,13 @@ class StockorderController extends Controller
             $sub->save();
 
             $substocktransaction[]= $sub;
-            
-            $qty = $sub->qty;
-            
-            
             $total = $total + $sub->total;
             
         }
 
         $akun = Akun::where('name','=','Hutang Pesanan Penjualan')->first();
         $akun = Akun::find($akun->id);
-        $akun->total = $akun->total + ($total-$stock->paid);
+        $akun->total = $akun->total + $stock->paid;
         $akun->save();
 
         $stock = Stocktransaction::find($stock->id);
@@ -200,6 +196,45 @@ class StockorderController extends Controller
             'stockktransaction'=>$stock,
             'substocktransaction'=>$substocktransaction,
         ];
+        return response($response,200);
+    }
+
+    public function deleteStockTransaction(Request $request){
+        $stock = Stocktransaction::find($request->id);
+        if ($stock->cashin_id) {
+
+            $akun = Akun::find($stock->cashin_id);
+            $akun->total = $akun->total - $stock->paid;
+            $akun->save();
+
+           $akun = Akun::where('name','=','Hutang Pesanan Penjualan')->first();
+           $akun = Akun::find($akun->id);
+           $akun->total = $akun->total - $stock->paid;
+           $akun->save();
+
+           Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
+        }elseif ($stock->cashout_id) {
+            $akun = Akun::find($stock->cashout_id);
+            $akun->total = $akun->total + $stock->total;
+            $akun->save();
+
+            $totalhpp=0;
+
+            $akun = Akun::where('name','=','Uang Muka Pesanan Pembelian')->first();
+            $akun = Akun::find($akun->id);
+            $akun->total = $akun->total -  $stock->paid;
+            $akun->save();
+
+           Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
+        }
+        $stock->delete();
+        $stock->credit()->delete();
+        
+        $response = [
+            'success'=>true,
+            'stocktransaction'=>$stock,
+        ];
+
         return response($response,200);
     }
 }
