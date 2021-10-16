@@ -80,6 +80,7 @@ class StockorderController extends Controller
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
+            'desc.*'  =>'nullable',
             'purchase_price.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
@@ -102,6 +103,7 @@ class StockorderController extends Controller
             $sub->stocktransaction_id = $stock->id;
             $sub->product_id = $request->product_id[$key];
             $sub->qty = $request->qty[$key];
+            $sub->desc = $request->desc[$key];
             $sub->purchase_price = $request->purchase_price[$key];
             $sub->total = $request->total[$key];
             $sub->save();
@@ -144,6 +146,7 @@ class StockorderController extends Controller
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
+            'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
         ]); 
 
@@ -176,6 +179,7 @@ class StockorderController extends Controller
             $sub->stocktransaction_id = $stock->id;
             $sub->product_id = $request->product_id[$key];
             $sub->qty = $request->qty[$key];
+            $sub->desc = $request->qty[$key];
             $sub->total = $request->total[$key];
             $sub->save();
 
