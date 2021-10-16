@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contacttype;
+use App\Models\Contacts;
+use App\Models\Priceproduct;
 
 class ContacttypeController extends Controller
 {
@@ -56,10 +58,11 @@ class ContacttypeController extends Controller
             'name' =>'required',
             'maxdebt' =>'nullable',
             'category' =>'nullable',
-
         ]);
 
         $data = Contacttype::find($request->id);
+        $contact = Contacts::where('name',$data->name)->update(array('name'=>$request->name));
+        $price = Priceproduct::where('name',$data->name)->update(array('name'=>$request->name));
         $data->name = $request->name;
         $data->category = $request->category;
         $data->maxdebt = $request->maxdebt;
