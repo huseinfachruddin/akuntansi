@@ -16,7 +16,7 @@ class PriceproductController extends Controller
         
         return response($response,200);
     }
-    public function cratePrice(){
+    public function cratePrice(Request $request){
         $request->validate([
             'product_id' =>'required',
             'name'  =>'required',
