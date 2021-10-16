@@ -19,6 +19,9 @@ class Credit extends Model
     public function cashin(){
         return $this->belongsTo(Akun::class,'cashin_id');
     }
+    public function cashout(){
+        return $this->belongsTo(Akun::class,'cashout_id');
+    }
 
     public function getCreatedAtAttribute(){
         return \Carbon\Carbon::parse($this->attributes['created_at'])->format('Y-d-m H:i');
