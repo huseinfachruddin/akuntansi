@@ -21,9 +21,6 @@ class ContactController extends Controller
 
     public function getContactCustomer(){
         $data = Contact::where('category','customer')->get();
-        whereHas('', function ($query) {
-            return $query->where('IDUser', '=', 1);
-        })->get();
         $response = [
             'success'=>true,
             'contact'=>$data,
