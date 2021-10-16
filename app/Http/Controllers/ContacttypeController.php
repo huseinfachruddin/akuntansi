@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contacttype;
-use App\Models\Contacts;
+use App\Models\Contact;
 use App\Models\Priceproduct;
 
 class ContacttypeController extends Controller
