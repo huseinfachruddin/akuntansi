@@ -61,7 +61,7 @@ class ContacttypeController extends Controller
         ]);
 
         $data = Contacttype::find($request->id);
-        $contact = Contact::where('name',$data->name)->update(array('name'=>$request->name));
+        $contact = Contact::where('type',$data->name)->update(array('name'=>$request->name,'maxdebt'=>$request->maxdebt,'category'=>$request->category));
         $price = Priceproduct::where('name',$data->name)->update(array('name'=>$request->name));
         $data->name = $request->name;
         $data->category = $request->category;
