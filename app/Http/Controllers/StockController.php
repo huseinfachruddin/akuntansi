@@ -398,7 +398,7 @@ class StockController extends Controller
         $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
         $stock->save();
 
-        $akun = Akun::find($request->cashin_id);
+        $akun = Akun::find($request->cashout_id);
         $akun->total = $akun->total + $request->total;
         $akun->save();
         
