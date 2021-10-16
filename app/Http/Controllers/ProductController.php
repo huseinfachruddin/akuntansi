@@ -10,7 +10,7 @@ use App\Models\Priceproduct;
 class ProductController extends Controller
 {
     public function getProduct(Request $request){
-        $data = Product::with('producttype','price')->get();
+        $data = Product::with('producttype','price','unit')->get();
         if (isset($request->contact_id)) {
             $customer = Contact::where('id',$request->contact_id)->first();
             foreach ($data as $key => $value) {

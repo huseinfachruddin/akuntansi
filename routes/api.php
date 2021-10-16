@@ -38,16 +38,17 @@ use App\Http\Controllers\UnitController;
 */
 
 Route::get('/setup/awal',function(Request $request){
-    $role = new Role;
-    $role->name='admin';
-    $role->save();
+    // $role = new Role;
+    // $role->name='admin';
+    // $role->save();
 
 
-    $user = User::create([
-        'name' => 'admin awal',
-        'email' => 'admin@admin.com',
-        'password' => bcrypt('password123'),
-    ]);
+    // $user = User::create([
+    //     'name' => 'admin awal',
+    //     'email' => 'admin@admin.com',
+    //     'password' => bcrypt('password123'),
+    // ]);
+    
     $user->syncRoles($role->name);
 
     return 'Ok';

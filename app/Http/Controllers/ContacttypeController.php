@@ -34,8 +34,8 @@ class ContacttypeController extends Controller
     public function createContacttype(Request $request){
         $request->validate([
             'name' =>'required|unique:contacttypes,name',
-            'category' =>'nullable',
-            'maxdebt' =>'nullable',
+            'category' =>'required',
+            'maxdebt' =>'required',
         ]);
 
         $data = new Contacttype;
@@ -56,8 +56,8 @@ class ContacttypeController extends Controller
     public function editContacttype(Request $request){
         $request->validate([
             'name' =>'required',
-            'maxdebt' =>'nullable',
-            'category' =>'nullable',
+            'maxdebt' =>'required',
+            'category' =>'required',
         ]);
 
         $data = Contacttype::find($request->id);
