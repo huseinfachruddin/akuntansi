@@ -117,7 +117,7 @@ Route::put('/producttype/edit/{id}',[ProducttypeController::class,'editProductty
 Route::delete('/producttype/delete/{id}',[ProducttypeController::class,'deleteProducttype']);
 
 // Price Product.........
-Route::post('/product/price/detail/{id}',[PriceproductController::class,'detailProductPrice']);
+Route::get('/product/price/detail/{id}',[PriceproductController::class,'detailProductPrice']);
 Route::post('/product/price/create',[PriceproductController::class,'cratePrice']);
 Route::delete('/product/price/delete/{id}',[PriceproductController::class,'deletePrice']);
 // CONTACT API*********
