@@ -24,7 +24,7 @@ use App\Http\Controllers\ProducttypeController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockNonMoneyController;
 use App\Http\Controllers\StockorderController;
-
+use App\Http\Controllers\UnitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +97,13 @@ Route::post('/cash/out/create',[CashController::class,'createCashOut']);
 Route::post('/cash/transfer/create',[CashController::class,'createCashTransfer']);
 
 Route::delete('/cash/transaction/delete/{id}',[CashController::class,'deleteCashTransaction']);
+
+// UNIT API *********
+Route::match(['get','post'], '/unit', [UnitController::class,'getUnit']);
+
+Route::post('/unit/create',[UnitController::class,'createUnit']);
+Route::put('/unit/edit/{id}',[UnitController::class,'editUnit']);
+Route::delete('/unit/delete/{id}',[UnitController::class,'deleteUnit']);
 
 // PRODUCT API *********
 Route::match(['get','post'], '/product', [ProductController::class,'getProduct']);

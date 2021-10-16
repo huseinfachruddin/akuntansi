@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Producttype;
 use App\Models\Priceproduct;
+use App\Models\Unit;
 use App\Models\Substocktransaction;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +33,10 @@ class Product extends Model
 
     public function price(){
         return $this->hasMany(Priceproduct::class,'product_id');
+    }
+
+    public function unit(){
+        return $this->belongsTo(Unit::class,'unit');
     }
 
     public function getCreatedAtAttribute(){
