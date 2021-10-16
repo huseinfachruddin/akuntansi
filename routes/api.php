@@ -61,7 +61,7 @@ Route::get('/clean',function(Request $request){
 
 Route::get('/test',function(Request $request){
     // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
-    $subin = Stocktransaction::whereMonth('created_at','=',10)->get();
+    $subin = Product::whereNotNull('id')->update(array('unit'=>null));
 
     return $subin;
 });
