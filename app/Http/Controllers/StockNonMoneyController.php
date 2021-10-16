@@ -69,7 +69,6 @@ class StockNonMoneyController extends Controller
     public function createStockIn(Request $request){
 
         $request->validate([
-            'contact_id' =>'required',
             'staff' =>'required',
             'date' =>'required',
 
@@ -81,7 +80,6 @@ class StockNonMoneyController extends Controller
 
         
         $stock = new Stocktransaction;
-        $stock->contact_id = $request->contact_id;
         $stock->staff = $request->staff;
         $stock->date = $request->date;
 
