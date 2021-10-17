@@ -12,9 +12,9 @@ class ProductController extends Controller
     public function getProduct(Request $request){
         $data = Product::with('producttype','price','unit')->get();
         if (isset($request->contact_id)) {
-            $customer = Contact::where('id',$request->contact_id)->first();
+            $customer = Contact::with('type')->where('id',$request->contact_id)->first();
             foreach ($data as $key => $value) {
-                $price = Priceproduct::where('product_id',$value->id)->where('name',$customer->type)->first();
+                $price = Priceproduct::where('product_id',$value->id)->where('name',$customer->type->name)->first();
                 if (!empty($price)) {
                     $value->selling_price=$price->total;
                 }

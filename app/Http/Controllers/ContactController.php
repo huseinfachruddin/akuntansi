@@ -20,7 +20,10 @@ class ContactController extends Controller
     }
 
     public function getContactCustomer(){
-        $data = Contact::where('category','customer')->get();
+        $data = Contact::with(['type' => function($type){
+                    $type->where('category','=','customer');
+                }])->get();
+
         $response = [
             'success'=>true,
             'contact'=>$data,
@@ -30,8 +33,10 @@ class ContactController extends Controller
     }
 
     public function getContactSupplier(){
-        $data = Contact::where('category','supplier')->get();
-        
+        $data = Contact::with(['type' => function($type){
+                    $type->where('category','=','supplier');
+                }])->get();   
+
         $response = [
             'success'=>true,
             'contact'=>$data,
@@ -66,13 +71,8 @@ class ContactController extends Controller
         $data->address = $request->address;
         $data->contact = $request->contact;
         $data->type = $request->type;
-        $contacttype = Contacttype::where('name',$data->type)->first();
-        if (!empty($contacttype->maxdebt)) {
-            $data->maxdebt = $contacttype->maxdebt;
-        }
-        $data->category = $contacttype->category;
-
         $data->save();
+        
         $response = [
             'success'=>true,
             'contact'=>$data,
@@ -96,11 +96,6 @@ class ContactController extends Controller
         $data->address = $request->address;
         $data->contact = $request->contact;
         $data->type = $request->type;
-        $contacttype = Contacttype::where('name',$data->type)->first();
-        if (!empty($contacttype->maxdebt)) {
-            $data->maxdebt = $contacttype->maxdebt;
-        }
-        $data->category = $contacttype->category;
         $data->save();
         
         $response = [

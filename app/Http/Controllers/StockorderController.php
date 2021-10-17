@@ -144,20 +144,26 @@ class StockorderController extends Controller
             'date' =>'required',
             'payment_due' =>'required',
 
-            'product_id.*' =>'required',
+            'product_id.*'=>'required',
             'qty.*'  =>'required',
             'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
         ]); 
 
-        $contact = Contact::where('id',$request->contact_id)->first();
+        $contact = Contact::with('type')->where('id',$request->contact_id)->first();
         $sum = 0;
         foreach ( $request->total as $key => $value) {
             $sum = $sum + $request->total[$key];
         }
+        
         $hutang = $sum - $request->paid;
-        if ($hutang > $contact->maxdebt && $contact->maxdebt!=null) {
-            return response(['error'=>'Hutang Melebihi maxmal hutang customer'],400);
+        if ($hutang > $contact->type->maxdebt && $contact->type->maxdebt!=null) {
+            return response(['error'=>'Hutang Melebihi maximal hutang customer'],400);
+        }
+
+        $paydue = date("Y-m-d", strtotime($request->payment_due));
+        if ($paydue > $contact->type->max_paydue) {
+            return response(['error'=>'Jatuh tempo melebihi maximal Jatuh tempo customer'],400);
         }
 
         $stock = new Stocktransaction;

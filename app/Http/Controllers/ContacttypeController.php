@@ -36,12 +36,15 @@ class ContacttypeController extends Controller
             'name' =>'required|unique:contacttypes,name',
             'category' =>'required',
             'maxdebt' =>'required',
+            'max_paydue' =>'required',
+
         ]);
 
         $data = new Contacttype;
         $data->name = $request->name;
         $data->category = $request->category;
         $data->maxdebt = $request->maxdebt;
+        $data->max_paydue = $request->max_paydue;
 
         $data->save();
         
@@ -58,14 +61,15 @@ class ContacttypeController extends Controller
             'name' =>'required',
             'maxdebt' =>'required',
             'category' =>'required',
+            'max_paydue' =>'required',
         ]);
 
         $data = Contacttype::find($request->id);
-        $contact = Contact::where('type',$data->name)->update(array('type'=>$request->name,'maxdebt'=>$request->maxdebt,'category'=>$request->category));
         $price = Priceproduct::where('name',$data->name)->update(array('name'=>$request->name));
         $data->name = $request->name;
         $data->category = $request->category;
         $data->maxdebt = $request->maxdebt;
+        $data->max_paydue = $request->max_paydue;
         $data->save();
         
         $response = [

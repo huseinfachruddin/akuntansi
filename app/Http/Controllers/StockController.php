@@ -108,7 +108,6 @@ class StockController extends Controller
         $response = [
             'success'=>true,
             'stocktransaction'=>$data,
-
         ];
         
         return response($response,200);
@@ -240,6 +239,7 @@ class StockController extends Controller
 
         $data = $request->product_id;
         $total = 0;
+        $jasa = 0;
         $totalhpp=0;
         $lasthb=0;
         foreach ( $data as $key => $value) {
@@ -253,6 +253,16 @@ class StockController extends Controller
             $substocktransaction[]= $sub;
 
             $product = Product::find($sub->product_id);
+            if ($product->category=='service') {
+
+                $akun = Akun::where('name','=','Pendapatan Jasa')->first();
+                $akun = Akun::find($akun->id);
+                $akun->total = $akun->total + $sub->total;
+                $akun->save();
+                $jasa = $jasa + $sub->total;
+                $total = $total + $sub->total;
+                continue;
+            }
             $product->qty = $product->qty - $sub->qty;
             $product->save();
             
@@ -302,7 +312,7 @@ class StockController extends Controller
 
         $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
         $akun = Akun::find($akun->id);
-        $akun->total = $akun->total + $total;
+        $akun->total = $akun->total + ($total-$jasa);
         $akun->save();
 
         $akun = Akun::where('name','=','Harga Pokok Penjualan')->first();
@@ -442,8 +452,18 @@ class StockController extends Controller
 
             $sub =Substocktransaction::where('stocktransaction_id','=',$stock->id)->get();
             $totalhpp=0;
+            $jasa=0;
             foreach ($sub as $key => $value) {
                 $product = Product::find($value->product_id);
+                if ($product->category=='service') {
+
+                    $akun = Akun::where('name','=','Pendapatan Jasa')->first();
+                    $akun = Akun::find($akun->id);
+                    $akun->total = $akun->total - $sub->total;
+                    $akun->save();
+                    $jasa = $jasa - $sub->total;
+                    continue;
+                }
                 $product->qty = $product->qty + $value->qty;
                 $product->save(); 
 
