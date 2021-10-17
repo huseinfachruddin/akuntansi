@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Stocktransaction;
+use App\Models\Contacttype;
+
 
 class Contact extends Model
 {
@@ -13,6 +15,10 @@ class Contact extends Model
 
     public function stocktransaction(){
         return $this->hasMany(Stocktransaction::class,'contact_id');
+    }
+
+    public function type(){
+        return $this->belongsTo(Contacttype::class,'type');
     }
 
     public function getCreatedAtAttribute(){
