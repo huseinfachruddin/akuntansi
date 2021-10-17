@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Contact;
+use App\Models\Contacttype;
 use App\Models\Priceproduct;
 
 class ProductController extends Controller
@@ -14,11 +15,13 @@ class ProductController extends Controller
         if (isset($request->contact_id)) {
             $customer = Contact::with('type')->where('id',$request->contact_id)->first();
             foreach ($data as $key => $value) {
-                $price = Priceproduct::where('product_id',$value->id)
-                ->where('name',$customer->type()->first()->name)
-                ->first();
-                if (!empty($price)) {
-                    $value->selling_price=$price->total;
+                if (!empty($customer->type()->first())) {
+                    $price = Priceproduct::where('product_id',$value->id)
+                    ->where('name',$customer->type()->first()->name)
+                    ->first();
+                    if (!empty($price)) {
+                        $value->selling_price=$price->total;
+                    }
                 }
             }
         }

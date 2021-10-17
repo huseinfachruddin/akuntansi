@@ -20,9 +20,9 @@ class ContactController extends Controller
     }
 
     public function getContactCustomer(){
-        $data = Contact::with(['type' => function($type){
-                    $type->where('category','=','customer');
-                }])->get();
+        $data = Contact::whereHas('type', function($type){
+            $type->where('category','=','customer');
+        })->get();   
 
         $response = [
             'success'=>true,
@@ -33,9 +33,9 @@ class ContactController extends Controller
     }
 
     public function getContactSupplier(){
-        $data = Contact::with(['type' => function($type){
+        $data = Contact::whereHas('type', function($type){
                     $type->where('category','=','supplier');
-                }])->get();   
+                })->get();   
 
         $response = [
             'success'=>true,
