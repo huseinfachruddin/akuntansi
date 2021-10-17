@@ -39,16 +39,16 @@ use App\Http\Controllers\UnitController;
 */
 
 Route::get('/setup/awal',function(Request $request){
-    // $role = new Role;
-    // $role->name='admin';
-    // $role->save();
+    $role = new Role;
+    $role->name='admin';
+    $role->save();
 
 
-    // $user = User::create([
-    //     'name' => 'admin awal',
-    //     'email' => 'admin@admin.com',
-    //     'password' => bcrypt('password123'),
-    // ]);
+    $user = User::create([
+        'name' => 'admin awal',
+        'email' => 'admin@admin.com',
+        'password' => bcrypt('password123'),
+    ]);
 
     $user->syncRoles($role->name);
 
@@ -56,6 +56,7 @@ Route::get('/setup/awal',function(Request $request){
     });
 Route::get('/clean',function(Request $request){
     $akun = Product::whereNotNull('name')->update(array('qty' => 0));
+    $akun = Stocktransaction::whereNotNull('id')->delete();
     $akun = Akun::whereNotNull('name')->update(array('total' => 0));
     
     return $akun;
