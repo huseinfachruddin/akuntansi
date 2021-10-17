@@ -149,6 +149,8 @@ Route::post('/contacttype/create',[ContacttypeController::class,'createContactty
 Route::put('/contacttype/edit/{id}',[ContacttypeController::class,'editContacttype']);
 Route::delete('/contacttype/delete/{id}',[ContacttypeController::class,'deleteContacttype']);
 // STOCK ******
+Route::match(['get','post'], '/stock/report', [StockController::class,'getStockReport']);
+
 Route::get('/stock/transaction',[StockController::class,'getStockTransaction']);
 Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTransactionDetail']);
 

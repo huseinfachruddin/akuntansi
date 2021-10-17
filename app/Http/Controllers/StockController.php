@@ -9,11 +9,28 @@ use App\Models\Product;
 use App\Models\Akun;
 use App\Models\Credit;
 use App\Models\Contact;
+use Illuminate\Support\Facades\DB;
 
 
 
 class StockController extends Controller
 {
+    public function getStockReport(Request $request){
+        // $data = Substocktransaction::whereHas('stoc');
+        $data = Product::whereHas('substocktransaction',function($query){
+            $query->whereHas('stocktransaction',function($query){
+                $query->whereNotNull('cashin_id');
+            });
+        })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->get();
+
+        $response = [
+            'success'=>true,
+            'stock'=>$data,
+        ];
+
+        return response($response,200);
+    }
+
     public function getStockTransaction(Request $request){
         $data = Stocktransaction::with('contact','cashin','cashout');
 
