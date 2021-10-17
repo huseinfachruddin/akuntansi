@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ContactController extends Controller
 {
     public function getContact(){
-        $data = Contact::all();
+        $data = Contact::with('type')->all();
         
         $response = [
             'success'=>true,
