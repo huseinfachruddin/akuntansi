@@ -155,14 +155,14 @@ class StockorderController extends Controller
         foreach ( $request->total as $key => $value) {
             $sum = $sum + $request->total[$key];
         }
-        
+
         $hutang = $sum - $request->paid;
-        if ($hutang > $contact->type->maxdebt && $contact->type->maxdebt!=null) {
+        if ($hutang > $contact->type()->first()->maxdebt && $contact->type()->first()->maxdebt!=null) {
             return response(['error'=>'Hutang Melebihi maximal hutang customer'],400);
         }
 
         $paydue = date("Y-m-d", strtotime($request->payment_due));
-        if ($paydue > $contact->type->max_paydue) {
+        if ($paydue > $contact->type()->first()->max_paydue) {
             return response(['error'=>'Jatuh tempo melebihi maximal Jatuh tempo customer'],400);
         }
 

@@ -14,7 +14,9 @@ class ProductController extends Controller
         if (isset($request->contact_id)) {
             $customer = Contact::with('type')->where('id',$request->contact_id)->first();
             foreach ($data as $key => $value) {
-                $price = Priceproduct::where('product_id',$value->id)->where('name',$customer->type->name)->first();
+                $price = Priceproduct::where('product_id',$value->id)
+                ->where('name',$customer->type()->first()->name)
+                ->first();
                 if (!empty($price)) {
                     $value->selling_price=$price->total;
                 }

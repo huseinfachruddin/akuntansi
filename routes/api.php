@@ -63,9 +63,9 @@ Route::get('/clean',function(Request $request){
 
 Route::get('/test',function(Request $request){
     // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
-    $subin = Contact::whereNotNull('id')->update(array('type'=>null));
-
-    return $subin;
+    $subin = Contact::with('type')->first();
+    $data = $subin->type()->first()->name;
+    return $data;
 });
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);

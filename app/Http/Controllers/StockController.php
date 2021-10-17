@@ -223,7 +223,7 @@ class StockController extends Controller
             $sum = $sum + $request->total[$key];
         }
         $hutang = $sum - $request->paid;
-        if ($hutang > $contact->maxdebt && $contact->maxdebt!=null) {
+        if ($hutang > $contact->type()->first()->maxdebt && $contact->type()->first()->maxdebt!=null) {
             return response(['error'=>'Hutang Melebihi maxmal hutang customer'],400);
         }
 
