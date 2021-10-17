@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Akun;
+use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Substocktransaction;
 use App\Models\Stocktransaction;
@@ -48,7 +49,7 @@ Route::get('/setup/awal',function(Request $request){
     //     'email' => 'admin@admin.com',
     //     'password' => bcrypt('password123'),
     // ]);
-    
+
     $user->syncRoles($role->name);
 
     return 'Ok';
@@ -62,7 +63,7 @@ Route::get('/clean',function(Request $request){
 
 Route::get('/test',function(Request $request){
     // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
-    $subin = Product::whereNotNull('id')->update(array('unit'=>null));
+    $subin = Contact::whereNotNull('id')->update(array('type'=>null));
 
     return $subin;
 });
