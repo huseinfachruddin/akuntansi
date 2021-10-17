@@ -227,6 +227,13 @@ class StockController extends Controller
             return response(['error'=>'Hutang Melebihi maxmal hutang customer'],400);
         }
 
+        $paydue = date("Y-m-d", strtotime($request->payment_due));
+        $day = $contact->type()->first()->max_paydue;
+        $max_patdue=date('Y-m-d',time()+(60*60*24*$day));
+        if ($paydue > $max_patdue && $contact->type()->first()->max_paydue!=null) {
+            return response(['error'=>'Jatuh tempo melebihi maximal'],400);
+        }
+        
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
         $stock->cashin_id = $request->cashin_id;

@@ -162,7 +162,9 @@ class StockorderController extends Controller
         }
 
         $paydue = date("Y-m-d", strtotime($request->payment_due));
-        if ($paydue > $contact->type()->first()->max_paydue && $contact->type()->first()->max_paydue!=null) {
+        $day = $contact->type()->first()->max_paydue;
+        $max_patdue=date('Y-m-d',time()+(60*60*24*$day));
+        if ($paydue > $max_patdue && $contact->type()->first()->max_paydue!=null) {
             return response(['error'=>'Jatuh tempo melebihi maximal'],400);
         }
 
