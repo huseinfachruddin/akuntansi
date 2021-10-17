@@ -18,7 +18,7 @@ class ChangeDataToContactsTable extends Migration
             $table->dropColumn('category');
         });
         Schema::table('contacttypes', function (Blueprint $table) {
-            $table->date('max_paydue')->nullable();
+            $table->double('max_paydue')->nullable();
         });
     }
 
