@@ -21,6 +21,7 @@ class StockController extends Controller
                 $query->whereNotNull('cashin_id')->where('pending',false)->orWhere('pending',null);
             });
         })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->get('substocktransaction_sum_total AS sum_total');
+
         $response = [
             'success'=>true,
             'stock'=>$data,

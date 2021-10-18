@@ -52,6 +52,8 @@ class ProductController extends Controller
             'purchase_price'  =>'required',
             'selling_price'  =>'required',
             'producttype'  =>'required',
+            'category'  =>'required',
+
         ]);
 
         $data = new Product;
@@ -62,6 +64,8 @@ class ProductController extends Controller
         $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;
         $data->producttype = $request->producttype;
+        $data->category = $request->category;
+
         $data->save();
         
         $response = [
@@ -79,6 +83,7 @@ class ProductController extends Controller
             'purchase_price'  =>'required',
             'selling_price'  =>'required',
             'producttype'  =>'required',
+            'category'  =>'required',
         ]);
 
         $data = Product::find($request->id);
@@ -87,7 +92,8 @@ class ProductController extends Controller
         $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;
         $data->producttype = $request->producttype;
-        
+        $data->category = $request->category;
+
         $data->save();
         
         $response = [
