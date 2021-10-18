@@ -290,10 +290,6 @@ class StockNonMoneyController extends Controller
             $akun->total = $akun->total - $stock->total;
             $akun->save();
 
-            $akun = Akun::where('name','=','Pendapatan Barang')->first();
-            $akun = Akun::find($akun->id);
-            $akun->total = $akun->total - $stock->total;
-            $akun->save();
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }
