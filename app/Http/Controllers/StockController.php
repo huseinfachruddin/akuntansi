@@ -28,7 +28,7 @@ class StockController extends Controller
                     $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
             });
-        })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->where('')->get('substocktransaction_sum_total AS sum_total');
+        })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->where('')->get();
 
         $response = [
             'success'=>true,
