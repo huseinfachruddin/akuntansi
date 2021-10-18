@@ -66,7 +66,7 @@ Route::get('/clean',function(Request $request){
 
 Route::get('/test',function(Request $request){
     // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
-    $contact = Contact::where('id',2)->first();
+    $contact = Contact::where('id',6)->first();
     $data = $contact->type()->first()->maxdebt;
     return $data;
 });
