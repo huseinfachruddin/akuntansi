@@ -17,9 +17,10 @@ class StockController extends Controller
 {
     public function getStockReport(Request $request){
         $data = Product::whereHas('substocktransaction',function($sub) use($request){
-            $sub->whereHas('stocktransaction',function($query) use($request){
+            $sub->whereHas('stocktransaction',function($stock) use($request){
                 $stock->whereNotNull('cashin_id')->where('pending',false)->orWhere('pending',null);
                 if (isset($request->start_date) && isset($request->end_date)) {
+
                     $request->start_date=date("Y-m-d", strtotime($request->start_date));
                     $request->end_date=date("Y-m-d", strtotime($request->end_date));
         
