@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Product;
 use App\Models\Substocktransaction;
 use App\Models\Stocktransaction;
+use App\Models\Cashtransaction;
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
