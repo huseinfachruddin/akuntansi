@@ -16,11 +16,19 @@ use Illuminate\Support\Facades\DB;
 class StockController extends Controller
 {
     public function getStockReport(Request $request){
-        $data = Product::whereHas('substocktransaction',function($query){
-            $query->whereHas('stocktransaction',function($query){
-                $query->whereNotNull('cashin_id')->where('pending',false)->orWhere('pending',null);
+        $data = Product::whereHas('substocktransaction',function($sub) use($request){
+            $sub->whereHas('stocktransaction',function($query){
+                $stock->whereNotNull('cashin_id')->where('pending',false)->orWhere('pending',null);
             });
-        })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->get('substocktransaction_sum_total AS sum_total');
+            if (isset($request->start_date) && isset($request->end_date)) {
+                $request->start_date=date("Y-m-d", strtotime($request->start_date));
+                $request->end_date=date("Y-m-d", strtotime($request->end_date));
+    
+                $sub = $data->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $sub = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
+        })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->where('')->get('substocktransaction_sum_total AS sum_total');
 
         $response = [
             'success'=>true,
