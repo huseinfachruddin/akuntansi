@@ -243,7 +243,7 @@ class StockController extends Controller
         foreach ( $request->total as $key => $value) {
             $sum = $sum + $request->total[$key];
         }
-        $hutang = $sum - ($request->discount - $request->paid) ;
+        $hutang = ($sum - $request->discount) - $request->paid ;
 
         if ($hutang > $contact->type()->first()->maxdebt) {
             return response(['error'=>'Hutang melebihi batas'],400);
@@ -253,7 +253,7 @@ class StockController extends Controller
         $day = $contact->type()->first()->max_paydue;
         $max_patdue=date('Y-m-d',time()+(60*60*24*$day));
         if ($paydue > $max_patdue && $contact->type()->first()->max_paydue!=null) {
-            return response(['error'=>'Jatuh tempo melebihi maximal'],400);
+            return response(['error'=>'Jatuh tempo melebihi batas'],400);
         }
         
         $stock = new Stocktransaction;
