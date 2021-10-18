@@ -246,7 +246,7 @@ class StockController extends Controller
         $hutang = $sum - ($request->discount - $request->paid) ;
 
         if ($hutang > $contact->type()->first()->maxdebt) {
-            return response(['error'=>'Hutang Melebihi maxmal'],400);
+            return response(['error'=>'Hutang melebihi batas'],400);
         }
 
         $paydue = date("Y-m-d", strtotime($request->payment_due));
