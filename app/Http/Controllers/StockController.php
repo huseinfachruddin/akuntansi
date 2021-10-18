@@ -77,7 +77,7 @@ class StockController extends Controller
 
     public function getStockOut(Request $request){
         $data = Stocktransaction::whereNotNull('cashin_id')->where('pending',false)->orWhere('pending',null);
-
+        dd($request);
         if (isset($request->start_date) && isset($request->end_date)) {
             $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
         }else{
