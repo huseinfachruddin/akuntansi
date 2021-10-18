@@ -17,17 +17,17 @@ class StockController extends Controller
 {
     public function getStockReport(Request $request){
         $data = Product::whereHas('substocktransaction',function($sub) use($request){
-            $sub->whereHas('stocktransaction',function($query){
+            $sub->whereHas('stocktransaction',function($query) use($request){
                 $stock->whereNotNull('cashin_id')->where('pending',false)->orWhere('pending',null);
+                if (isset($request->start_date) && isset($request->end_date)) {
+                    $request->start_date=date("Y-m-d", strtotime($request->start_date));
+                    $request->end_date=date("Y-m-d", strtotime($request->end_date));
+        
+                    $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+                }else{
+                    $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+                }
             });
-            if (isset($request->start_date) && isset($request->end_date)) {
-                $request->start_date=date("Y-m-d", strtotime($request->start_date));
-                $request->end_date=date("Y-m-d", strtotime($request->end_date));
-    
-                $sub = $sub->whereBetween('date',[$request->start_date,$request->end_date]);
-            }else{
-                $sub = $sub->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
-            }
         })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->where('')->get('substocktransaction_sum_total AS sum_total');
 
         $response = [
