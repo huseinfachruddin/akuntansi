@@ -16,13 +16,11 @@ use Illuminate\Support\Facades\DB;
 class StockController extends Controller
 {
     public function getStockReport(Request $request){
-        // $data = Substocktransaction::whereHas('stoc');
         $data = Product::whereHas('substocktransaction',function($query){
             $query->whereHas('stocktransaction',function($query){
                 $query->whereNotNull('cashin_id')->where('pending',false)->orWhere('pending',null);
             });
         })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->get('substocktransaction_sum_total AS sum_total');
-        dd($data);
         $response = [
             'success'=>true,
             'stock'=>$data,
