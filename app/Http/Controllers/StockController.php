@@ -243,7 +243,8 @@ class StockController extends Controller
         foreach ( $request->total as $key => $value) {
             $sum = $sum + $request->total[$key];
         }
-        $hutang = $sum - $request->discount - $request->paid ;
+        $hutang = $sum - ($request->discount - $request->paid) ;
+
         if ($hutang > $contact->type()->first()->maxdebt && $contact->type()->first()->maxdebt!=null) {
             return response(['error'=>'Hutang Melebihi maxmal'],400);
         }

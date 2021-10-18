@@ -66,8 +66,8 @@ Route::get('/clean',function(Request $request){
 
 Route::get('/test',function(Request $request){
     // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
-    $day=30;
-    $data = date('Y-m-d',time()+(60*60*24*$day));
+    $contact = Contact::where('id',2)->first();
+    $data = $contact->type()->first()->maxdebt;
     return $data;
 });
 
