@@ -11,7 +11,55 @@ use App\Models\Priceproduct;
 class ProductController extends Controller
 {
     public function getProduct(Request $request){
-        $data = Product::with('producttype','price','unit')->get();
+        $data = Product::with('producttype','price','unit')->where('qty','>',0)->get();
+        if (isset($request->contact_id)) {
+            $customer = Contact::with('type')->where('id',$request->contact_id)->first();
+            foreach ($data as $key => $value) {
+                if (!empty($customer->type()->first())) {
+                    $price = Priceproduct::where('product_id',$value->id)
+                    ->where('name',$customer->type()->first()->name)
+                    ->first();
+                    if (!empty($price)) {
+                        $value->selling_price=$price->total;
+                    }
+                }
+            }
+        }
+
+        $response = [
+            'success'=>true,
+            'product'=>$data,
+        ];
+        
+        return response($response,200);
+    }
+
+    public function getProductGoods(Request $request){
+        $data = Product::with('producttype','price','unit')->where('qty','>',0)->where('category','<>','service')->get();
+        if (isset($request->contact_id)) {
+            $customer = Contact::with('type')->where('id',$request->contact_id)->first();
+            foreach ($data as $key => $value) {
+                if (!empty($customer->type()->first())) {
+                    $price = Priceproduct::where('product_id',$value->id)
+                    ->where('name',$customer->type()->first()->name)
+                    ->first();
+                    if (!empty($price)) {
+                        $value->selling_price=$price->total;
+                    }
+                }
+            }
+        }
+
+        $response = [
+            'success'=>true,
+            'product'=>$data,
+        ];
+        
+        return response($response,200);
+    }
+
+    public function getProductService(Request $request){
+        $data = Product::with('producttype','price','unit')->where('qty','>',0)->where('category','service')->get();
         if (isset($request->contact_id)) {
             $customer = Contact::with('type')->where('id',$request->contact_id)->first();
             foreach ($data as $key => $value) {
@@ -53,7 +101,6 @@ class ProductController extends Controller
             'selling_price'  =>'required',
             'producttype'  =>'required',
             'category'  =>'required',
-
         ]);
 
         $data = new Product;
@@ -64,6 +111,9 @@ class ProductController extends Controller
         $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;
         $data->producttype = $request->producttype;
+        if ($request->category=='service') {
+            $data->qty = 100;
+        }
         $data->category = $request->category;
 
         $data->save();

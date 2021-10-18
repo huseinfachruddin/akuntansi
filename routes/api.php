@@ -66,8 +66,7 @@ Route::get('/clean',function(Request $request){
 
 Route::get('/test',function(Request $request){
     // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
-    $contact = Contact::where('id',6)->first();
-    $data = $contact->type()->first()->maxdebt;
+    $data = null - infinity;
     return $data;
 });
 
@@ -112,6 +111,8 @@ Route::delete('/unit/delete/{id}',[UnitController::class,'deleteUnit']);
 
 // PRODUCT API *********
 Route::match(['get','post'], '/product', [ProductController::class,'getProduct']);
+Route::match(['get','post'], '/product/goods', [ProductController::class,'getProductGoods']);
+Route::match(['get','post'], '/product/service', [ProductController::class,'getProductService']);
 
 Route::get('/product/detail/{id}',[ProductController::class,'getProductDetail']);
 
