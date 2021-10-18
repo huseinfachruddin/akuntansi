@@ -243,9 +243,9 @@ class StockController extends Controller
         foreach ( $request->total as $key => $value) {
             $sum = $sum + $request->total[$key];
         }
-        $hutang = $sum - $request->paid;
+        $hutang = $sum - $request->discount - $request->paid ;
         if ($hutang > $contact->type()->first()->maxdebt && $contact->type()->first()->maxdebt!=null) {
-            return response(['error'=>'Hutang Melebihi maxmal hutang customer'],400);
+            return response(['error'=>'Hutang Melebihi maxmal'],400);
         }
 
         $paydue = date("Y-m-d", strtotime($request->payment_due));
@@ -390,7 +390,7 @@ class StockController extends Controller
         ]);
         
         $stock = Stocktransaction::find($request->id);
-        if ($stock->total<($stock->paid + $request->total)) {
+        if (($stock->total - $stock->discount)<($stock->paid + $request->total)) {
             return response(['error'=>'kelebihan dalam pembayaran'],400);
         }
         $stock->paid = $stock->paid + $request->total;
@@ -425,11 +425,10 @@ class StockController extends Controller
             'cashout_id' =>'required',
             'total' =>'required',
             'payment_due' =>'required',
-
         ]);
         
         $stock = Stocktransaction::find($request->id);
-        if ($stock->total<($stock->paid + $request->total)) {
+        if (($stock->total - $stock->discount)<($stock->paid + $request->total)) {
             return response(['error'=>'kelebihan dalam pembayaran'],400);
         }
         $stock->paid = $stock->paid + $request->total;
@@ -441,11 +440,6 @@ class StockController extends Controller
         $akun->save();
         
         $akun = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
-        $akun = Akun::find($akun->id);
-        $akun->total = $akun->total - $request->total;
-        $akun->save();
-
-        $akun = Akun::where('name','=','Piutang Penjualan')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total - $request->total;
         $akun->save();
