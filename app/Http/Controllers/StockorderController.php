@@ -29,8 +29,6 @@ class StockorderController extends Controller
         $data = Stocktransaction::whereNotNull('cashout_id')->where('pending',true);
         
         if (isset($request->start_date) && isset($request->end_date)) {
-            $request->start_date=date("Y-m-d", strtotime($request->start_date));
-            $request->end_date=date("Y-m-d", strtotime($request->end_date));
             $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
         }else{
             $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
@@ -51,8 +49,6 @@ class StockorderController extends Controller
         $data = Stocktransaction::whereNotNull('cashin_id')->where('pending',true);
 
         if (isset($request->start_date) && isset($request->end_date)) {
-            $request->start_date=date("Y-m-d", strtotime($request->start_date));
-            $request->end_date=date("Y-m-d", strtotime($request->end_date));
             $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
         }else{
             $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
