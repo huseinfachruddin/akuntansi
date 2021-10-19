@@ -156,7 +156,7 @@ class StockorderController extends Controller
             $sum = $sum + $request->total[$key];
         }
 
-        $hutang = $sum - $request->paid;
+        $hutang = ($sum -$request->paid) - $request->paid;
         if ($hutang > $contact->type()->first()->maxdebt) {
             return response(['error'=>'Hutang melebihi batas'],400);
         }
