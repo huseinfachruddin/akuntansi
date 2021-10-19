@@ -84,7 +84,7 @@ class StockorderController extends Controller
             'total.*'  =>'required|numeric',
         ]); 
         if (empty($request->cashout_id)) {
-            $request->cashout_id = Akun::where('iscashout',true)->first()->id;
+            $request->cashout_id = Akun::where('iscash',true)->first()->id;
         }
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
@@ -158,7 +158,7 @@ class StockorderController extends Controller
         }
 
         if (empty($request->cashin_id)) {
-            $request->cashin_id = Akun::where('iscashin',true)->first()->id;
+            $request->cashin_id = Akun::where('iscash',true)->first()->id;
         }
 
         $contact = Contact::with('type')->where('id',$request->contact_id)->first();
