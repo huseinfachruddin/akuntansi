@@ -72,7 +72,7 @@ class StockorderController extends Controller
     public function createStockIn(Request $request){
         $request->validate([
             'contact_id' =>'required',
-            'cashout_id' =>'required',
+            'cashout_id' =>'nullable',
             'staff' =>'required',
             'paid' =>'required',
             'payment_due' =>'required',
@@ -83,7 +83,9 @@ class StockorderController extends Controller
             'purchase_price.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
-        
+        if (empty($request->cashout_id)) {
+            $request->cashout_id = Akun::where('iscashout',true)->first()->id;
+        }
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
@@ -149,6 +151,10 @@ class StockorderController extends Controller
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
+
+        if (empty($request->cashin_id)) {
+            $request->cashin_id = Akun::where('iscashin',true)->first()->id;
+        }
 
         $contact = Contact::with('type')->where('id',$request->contact_id)->first();
         $sum = 0;
