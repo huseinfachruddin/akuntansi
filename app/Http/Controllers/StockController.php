@@ -151,6 +151,11 @@ class StockController extends Controller
             'total.*'  =>'required|numeric',
         ]); 
         $paid=0;
+        if (!empty($request->paid) || $request->paid>0) {
+            $request->validate([
+                'cashout_id' =>'required',
+            ]); 
+        }
         if (empty($request->cashout_id)) {
             $request->cashout_id = Akun::where('iscashout',true)->first()->id;
         }
@@ -248,10 +253,15 @@ class StockController extends Controller
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
-        $paid=0;
+        if (!empty($request->paid) || $request->paid>0) {
+            $request->validate([
+                'cashin_id' =>'required',
+            ]); 
+        }
         if (empty($request->cashin_id)) {
             $request->cashin_id = Akun::where('iscashin',true)->first()->id;
         }
+        $paid=0;
         if (!empty($request->id)) {
             $stock = Stocktransaction::find($request->id);
             $paid=$stock->paid;

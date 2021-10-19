@@ -146,11 +146,16 @@ class StockorderController extends Controller
             'date' =>'required',
 
             'payment_due' =>'required',
-
             'product_id.*'=>'required',
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
+
+        if (!empty($request->paid) || $request->paid>0) {
+            $request->validate([
+                'cashin_id' =>'required',
+            ]); 
+        }
 
         if (empty($request->cashin_id)) {
             $request->cashin_id = Akun::where('iscashin',true)->first()->id;
