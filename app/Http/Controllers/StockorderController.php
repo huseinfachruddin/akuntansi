@@ -157,16 +157,6 @@ class StockorderController extends Controller
         }
 
         $hutang = ($sum -$request->paid) - $request->paid;
-        if ($hutang > $contact->type()->first()->maxdebt) {
-            return response(['error'=>'Hutang melebihi batas'],400);
-        }
-
-        $paydue = date("Y-m-d", strtotime($request->payment_due));
-        $day = $contact->type()->first()->max_paydue;
-        $max_patdue=date('Y-m-d',time()+(60*60*24*$day));
-        if ($paydue > $max_patdue) {
-            return response(['error'=>'Jatuh tempo melebihi batas'],400);
-        }
 
         $stock = new Stocktransaction;
         $stock->contact_id = $request->contact_id;
