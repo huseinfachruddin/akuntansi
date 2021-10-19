@@ -11,8 +11,8 @@ use App\Models\Priceproduct;
 class ProductController extends Controller
 {
     public function getProduct(Request $request){
-        $data = Product::with('producttype','price','unit')->where('qty','>',0)->get();
         if (isset($request->contact_id)) {
+            $data = Product::with('producttype','price','unit')->where('qty','>','0')->get();
             $customer = Contact::with('type')->where('id',$request->contact_id)->first();
             foreach ($data as $key => $value) {
                 if (!empty($customer->type()->first())) {
@@ -24,6 +24,8 @@ class ProductController extends Controller
                     }
                 }
             }
+        }else{
+            $data = Product::with('producttype','price','unit')->get();
         }
 
         $response = [
