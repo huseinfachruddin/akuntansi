@@ -150,7 +150,10 @@ class StockController extends Controller
             'purchase_price.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
-        
+
+        if (!empty($request->id)) {
+            $this->pendingToIn($request->id);
+        }
         $stock = new Stocktransaction;  
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
@@ -237,8 +240,9 @@ class StockController extends Controller
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
+
         if (!empty($request->id)) {
-            $this->pendingToIn($request->id);
+            $this->pendingToOut($request);
         }
         $contact = Contact::where('id',$request->contact_id)->first();
         $sum = 0;
@@ -480,7 +484,7 @@ class StockController extends Controller
         $stock = Stocktransaction::find($request->id);
         $stock->pending = false;
         $stock->save();
-        
+
         $akun = Akun::where('name','=','Hutang Pesanan Penjualan')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total - $stock->paid;
