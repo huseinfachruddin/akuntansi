@@ -150,10 +150,15 @@ class StockController extends Controller
             'purchase_price.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
-
+        $paid=0;
         if (!empty($request->id)) {
             $this->pendingToIn($request->id);
+            $stock = Stocktransaction::find($request->id);
+            $paid = $stock->paid;
         }
+
+        $request->paid= $request->paid + $paid;
+
         $stock = new Stocktransaction;  
         $stock->contact_id = $request->contact_id;
         $stock->cashout_id = $request->cashout_id;
@@ -240,21 +245,26 @@ class StockController extends Controller
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
-
+        $paid=0;
         if (!empty($request->id)) {
-            $this->pendingToOut($request);
+            $stock = Stocktransaction::find($request->id);
+            $paid=$stock->paid;
         }
+        $request->paid= $request->paid + $paid;
         $contact = Contact::where('id',$request->contact_id)->first();
         $sum = 0;
+
         foreach ( $request->total as $key => $value) {
             $sum = $sum + $request->total[$key];
         }
-        $hutang = ($sum - $request->discount) - $request->paid ;
 
+        $hutang = ($sum - $request->discount) - $request->paid ;
         if ($hutang > $contact->type()->first()->maxdebt) {
             return response(['error'=>'Hutang melebihi batas'],400);
         }
-
+        if (!empty($request->id)) {
+            $this->pendingToOut($request);
+        }
         $paydue = date("Y-m-d", strtotime($request->payment_due));
         $day = $contact->type()->first()->max_paydue;
         $max_patdue=date('Y-m-d',time()+(60*60*24*$day));
@@ -443,7 +453,7 @@ class StockController extends Controller
         $stock->save();
 
         $akun = Akun::find($request->cashout_id);
-        $akun->total = $akun->total + $request->total;
+        $akun->total = $akun->total - $request->total;
         $akun->save();
         
         $akun = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
