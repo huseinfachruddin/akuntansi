@@ -27,7 +27,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockNonMoneyController;
 use App\Http\Controllers\StockorderController;
 use App\Http\Controllers\UnitController;
-
+use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -65,8 +65,9 @@ Route::get('/clean',function(Request $request){
 });
 
 Route::get('/test',function(Request $request){
-    // $subin = Substocktransaction::whereNotNull('purchase_price')->where('product_id','=',$value->id)->get();
-    $data = null - infinity;
+    // $stock = Stocktransaction::first()->date;
+    // $data = Carbon::create($stock)->diffForHumans();
+    $data =Akun::where('iscashin',true)->first()->id;
     return $data;
 });
 

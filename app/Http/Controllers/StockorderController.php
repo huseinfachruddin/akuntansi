@@ -138,7 +138,7 @@ class StockorderController extends Controller
     public function createStockOut(Request $request){
         $request->validate([
             'contact_id' =>'required',
-            'cashin_id' =>'required',
+            'cashin_id' =>'nullabel',
             'staff' =>'required',
             'paid' =>'required',
             'date' =>'required',
