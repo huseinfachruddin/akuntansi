@@ -110,6 +110,7 @@ Route::put('/unit/edit/{id}',[UnitController::class,'editUnit']);
 Route::delete('/unit/delete/{id}',[UnitController::class,'deleteUnit']);
 
 // PRODUCT API *********
+Route::match(['get','post'], '/product/all', [ProductController::class,'getProductAll']);
 Route::match(['get','post'], '/product', [ProductController::class,'getProduct']);
 Route::match(['get','post'], '/product/goods', [ProductController::class,'getProductGoods']);
 Route::match(['get','post'], '/product/service', [ProductController::class,'getProductService']);

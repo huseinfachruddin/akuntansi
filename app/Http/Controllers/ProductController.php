@@ -10,6 +10,32 @@ use App\Models\Priceproduct;
 
 class ProductController extends Controller
 {
+    public function getProductAll(Request $request){
+        if (isset($request->contact_id)) {
+            $data = Product::with('producttype','price','unit')->get();
+            $customer = Contact::with('type')->where('id',$request->contact_id)->first();
+            foreach ($data as $key => $value) {
+                if (!empty($customer->type()->first())) {
+                    $price = Priceproduct::where('product_id',$value->id)
+                    ->where('name',$customer->type()->first()->name)
+                    ->first();
+                    if (!empty($price)) {
+                        $value->selling_price=$price->total;
+                    }
+                }
+            }
+        }else{
+            $data = Product::with('producttype','price','unit')->get();
+        }
+
+        $response = [
+            'success'=>true,
+            'product'=>$data,
+        ];
+        
+        return response($response,200);
+    }
+
     public function getProduct(Request $request){
         if (isset($request->contact_id)) {
             $data = Product::with('producttype','price','unit')->where('qty','>','0')->get();
