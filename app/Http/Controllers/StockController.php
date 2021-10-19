@@ -287,6 +287,7 @@ class StockController extends Controller
         $jasa = 0;
         $totalhpp=0;
         $lasthb=0;
+        $qty=0;
         foreach ( $data as $key => $value) {
             $sub = new Substocktransaction;
             $sub->stocktransaction_id = $stock->id;
