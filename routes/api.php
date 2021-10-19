@@ -56,7 +56,7 @@ Route::get('/setup/awal',function(Request $request){
     return 'Ok';
     });
 Route::get('/clean',function(Request $request){
-    $akun = Product::whereNotNull('name')->update(array('qty' => 0));
+    $akun = Product::whereNotNull('name')->where('category','<>','service')->update(array('qty' => 0));
     $akun = Stocktransaction::whereNotNull('id')->delete();
     $akun = Cashtransaction::whereNotNull('id')->delete();
     $akun = Akun::whereNotNull('name')->update(array('total' => 0));
