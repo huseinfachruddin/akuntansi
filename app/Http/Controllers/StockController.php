@@ -237,7 +237,9 @@ class StockController extends Controller
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
-
+        if (!empty($request->id)) {
+            $this->pendingToIn($request->id);
+        }
         $contact = Contact::where('id',$request->contact_id)->first();
         $sum = 0;
         foreach ( $request->total as $key => $value) {
@@ -457,6 +459,36 @@ class StockController extends Controller
         ];
 
         return response($response,200);
+    }
+
+    public function pendingToIn(Request $request){
+        $stock = Stocktransaction::find($request->id);
+        $stock->pending = false;
+        $stock->save();
+
+        $akun = Akun::where('name','=','Uang Muka Pesanan Pembelian')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total -  $stock->paid;
+        $akun->save();
+
+        $akun = Akun::find($request->cashout_id);
+        $akun->total = $akun->total + $stock->paid;
+        $akun->save();
+    }
+
+    public function pendingToOut(Request $request){
+        $stock = Stocktransaction::find($request->id);
+        $stock->pending = false;
+        $stock->save();
+        
+        $akun = Akun::where('name','=','Hutang Pesanan Penjualan')->first();
+        $akun = Akun::find($akun->id);
+        $akun->total = $akun->total - $stock->paid;
+        $akun->save();
+        
+        $akun = Akun::find($request->cashin_id);
+        $akun->total = $akun->total - $stock->paid;
+        $akun->save();
     }
 
     public function deleteStockTransaction(Request $request){

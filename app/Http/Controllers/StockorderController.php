@@ -140,6 +140,9 @@ class StockorderController extends Controller
             'staff' =>'required',
             'paid' =>'required',
             'date' =>'required',
+            'discount' =>'nullable',
+            'date' =>'required',
+
             'payment_due' =>'required',
 
             'product_id.*'=>'required',
@@ -161,7 +164,7 @@ class StockorderController extends Controller
         $paydue = date("Y-m-d", strtotime($request->payment_due));
         $day = $contact->type()->first()->max_paydue;
         $max_patdue=date('Y-m-d',time()+(60*60*24*$day));
-        if ($paydue > $max_patdue && $contact->type()->first()->max_paydue!=null) {
+        if ($paydue > $max_patdue) {
             return response(['error'=>'Jatuh tempo melebihi batas'],400);
         }
 
@@ -199,6 +202,7 @@ class StockorderController extends Controller
 
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
+        $stock->discount = $request->discount;
         $stock->save();
         
         $akun = Akun::find($request->cashin_id);
