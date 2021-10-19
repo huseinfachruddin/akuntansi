@@ -35,7 +35,7 @@ class ProductController extends Controller
     }
 
     public function getProductGoods(Request $request){
-        $data = Product::with('producttype','price','unit')->where('qty','>',0)->where('category','<>','service')->get();
+        $data = Product::with('producttype','price','unit')->where('category','<>','service')->get();
         if (isset($request->contact_id)) {
             $customer = Contact::with('type')->where('id',$request->contact_id)->first();
             foreach ($data as $key => $value) {
