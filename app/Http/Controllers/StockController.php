@@ -20,7 +20,7 @@ class StockController extends Controller
         $data = Product::with('producttype','unit')
         ->whereHas('substocktransaction' , function($sub) use($request){
             $sub->whereHas('stocktransaction',function($stock) use($request){
-                $stock = $stock->whereNotNull('cashin_id');
+                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));

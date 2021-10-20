@@ -27,7 +27,6 @@ class StockorderController extends Controller
         $response = [
             'success'=>true,
             'stocktransaction'=>$data,
-
         ];
 
         return response($response,200);
