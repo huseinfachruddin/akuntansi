@@ -176,6 +176,7 @@ Route::match(['get','post'], '/stock/out/debt/due', [StockDebtController::class,
 Route::put('/stock/out/paid/{id}',[StockDebtController::class,'paidStockOut']);
 Route::put('/stock/in/paid/{id}',[StockDebtController::class,'paidStockIn']);
 
+Route::delete('/stock/paid/delete/{id}',[StockController::class,'deleteCreditTransaction']);
 // STOCK Non Money******
 
 Route::get('/stock/nonmony/detail/{id}',[StockNonMoneyController::class,'getStockTransactionDetail']);

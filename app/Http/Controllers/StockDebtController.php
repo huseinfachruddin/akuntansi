@@ -141,10 +141,10 @@ class StockDebtController extends Controller
     public function deleteCreditTransaction(Request $request){
 
         $credit = Credit::find($request->id);
+        $stock = Stocktransaction::find($credit->stocktransaction_id);
 
-        $stock = $credit->stocktransaction();
         if ($stock->cashin_id) { // Penjualan
-            $stock = Stocktransaction::find($request->id);
+            $stock = Stocktransaction::find($stock->id);
             $stock->paid = $stock->paid - $credit->total;
             $stock->save();
 
@@ -155,7 +155,7 @@ class StockDebtController extends Controller
 
         }elseif ($stock->cashout_id){ // Pembelian
 
-            $stock = Stocktransaction::find($request->id);
+            $stock = Stocktransaction::find($stock->id);
             $stock->paid = $stock->paid - $credit->total;
             $stock->save();
 
