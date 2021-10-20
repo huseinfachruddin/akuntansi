@@ -547,7 +547,7 @@ class StockController extends Controller
                     $akun = Akun::find($akun->id);
                     $akun->total = $akun->total - $value->total;
                     $akun->save();
-                    $jasa = $jasa - $sub->total;
+                    $jasa = $jasa - $value->total;
                     continue;
                 }
                 $product->qty = $product->qty + $value->qty;
