@@ -24,6 +24,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContacttypeController;
 use App\Http\Controllers\ProducttypeController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockDebtController;
 use App\Http\Controllers\StockNonMoneyController;
 use App\Http\Controllers\StockorderController;
 use App\Http\Controllers\UnitController;
