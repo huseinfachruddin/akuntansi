@@ -94,7 +94,7 @@ class StockorderController extends Controller
             'cashout_id' =>'nullable',
             'staff' =>'required',
             'paid' =>'required',
-            'payment_due' =>'required',
+            'payment_due' =>'nullable',
             'date' =>'required',
             'discount' =>'nullable',
 
@@ -166,7 +166,7 @@ class StockorderController extends Controller
             'discount' =>'nullable',
             'date' =>'required',
 
-            'payment_due' =>'required',
+            'payment_due' =>'nullable',
             'product_id.*'=>'required',
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
