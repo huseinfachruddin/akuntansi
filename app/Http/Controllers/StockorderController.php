@@ -234,7 +234,7 @@ class StockorderController extends Controller
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
         }elseif ($stock->cashout_id) {
             $akun = Akun::find($stock->cashout_id);
-            $akun->total = $akun->total + $stock->total;
+            $akun->total = $akun->total + $stock->paid;
             $akun->save();
 
             $totalhpp=0;

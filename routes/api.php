@@ -162,7 +162,8 @@ Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTra
 Route::match(['get','post'], '/stock/in', [StockController::class,'getStockIn']);
 Route::match(['get','post'], '/stock/out', [StockController::class,'getStockOut']);
 
-Route::match(['get','post'], '/stock/out/debt', [StockController::class,'getStockOutDontPaid']);
+Route::match(['get','post'], '/stock/out/debt', [StockController::class,'getStockOutDebt']);
+Route::match(['get','post'], '/stock/out/debt/due', [StockController::class,'getStockOutDebtDue']);
 
 Route::post('/stock/in/create',[StockController::class,'createStockIn']);
 Route::post('/stock/out/create',[StockController::class,'createStockOut']);

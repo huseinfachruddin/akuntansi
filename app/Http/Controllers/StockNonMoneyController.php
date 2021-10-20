@@ -12,6 +12,7 @@ use App\Models\Contact;
 
 class StockNonMoneyController extends Controller
 {
+    
     public function getStockIn(Request $request){
         
         $data = Stocktransaction::where('nonmoney','in');

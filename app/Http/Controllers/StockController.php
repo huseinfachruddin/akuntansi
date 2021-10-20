@@ -9,33 +9,13 @@ use App\Models\Product;
 use App\Models\Akun;
 use App\Models\Credit;
 use App\Models\Contact;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
 
 class StockController extends Controller
 {
-    public function getStockReport(Request $request){
-        $data = Product::whereHas('substocktransaction',function($sub) use($request){
-            $sub->whereHas('stocktransaction',function($stock) use($request){
-                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
-                if (!empty($request->start_date) && !empty($request->end_date)) {
-                    $request->start_date = date('Y-m-d',strtotime($request->start_date));
-                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
-                    $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
-                }else{
-                    $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
-                }
-            });
-        })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->get();
-
-        $response = [
-            'success'=>true,
-            'stock'=>$data,
-        ];
-
-        return response($response,200);
-    }
 
     public function getStockTransaction(Request $request){
         $data = Stocktransaction::with('contact','cashin','cashout');
@@ -101,8 +81,28 @@ class StockController extends Controller
         return response($response,200);
     }
 
-    public function getStockOutDontPaid(Request $request){
-        $data = Stocktransaction::whereNotNull('cashin_id')->whereNull('pending');;
+    public function getStockOutDebtDue(Request $request){
+
+        $data = Stocktransaction::whereNotNull('cashin_id')
+        ->whereNull('pending')
+        ->whereRaw('total > paid')
+        ->with('contact','cashin','credit')
+        ->orderBy('date','DESC')->get();
+        foreach ($data as $key => $value) {
+            $value->date = Carbon::create($value->date)->diffForHumans();
+        }
+
+        $response = [
+            'success'=>true,
+            'stocktransaction'=>$data,
+
+        ];
+
+        return response($response,200);
+    }
+
+    public function getStockOutDebt(Request $request){
+        $data = Stocktransaction::whereNotNull('cashin_id')->whereNull('pending');
 
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
