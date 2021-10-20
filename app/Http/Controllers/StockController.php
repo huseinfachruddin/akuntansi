@@ -124,7 +124,7 @@ class StockController extends Controller
     }
 
     public function getStockTransactionDetail(Request $request){
-        $data = Stocktransaction::where('id',$request->id)->with('contact','cashin','cashout','substocktransaction','substocktransaction.product','credit','credit.cashout','credit.cashin')->get();
+        $data = Stocktransaction::where('id',$request->id)->with('contact','cashin','cashout','substocktransaction','substocktransaction.product.unit','credit','credit.cashout','credit.cashin')->get();
         
         $response = [
             'success'=>true,
