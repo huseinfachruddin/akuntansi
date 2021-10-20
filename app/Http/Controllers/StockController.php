@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class StockController extends Controller
 {
     public function getStockOutReport(Request $request){
-        $data = Product::with('producttype','price','unit')
+        $data = Product::with('producttype','unit')
         ->whereHas('substocktransaction' , function($sub) use($request){
             $sub->whereHas('stocktransaction',function($stock) use($request){
                 $stock = $stock->whereNotNull('cashin_id');
