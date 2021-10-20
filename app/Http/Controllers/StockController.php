@@ -136,7 +136,7 @@ class StockController extends Controller
         ->whereNull('pending')
         ->whereRaw('total > paid')
         ->with('contact','cashin','credit')
-        ->orderBy('date','ASC')->get();
+        ->orderBy('payment_due','ASC')->get();
         foreach ($data as $key => $value) {
             $value->payment_due = Carbon::create($value->payment_due)->diffForHumans();
         }
