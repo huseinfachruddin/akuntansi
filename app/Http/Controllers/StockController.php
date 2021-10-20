@@ -16,6 +16,28 @@ use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
+    public function getStockOutReport(Request $request){
+        $data = Product::with('producttype','price','unit')
+        ->whereHas('substocktransaction' , function($sub) use($request){
+            $sub->whereHas('stocktransaction',function($stock) use($request){
+                $stock = $stock->whereNotNull('cashin_id');
+                if (!empty($request->start_date) && !empty($request->end_date)) {
+                    $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+                }else{
+                    $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+                }
+                });
+        })->withSum('substocktransaction','qty')->withSum('substocktransaction','total')->get();
+
+        $response = [
+            'success'=>true,
+            'stocktransaction'=>$data,
+        ];
+
+        return response($response,200);
+    }
 
     public function getStockTransaction(Request $request){
         $data = Stocktransaction::with('contact','cashin','cashout');
