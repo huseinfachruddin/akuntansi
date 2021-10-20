@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\Akun;
 use App\Models\Credit;
 use App\Models\Contact;
+use Carbon\Carbon;
+
 
 class StockorderController extends Controller
 {
@@ -27,7 +29,7 @@ class StockorderController extends Controller
         $data = $data->with('contact','cashout')->orderBy('date','ASC')->get();
 
         foreach ($data as $key => $value) {
-            $value->payment_due = Carbon::create($value->date)->diffForHumans();
+            $value->date = Carbon::create($value->date)->diffForHumans();
         }
 
         $response = [
