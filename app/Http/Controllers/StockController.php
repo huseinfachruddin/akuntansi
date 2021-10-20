@@ -138,7 +138,12 @@ class StockController extends Controller
         ->with('contact','cashin','credit')
         ->orderBy('payment_due','ASC')->get();
         foreach ($data as $key => $value) {
-            $value->payment_due = Carbon::create($value->payment_due)->diffForHumans();
+            $day = date('Y-m-d',time());
+            if ($value->payment_due<$day) {
+                $value->payment_due = Carbon::create($value->payment_due)->diffForHumans(null,true)." lagi";
+            }else {
+                $value->payment_due = Carbon::create($value->payment_due)->diffForHumans(null,true)." yang lalu";
+            }
         }
 
         $response = [
