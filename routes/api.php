@@ -189,6 +189,7 @@ Route::delete('/stock/nonmoney/delete/{id}',[StockNonMoneyController::class,'del
 
 // STOCK Order leter******
 Route::get('/stock/pending/detail/{id}',[StockorderController::class,'getStockTransactionDetail']);
+Route::match(['get','post'], '/stock/pending/out/due', [StockorderController::class,'getStockOutDue']);
 
 Route::match(['get','post'], '/stock/pending/in', [StockorderController::class,'getStockIn']);
 Route::match(['get','post'], '/stock/pending/out', [StockorderController::class,'getStockOut']);
