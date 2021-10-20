@@ -89,7 +89,7 @@ class StockController extends Controller
         ->with('contact','cashin','credit')
         ->orderBy('date','DESC')->get();
         foreach ($data as $key => $value) {
-            $value->date = Carbon::create($value->date)->diffForHumans();
+            $value->payment_due = Carbon::create($value->payment_due)->diffForHumans();
         }
 
         $response = [
