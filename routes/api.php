@@ -162,16 +162,19 @@ Route::get('/stock/transaction/detail/{id}',[StockController::class,'getStockTra
 Route::match(['get','post'], '/stock/in', [StockController::class,'getStockIn']);
 Route::match(['get','post'], '/stock/out', [StockController::class,'getStockOut']);
 
-Route::match(['get','post'], '/stock/out/debt', [StockController::class,'getStockOutDebt']);
-Route::match(['get','post'], '/stock/out/debt/due', [StockController::class,'getStockOutDebtDue']);
 
 Route::post('/stock/in/create',[StockController::class,'createStockIn']);
 Route::post('/stock/out/create',[StockController::class,'createStockOut']);
 
-Route::put('/stock/out/paid/{id}',[StockController::class,'paidStockOut']);
-Route::put('/stock/in/paid/{id}',[StockController::class,'paidStockIn']);
-
 Route::delete('/stock/transaction/delete/{id}',[StockController::class,'deleteStockTransaction']);
+
+// STOCK DEBT******
+
+Route::match(['get','post'], '/stock/out/debt', [StockDebtController::class,'getStockOutDebt']);
+Route::match(['get','post'], '/stock/out/debt/due', [StockDebtController::class,'getStockOutDebtDue']);
+
+Route::put('/stock/out/paid/{id}',[StockDebtController::class,'paidStockOut']);
+Route::put('/stock/in/paid/{id}',[StockDebtController::class,'paidStockIn']);
 
 // STOCK Non Money******
 
