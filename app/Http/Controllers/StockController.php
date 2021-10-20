@@ -641,7 +641,7 @@ class StockController extends Controller
 
            $akun = Akun::where('name','=','Pendapatan Penjualan')->first();
            $akun = Akun::find($akun->id);
-           $akun->total = $akun->total - $stock->total;
+           $akun->total = $akun->total - $stock->paid;
            $akun->save();
 
            $akun = Akun::where('name','=','Harga Pokok Penjualan')->first();
