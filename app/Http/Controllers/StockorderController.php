@@ -21,7 +21,12 @@ class StockorderController extends Controller
         $data = $data->with('contact','cashout')->orderBy('date','ASC')->get();
 
         foreach ($data as $key => $value) {
-            $value->date = Carbon::create($value->date)->diffForHumans();
+            $day = date('Y-m-d',time());
+            if ($value->date<$day) {
+                $value->date = Carbon::create($value->date)->diffForHumans(null,true)." lagi";
+            }else {
+                $value->date = Carbon::create($value->date)->diffForHumans(null,true)." yang lalu";
+            }
         }
 
         $response = [
