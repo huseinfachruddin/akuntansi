@@ -214,7 +214,7 @@ class StockController extends Controller
             $request->cashout_id = Akun::where('iscash')->first()->id;
         }
         if (!empty($request->id)) {
-            $this->pendingToIn($request->id);
+            $this->pendingToIn($request);
             $stock = Stocktransaction::find($request->id);
             $paid = $stock->paid;
         }
