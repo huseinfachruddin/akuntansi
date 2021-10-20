@@ -29,7 +29,8 @@ class StockController extends Controller
                     $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
                 });
-        })->withSum(['substocktransaction'=>function($sub) use($request){
+        });
+        $data= $data->withSum(['substocktransaction'=>function($sub) use($request){
             $sub->whereHas('stocktransaction',function($stock) use($request){
                 $stock->whereNotNull('cashin_id')->whereNull('pending');
                 $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
@@ -41,7 +42,9 @@ class StockController extends Controller
                     $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
             });
-        }],'qty')->withSum(['substocktransaction'=>function($sub) use($request){
+        }],'qty');
+        
+        $data =$data->withSum(['substocktransaction'=>function($sub) use($request){
             $sub->whereHas('stocktransaction',function($stock) use($request){
                 $stock->whereNotNull('cashin_id')->whereNull('pending');
                 $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
