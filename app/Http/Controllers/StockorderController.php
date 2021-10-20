@@ -77,6 +77,7 @@ class StockorderController extends Controller
             'paid' =>'required',
             'payment_due' =>'required',
             'date' =>'required',
+            'discount' =>'nullable',
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
@@ -124,6 +125,7 @@ class StockorderController extends Controller
 
         $stock = Stocktransaction::find($stock->id);
         $stock->total = $total;
+        $stock->discount = $request->discount;
         $stock->save();
 
         $response = [
