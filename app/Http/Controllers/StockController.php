@@ -258,6 +258,7 @@ class StockController extends Controller
             'discount' =>'nullable',
 
             'product_id.*' =>'required',
+            'selling_price.*' =>'required',
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
         ]); 
@@ -316,6 +317,7 @@ class StockController extends Controller
             $sub = new Substocktransaction;
             $sub->stocktransaction_id = $stock->id;
             $sub->product_id = $request->product_id[$key];
+            $sub->selling_price = $request->selling_price[$key];
             $sub->qty = $request->qty[$key];
             $sub->total = $request->total[$key];
             $sub->save();

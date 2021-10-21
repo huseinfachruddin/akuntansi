@@ -37,7 +37,7 @@ class CashController extends Controller
     public function getCashIn(Request $request){
 
         
-        $data = Cashtransaction::whereNotNull('cashin');
+        $data = Cashtransaction::whereNotNull('cashin')->whereNull('from');
 
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
@@ -60,7 +60,7 @@ class CashController extends Controller
 
     public function getCashOut(Request $request){
 
-        $data = Cashtransaction::whereNotNull('cashout');
+        $data = Cashtransaction::whereNotNull('cashout')->whereNull('to');
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
             $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -80,7 +80,7 @@ class CashController extends Controller
     }
 
     public function getCashTransfer(Request $request){
-        $data = Cashtransaction::whereNotNull('transfer');
+        $data = Cashtransaction::whereNotNull('transfer')->whereNotNull('from')->whereNotNull('to');
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
             $request->end_date = date('Y-m-d',strtotime($request->end_date));

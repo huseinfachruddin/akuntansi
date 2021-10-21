@@ -28,6 +28,8 @@ use App\Http\Controllers\StockDebtController;
 use App\Http\Controllers\StockNonMoneyController;
 use App\Http\Controllers\StockorderController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\ReportController;
+
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +73,8 @@ Route::get('/test',function(Request $request){
     $data =Akun::where('iscashin',true)->first()->id;
     return $data;
 });
+
+Route::get('/report/akun/cash',[ReportController::class,'CashReport']);
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);
 Route::get('/report',[AkunController::class,'Report']);

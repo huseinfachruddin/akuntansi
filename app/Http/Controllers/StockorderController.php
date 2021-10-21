@@ -173,9 +173,10 @@ class StockorderController extends Controller
 
             'payment_due' =>'nullable',
             'product_id.*'=>'required',
+            'selling_price.*'=>'required',
             'qty.*'  =>'required',
             'total.*'  =>'required|numeric',
-        ]); 
+        ]);
 
         if (!empty($request->paid) || $request->paid>0) {
             $request->validate([
@@ -213,6 +214,7 @@ class StockorderController extends Controller
             $sub = new Substocktransaction;
             $sub->stocktransaction_id = $stock->id;
             $sub->product_id = $request->product_id[$key];
+            $sub->selling_price = $request->selling_price[$key];
             $sub->qty = $request->qty[$key];
             $sub->total = $request->total[$key];
             $sub->save();
