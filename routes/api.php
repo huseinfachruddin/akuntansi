@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Akun;
 use App\Models\Contact;
+use App\Models\Credit;
 use App\Models\Product;
 use App\Models\Substocktransaction;
 use App\Models\Stocktransaction;
@@ -62,6 +63,7 @@ Route::get('/clean',function(Request $request){
     $akun = Product::whereNotNull('name')->where('category','<>','service')->update(array('qty' => 0));
     $akun = Stocktransaction::whereNotNull('id')->delete();
     $akun = Cashtransaction::whereNotNull('id')->delete();
+    $akun = Credit::whereNotNull('id')->delete();
     $akun = Akun::whereNotNull('name')->update(array('total' => 0));
     
     return $akun;
