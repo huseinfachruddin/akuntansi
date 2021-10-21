@@ -23,7 +23,7 @@ class StockDebtController extends Controller
         ->orderBy('payment_due','DESC')->get();
         foreach ($data as $key => $value) {
             $day = date('Y-m-d',time());
-            if ($value->payment_due<$day) {
+            if ($value->payment_due>$day) {
                 $value->payment_due = Carbon::create($value->payment_due)->diffForHumans(null,true)." lagi";
             }else {
                 $value->payment_due = Carbon::create($value->payment_due)->diffForHumans(null,true)." yang lalu";
