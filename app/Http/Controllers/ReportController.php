@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     public function CashReport(Request $request){
-        $data = Akun::withCount(['stocktransactioncashin as sum_cashin' =>function($stock){
-            $stock->whereNull('pending')->whereNull('nonmoney')->select(DB::raw("SUM(paid)"));
-        },'stocktransactioncashout as sum_cashout' =>function($stock){
-            $stock->whereNull('pending')->whereNull('nonmoney')->select(DB::raw("SUM(paid)"));
+        $data = Akun::withCount(['creditin as sum_cashin' =>function($stock){
+            $stock->select(DB::raw("SUM(total)"));
+        },'creditout as sum_cashout' =>function($stock){
+            $stock->select(DB::raw("SUM(total)"));
         },'cashtransactionfrom as sum_cashfrom' =>function($cash){
             $cash->select(DB::raw("SUM(cashout+transfer)"));
         },'cashtransactionto as sum_cashto' =>function($cash){

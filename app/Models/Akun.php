@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Cashtransaction;
 use App\Models\Subcashtransaction;
 use App\Models\Stocktransaction;
+use App\Models\Credit;
 use Illuminate\Support\Facades\DB;
 
 class Akun extends Model
@@ -36,6 +37,14 @@ class Akun extends Model
 
     public function perent(){
         return $this->belongsTo(Self::class,'perent_id');
+    }
+
+    public function creditin(){
+        return $this->hasMany(Credit::class,'cashin_id');
+    }
+
+    public function creditout(){
+        return $this->hasMany(Credit::class,'cashout_id');
     }
 
     public function children(){
