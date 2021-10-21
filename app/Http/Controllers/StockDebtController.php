@@ -20,7 +20,7 @@ class StockDebtController extends Controller
         ->whereNull('pending')
         ->whereRaw('total > paid')
         ->with('contact','cashin','credit')
-        ->orderBy('payment_due','ASC')->get();
+        ->orderBy('payment_due','DESC')->get();
         foreach ($data as $key => $value) {
             $day = date('Y-m-d',time());
             if ($value->payment_due<$day) {
