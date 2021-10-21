@@ -155,6 +155,8 @@ class CashController extends Controller
         
         $cash = Cashtransaction::find($cash->id);
         $cash->cashin = $cash->cashin + $total;
+        $cash->cashout = 0 ; 
+        $cash->transfer = 0 ; 
         $cash->save();
         
         $akun = Akun::find($request->to);
@@ -213,6 +215,8 @@ class CashController extends Controller
         
         $cash = Cashtransaction::find($cash->id);
         $cash->cashout = $cash->cashout + $total;
+        $cash->cashin = 0 ; 
+        $cash->transfer = 0 ; 
         $cash->save();
         
         $akun = Akun::find($request->from);
@@ -246,6 +250,8 @@ class CashController extends Controller
         $cash->desc = $request->desc;
         $cash->date = date("Y-m-d", strtotime($request->date));
         $cash->transfer = $request->total;
+        $cash->cashout = 0 ; 
+        $cash->cashin = 0 ; 
         $cash->save();
         
         $akun = Akun::find($request->from);
