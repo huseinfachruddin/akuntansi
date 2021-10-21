@@ -41,4 +41,13 @@ class Stocktransaction extends Model
     public function getUpdatedAtAttribute(){
             return \Carbon\Carbon::parse($this->attributes['updated_at'])->format('Y-d-m H:i');
         }
+
+    public static function boot() {
+            parent::boot();
+    
+            static::deleting(function($credit) { // before delete() method call this
+                 $credit->credit()->delete();
+                 // do the rest of the cleanup...
+            });
+        }
 }
