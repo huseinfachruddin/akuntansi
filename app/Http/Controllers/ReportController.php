@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     public function CashReport(Request $request){
-        $data = Akun::withCount(['creditin as sum_stockin' =>function($stock){
+        $cash = Akun::withCount(['creditin as sum_stockin' =>function($stock){
             $stock->select(DB::raw("SUM(total)"));
         },'creditout as sum_stockout' =>function($stock){
             $stock->select(DB::raw("SUM(total)"));
@@ -25,13 +25,23 @@ class ReportController extends Controller
         },'cashtransactionto as sum_cashto' =>function($cash){
             $cash->select(DB::raw("SUM(cashin+transfer)"));
         }])->where('iscash',true)->get();
-
-        foreach ($data as $key => $value) {
+    
+        foreach ($cash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
+        
+        $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub){
+            $sub->select(DB::raw("SUM(total)"));
+        }])->where('iscashin',true)->get();
+
+        foreach ($cashin as $key => $value) {
+            $value->total = $value->sum_subcash;
+        }
+        
         $response = [
             'success'=>true,
-            'stocktransaction'=>$data,
+            'cash'=>$cash,
+            'cashin'=>$cashin
         ];
 
         return response($response,200);
