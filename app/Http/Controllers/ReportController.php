@@ -77,7 +77,7 @@ class ReportController extends Controller
             $value->total = $value->sum_subcash;
         }
 
-        $cashout = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub){
+        $cashout = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
