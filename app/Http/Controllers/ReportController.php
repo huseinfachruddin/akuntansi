@@ -26,7 +26,7 @@ class ReportController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
-                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
+                $stock = $stock->whereNotNull('cashin_id')->where('pending','<>',false);
             })->select(DB::raw("SUM(total)"));
         },
         // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
@@ -39,7 +39,7 @@ class ReportController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
-                $stock = $stock->whereNotNull('cashout_id')->whereNull('pending');
+                $stock = $stock->whereNotNull('cashout_id')->where('pending','<>',false);
             })->select(DB::raw("SUM(total)"));    
         },
         // CASH FROM = menghitung cash sebagai akun
