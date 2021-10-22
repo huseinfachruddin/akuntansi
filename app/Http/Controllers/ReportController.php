@@ -33,15 +33,25 @@ class ReportController extends Controller
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub){
             $sub->select(DB::raw("SUM(total)"));
         }])->where('iscashin',true)->get();
-
+        
         foreach ($cashin as $key => $value) {
             $value->total = $value->sum_subcash;
         }
-        
+
+        $cashout = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub){
+            $sub->select(DB::raw("SUM(total)"));
+        }])->where('iscashout',true)->get();
+
+        foreach ($cashout as $key => $value) {
+            $value->total = $value->sum_subcash;
+        }
+
         $response = [
             'success'=>true,
             'cash'=>$cash,
-            'cashin'=>$cashin
+            'cashin'=>$cashin,
+            'cashout'=>$cashout
+
         ];
 
         return response($response,200);
