@@ -142,7 +142,7 @@ class ReportController extends Controller
             $stock = $stock->where('nonmoney','in');
         })->sum('total');
 
-        $potonganbeli = Substocktransaction::whereNotNull('cashout_id');
+        $potonganbeli = Stocktransaction::whereNotNull('cashout_id');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
