@@ -18,7 +18,7 @@ class StockDebtController extends Controller
 
         $data = Stocktransaction::whereNotNull('cashin_id')
         ->whereNull('pending')
-        ->whereRaw('total > paid')
+        ->whereRaw('paid < total')
         ->with('contact','cashin','credit')
         ->orderBy('payment_due','ASC')->get();
         foreach ($data as $key => $value) {
