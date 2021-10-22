@@ -126,7 +126,7 @@ class ReportController extends Controller
             }
         }
 
-        $data = akunRekursif($data,$cash);
+        akunRekursif($data,$cash);
 
 
         $response = [
