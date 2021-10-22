@@ -98,10 +98,11 @@ class ReportController extends Controller
             });
         }])->where('iscashout',true)->get();
 
-        $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
-        foreach ($data as $key => $value) {
+        foreach ($cashout as $key => $value) {
             $value->total = $value->sum_subcash;
         }
+
+        $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
                 if ($valuedata->children==[]) {
@@ -156,14 +157,39 @@ class ReportController extends Controller
         })->whereHas('stocktransaction',function($stock){
             $stock->whereNull('pending');
         })->sum('total');
-        
-        $akun = Akun::where('name','=','Pendapatan Jasa')->first();
-        $akun->total = 0;
 
+        $akun = Akun::where('name','=','Pendapatan Jasa')->first();
+        $akun->total = $jasa;
+
+        $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
+        function akunRekursif($data,$total){
+            foreach ($data as $key => $valuedata) {
+                if ($valuedata->children==[]) {
+                    foreach ($total as $key => $valuetotal) {
+                        if ($valuedata->name==$valuetotal->name) {
+                            $valuedata->total = $valuetotal->total;
+                        }else{
+                            $valuedata->total = 0;
+                        }
+                    }
+                    akunRekursif($valuedata->children,$total);
+                }else{
+                    foreach ($total as $key => $valuetotal) {
+                        if ($valuedata->name==$valuetotal->name) {
+                            $valuedata->total = $valuetotal->total;
+                        }else{
+                            $valuedata->total = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        akunRekursif($data,$akun);
 
         $response = [
             'success'=>true,
-            'report'=>$akun   
+            'report'=>$data  
         ];
 
         return response($response,200);
