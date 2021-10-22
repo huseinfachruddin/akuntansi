@@ -109,7 +109,7 @@ class ReportController extends Controller
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
                             $valuedata->total = $valuetotal->total;
-                            dd($valuedata->total);
+                            break;
                         }else{
                             $valuedata->total = 0;
                         }
@@ -119,6 +119,7 @@ class ReportController extends Controller
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
                             $valuedata->total = $valuetotal->total;
+                            break;
                         }else{
                             $valuedata->total = 0;
                         }
