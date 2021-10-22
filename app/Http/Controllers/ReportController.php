@@ -150,11 +150,18 @@ class ReportController extends Controller
                 }
             });
         }])->where('iscashout',true)->get();
- 
+
+        $jasa = Substocktransaction::whereHas('product',function($product){
+            $product->where('category','service');
+        })->whereHas('stocktransaction',function($stock){
+            $stock->whereNull('pending');
+        })->sum('total');
+
+        
+
         $response = [
             'success'=>true,
-            'cashout'=>$biaya   
-
+            'report'=>$jasa   
         ];
 
         return response($response,200);
