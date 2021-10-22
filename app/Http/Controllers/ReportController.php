@@ -127,8 +127,7 @@ class ReportController extends Controller
         }
 
         akunRekursif($data,$cash);
-        akunRekursif($data,$cashin);
-        akunRekursif($data,$cashout);
+
 
         $response = [
             'success'=>true,
