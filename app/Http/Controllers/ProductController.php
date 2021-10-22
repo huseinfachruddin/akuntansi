@@ -159,9 +159,9 @@ class ProductController extends Controller
         $request->validate([
             'name' =>'required',
             'unit'  =>'required',
-            'purchase_price'  =>'required',
+            'purchase_price'  =>'nullable',
             'selling_price'  =>'required',
-            'producttype'  =>'required',
+            'producttype'  =>'nullable',
             'category'  =>'required',
         ]);
 
