@@ -61,13 +61,13 @@ class ReportController extends Controller
         }
         
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
-            $sub->select(DB::raw("SUM(total)"))->whereHas('stocktransaction',function($stock) use($request){
+            $sub->select(DB::raw("SUM(total)"))->whereHas('stocktransaction',function($cash) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
-                    $stock = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+                    $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+                    $cash = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
             });
             
@@ -78,13 +78,13 @@ class ReportController extends Controller
         }
 
         $cashout = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub){
-            $sub->select(DB::raw("SUM(total)"))->whereHas('stocktransaction',function($stock) use($request){
+            $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
-                    $stock = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+                    $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+                    $cash = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
             });
         }])->where('iscashout',true)->get();
