@@ -113,7 +113,7 @@ class ReportController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->whereNull('pending');
+            $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
         })->sum('total');
 
         $penjualan = Substocktransaction::whereHas('product',function($product){
@@ -126,7 +126,7 @@ class ReportController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->whereNull('pending');
+            $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
         })->sum('total');
 
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
