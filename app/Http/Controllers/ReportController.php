@@ -185,7 +185,7 @@ class ReportController extends Controller
             }
         }
 
-        akunRekursif($data,$akun);
+        akunRekursif($data,[$akun]);
 
         $response = [
             'success'=>true,
