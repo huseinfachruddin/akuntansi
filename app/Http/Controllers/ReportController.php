@@ -123,7 +123,7 @@ class ReportController extends Controller
             }
         }
         $akun=[];
-        array_push($akun,$cash,$cashin,$cashout);
+        array_push($akun,$cash+$cashin+$cashout);
         // akunRekursif($data,$akun);
 
 
