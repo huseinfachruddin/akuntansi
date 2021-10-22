@@ -124,20 +124,21 @@ class ReportController extends Controller
                 }
             }
         }
+
         akunRekursif($data,$cash);
+        akunRekursif($data,$cashin);
+        akunRekursif($data,$cashout);
+
         $response = [
             'success'=>true,
-            'cash'=>$data,
-            'cashin'=>$cashin,
-            'cashout'=>$cashout
-
+            'report'=>$data,
         ];
 
         return response($response,200);
     }
 
     public function ReportLaba(Request $request){
-        
+
         $biaya = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
