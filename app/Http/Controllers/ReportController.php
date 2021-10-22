@@ -106,6 +106,7 @@ class ReportController extends Controller
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
                 if (!empty($valuedata->children)) {
+                    akunRekursif($valuedata,$total);
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
                             $valuedata->total = $valuetotal->total;
@@ -113,7 +114,6 @@ class ReportController extends Controller
                             $valuedata->total = 0;
                         }
                     }
-                    akunRekursif($valuedata->children,$total);
                 }else{
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
@@ -127,6 +127,7 @@ class ReportController extends Controller
         }
 
         akunRekursif($data,$cash);
+
 
         $response = [
             'success'=>true,
