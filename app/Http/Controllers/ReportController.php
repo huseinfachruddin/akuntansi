@@ -159,7 +159,7 @@ class ReportController extends Controller
         })->sum('total');
 
         $akun = Akun::where('name','=','Pendapatan Jasa')->first();
-        $akun->total = $jasa;
+        $akun->total = 0;
 
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
