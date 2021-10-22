@@ -168,11 +168,12 @@ class ProductController extends Controller
         $data = Product::find($request->id);
         $data->name = $request->name;
         $data->unit = $request->unit;
-        $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;
-        $data->producttype = $request->producttype;
         if ($request->category=='service') {
             $data->qty = 100;
+        }else {
+            $data->producttype = $request->producttype;
+            $data->purchase_price = $request->purchase_price;
         }
         $data->category = $request->category;
 
