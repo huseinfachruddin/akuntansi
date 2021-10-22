@@ -16,13 +16,43 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     public function CashReport(Request $request){
-        $cash = Akun::withCount(['creditin as sum_stockin' =>function($stock){
-            $stock->select(DB::raw("SUM(total)"));
-        },'creditout as sum_stockout' =>function($stock){
-            $stock->select(DB::raw("SUM(total)"));
-        },'cashtransactionfrom as sum_cashfrom' =>function($cash){
+        $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
+            $credit->whereHas('stocktransaction',function($stock) use($request){
+                if (!empty($request->start_date) && !empty($request->end_date)) {
+                    $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+                }else{
+                    $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+                }
+            })->select(DB::raw("SUM(total)"));
+        },'creditout as sum_stockout' =>function($credit) use($request){
+            $credit->whereHas('stocktransaction',function($stock) use($request){
+                if (!empty($request->start_date) && !empty($request->end_date)) {
+                    $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+                }else{
+                    $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+                }
+            })->select(DB::raw("SUM(total)"));    
+        },'cashtransactionfrom as sum_cashfrom' =>function($cash) use($request){
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $cash = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
             $cash->select(DB::raw("SUM(cashout+transfer)"));
-        },'cashtransactionto as sum_cashto' =>function($cash){
+        },'cashtransactionto as sum_cashto' =>function($cash) use($request){
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $cash = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
             $cash->select(DB::raw("SUM(cashin+transfer)"));
         }])->where('iscash',true)->get();
     

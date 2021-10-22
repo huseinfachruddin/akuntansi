@@ -80,7 +80,7 @@ Route::get('/test',function(Request $request){
     return $data;
 });
 
-Route::get('/report/akun/cash',[ReportController::class,'CashReport']);
+Route::match(['get','post'],'/report/akun/cash', [ReportController::class,'CashReport']);
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);
 Route::get('/report',[AkunController::class,'Report']);
