@@ -116,9 +116,24 @@ class ReportController extends Controller
             $stock = $stock->whereNull('pending');
         })->sum('total');
 
+        $penjualan = Substocktransaction::whereHas('product',function($product){
+            $product->where('category','<>','service');
+        })->whereHas('stocktransaction',function($stock) use($request){
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
+            $stock = $stock->whereNull('pending');
+        })->sum('total');
+
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
-        
+
+        $akunPenjualan = Akun::where('name','=','Pendapatan Penjualan')->first();
+        $akunPenjualan->total = $penjualan;
         
         
         //TOTAL KABEH
