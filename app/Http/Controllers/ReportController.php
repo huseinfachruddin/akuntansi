@@ -127,7 +127,7 @@ class ReportController extends Controller
 
         $response = [
             'success'=>true,
-            'report'=>$cash,
+            'report'=>$data,
         ];
 
         return response($response,200);
