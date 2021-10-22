@@ -268,7 +268,7 @@ class StockorderController extends Controller
 
            $akun = Akun::where('name','=','Hutang Pesanan Penjualan')->first();
            $akun = Akun::find($akun->id);
-           $akun->total = $akun->total - $stock->paid;
+           $akun->total = ($akun->total-$akun->discount) - $stock->paid;
            $akun->save();
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
@@ -281,7 +281,7 @@ class StockorderController extends Controller
 
             $akun = Akun::where('name','=','Uang Muka Pesanan Pembelian')->first();
             $akun = Akun::find($akun->id);
-            $akun->total = $akun->total -  $stock->paid;
+            $akun->total = ($akun->total-$akun->discount) -  $stock->paid;
             $akun->save();
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
