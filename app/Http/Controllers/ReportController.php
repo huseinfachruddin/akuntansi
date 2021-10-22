@@ -190,7 +190,7 @@ class ReportController extends Controller
         $akunHpp = Akun::where('name','=','Harga Pokok Penjualan')->first();
         $akunHpp->total = $hpp;
 
-        $akunPotonganJual = Akun::where('name','=','Harga Pokok Penjualan')->first();
+        $akunPotonganJual = Akun::where('name','=','Potongan Penjualan')->first();
         $akunPotonganJual->total = $potonganjual;
         
         //TOTAL KABEH
