@@ -157,7 +157,7 @@ class ReportController extends Controller
             $stock->whereNull('pending');
         })->sum('total');
         
-        $akun = Akun::where('name','=','Pendapatan Jasa')->first();
+        $akun = Akun::where('name','=','Pendapatan Jasa')->get();
         $akun->total = $jasa;
 
 
