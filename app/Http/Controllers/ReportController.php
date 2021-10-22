@@ -142,6 +142,20 @@ class ReportController extends Controller
             $stock = $stock->where('nonmoney','in');
         })->sum('total');
 
+        $potonganbeli = Substocktransaction::whereHas('product',function($product){
+            $product->where('category','<>','service');
+        })->whereHas('stocktransaction',function($stock) use($request){
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
+            $stock = $stock->whereNotNull('cashout_id');
+        })->sum('discount');
+
+
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
 
@@ -150,7 +164,9 @@ class ReportController extends Controller
 
         $akunBarang = Akun::where('name','=','Pendapatan Barang')->first();
         $akunBarang->total = $barang;
-        
+
+        $akunPotonganBeli = Akun::where('name','=','Potongan Pembelian')->first();
+        $akunPotonganBeli->total = $potonganbeli;
         
         //TOTAL KABEH
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
@@ -190,6 +206,7 @@ class ReportController extends Controller
         array_push($akun,$akunJasa);
         array_push($akun,$akunPenjualan);
         array_push($akun,$akunBarang);
+        array_push($akun,$akunPotonganBeli);
 
         akunRekursif($data,$akun);
 
