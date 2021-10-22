@@ -125,9 +125,9 @@ class ProductController extends Controller
         $request->validate([
             'name' =>'required',
             'unit'  =>'required',
-            'purchase_price'  =>'required',
+            'purchase_price'  =>'nullable',
             'selling_price'  =>'required',
-            'producttype'  =>'required',
+            'producttype'  =>'nullable',
             'category'  =>'required',
         ]);
 
@@ -136,11 +136,12 @@ class ProductController extends Controller
         $data->name = $request->name;
         $data->qty = 0;
         $data->unit = $request->unit;
-        $data->purchase_price = $request->purchase_price;
         $data->selling_price = $request->selling_price;
-        $data->producttype = $request->producttype;
         if ($request->category=='service') {
             $data->qty = 100;
+        }else {
+            $data->producttype = $request->producttype;
+            $data->purchase_price = $request->purchase_price;
         }
         $data->category = $request->category;
 

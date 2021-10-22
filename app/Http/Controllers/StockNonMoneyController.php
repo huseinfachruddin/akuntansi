@@ -173,9 +173,11 @@ class StockNonMoneyController extends Controller
             $product->save();
             
             $qty = $sub->qty;
-            $subin = Substocktransaction::where('left','>',0)->where('product_id','=',$sub->product_id)->get();
+            $subin = Substocktransaction::where('left','>',0)
+            ->whereHas('stocktransaction',function($query){
+                $query->whereNull('pending');
+            })->where('product_id','=',$sub->product_id)->get();
             foreach ($subin as $key => $value) {
-
                 if ($qty <= $value->left) {
 
                     $set = $value->left-$qty;
@@ -198,8 +200,7 @@ class StockNonMoneyController extends Controller
                 
                 $lasthb=$value->purchase_price;
             }
-            $total = $total + $sub->total;
-            
+            $total = $total + $sub->total;     
         }
               
         if ($qty > 0) {
