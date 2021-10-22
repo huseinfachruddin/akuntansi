@@ -132,7 +132,7 @@ class ReportController extends Controller
         foreach ($cashout as $key => $value) {
             array_push($akun,$value);
         }
-        // akunRekursif($data,$akun);
+        akunRekursif($data,$akun);
 
 
         $response = [
