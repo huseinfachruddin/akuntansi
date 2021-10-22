@@ -106,15 +106,15 @@ class ReportController extends Controller
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
                 if (!empty($valuedata->children)) {
-                    dd($valuedata);
-                    akunRekursif($valuedata->children,$total);
                     foreach ($total as $key => $valuetotal) {
+                        dd($valuetotal);
                         if ($valuedata->name==$valuetotal->name) {
                             $valuedata->total = $valuetotal->total;
                         }else{
                             $valuedata->total = 0;
                         }
                     }
+                    akunRekursif($valuedata->children,$total);
                 }else{
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
