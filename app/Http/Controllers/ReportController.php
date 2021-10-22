@@ -122,13 +122,13 @@ class ReportController extends Controller
                 }
             }
         }
-
-        akunRekursif($data,[$cash,$cashin,$cashout]);
+        $akun=array_push($cash,$cashin,$cashout);
+        akunRekursif($data,$akun);
 
 
         $response = [
             'success'=>true,
-            'report'=>[$cash,$cashin,$cashout],
+            'report'=>$akun,
         ];
 
         return response($response,200);
