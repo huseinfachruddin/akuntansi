@@ -102,6 +102,26 @@ class ReportController extends Controller
             $value->total = $value->sum_subcash;
         }
 
+        // PENDAPATAN
+        $jasa = Substocktransaction::whereHas('product',function($product){
+            $product->where('category','service');
+        })->whereHas('stocktransaction',function($stock) use($request){
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
+            $stock = $stock->whereNull('pending');
+        })->sum('total');
+
+        $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
+        $akunJasa->total = $jasa;
+        
+        
+        
+        //TOTAL KABEH
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
@@ -122,16 +142,22 @@ class ReportController extends Controller
                 }
             }
         }
+        // masukin
         $akun=[];
         foreach ($cash as $key => $value) {
             array_push($akun,$value);
         }
+
         foreach ($cashin as $key => $value) {
             array_push($akun,$value);
         }
+
         foreach ($cashout as $key => $value) {
             array_push($akun,$value);
         }
+        
+        array_push($akun,$akunJasa);
+
         akunRekursif($data,$akun);
 
 
@@ -143,61 +169,61 @@ class ReportController extends Controller
         return response($response,200);
     }
 
-    public function ReportLaba(Request $request){
+    // public function ReportLaba(Request $request){
 
-        $biaya = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
-            $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
-                if (!empty($request->start_date) && !empty($request->end_date)) {
-                    $request->start_date = date('Y-m-d',strtotime($request->start_date));
-                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
-                    $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
-                }else{
-                    $cash = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
-                }
-            });
-        }])->where('iscashout',true)->get();
+    //     $biaya = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
+    //         $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
+    //             if (!empty($request->start_date) && !empty($request->end_date)) {
+    //                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
+    //                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
+    //                 $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+    //             }else{
+    //                 $cash = $cash->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+    //             }
+    //         });
+    //     }])->where('iscashout',true)->get();
 
-        $jasa = Substocktransaction::whereHas('product',function($product){
-            $product->where('category','service');
-        })->whereHas('stocktransaction',function($stock){
-            $stock->whereNull('pending');
-        })->sum('total');
+    //     $jasa = Substocktransaction::whereHas('product',function($product){
+    //         $product->where('category','service');
+    //     })->whereHas('stocktransaction',function($stock){
+    //         $stock->whereNull('pending');
+    //     })->sum('total');
 
-        $akun = Akun::where('name','=','Pendapatan Jasa')->with(str_repeat('children.',10))->first();
-        $akun->total = 0;
+    //     $akun = Akun::where('name','=','Pendapatan Jasa')->with(str_repeat('children.',10))->first();
+    //     $akun->total = 0;
 
-        $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
-        function akunRekursif($data,$total){
-            foreach ($data as $key => $valuedata) {
-                if ($valuedata->children!=[]) {
-                    foreach ($total as $key => $valuetotal) {
-                        if ($valuedata->name==$valuetotal->name) {
-                            $valuedata->total = $valuetotal->total;
-                        }else{
-                            $valuedata->total = 0;
-                        }
-                    }
-                    akunRekursif($valuedata->children,$total);
-                }else{
-                    foreach ($total as $key => $valuetotal) {
-                        if ($valuedata->name==$valuetotal->name) {
-                            $valuedata->total = $valuetotal->total;
-                        }else{
-                            $valuedata->total = 0;
-                        }
-                    }
-                }
-            }
-        }
+    //     $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
+    //     function akunRekursif($data,$total){
+    //         foreach ($data as $key => $valuedata) {
+    //             if ($valuedata->children!=[]) {
+    //                 foreach ($total as $key => $valuetotal) {
+    //                     if ($valuedata->name==$valuetotal->name) {
+    //                         $valuedata->total = $valuetotal->total;
+    //                     }else{
+    //                         $valuedata->total = 0;
+    //                     }
+    //                 }
+    //                 akunRekursif($valuedata->children,$total);
+    //             }else{
+    //                 foreach ($total as $key => $valuetotal) {
+    //                     if ($valuedata->name==$valuetotal->name) {
+    //                         $valuedata->total = $valuetotal->total;
+    //                     }else{
+    //                         $valuedata->total = 0;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        akunRekursif($data,[$akun]);
+    //     akunRekursif($data,[$akun]);
 
-        $response = [
-            'success'=>true,
-            'report'=> $data
-        ];
+    //     $response = [
+    //         'success'=>true,
+    //         'report'=> $data
+    //     ];
 
-        return response($response,200);
-    }
+    //     return response($response,200);
+    // }
 
 }
