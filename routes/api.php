@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Substocktransaction;
 use App\Models\Stocktransaction;
 use App\Models\Cashtransaction;
+use App\Models\Subcashtransaction;
 
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
@@ -62,11 +63,9 @@ Route::get('/setup/awal',function(Request $request){
 Route::get('/clean',function(Request $request){
     $akun = Product::whereNotNull('name')->where('category','<>','service')->update(array('qty' => 0));
     $akun = Stocktransaction::with('subcashtransaction')->whereNotNull('id');
-    $akun->subcashtransaction()->delete();
-    $akun->delete();
-    $akun = Cashtransaction::with('substocktransaction')->whereNotNull('id');
-    $akun->substocktransaction()->delete();
-    $akun->delete();
+    $akun = Substocktransaction::whereNotNull('id')->delete();
+    $akun = Cashtransaction::whereNotNull('id')->delete();
+    $akun = Subcashtransaction::whereNotNull('id')->delete();
     $akun = Credit::whereNotNull('id')->delete();
     $akun = Akun::whereNotNull('name')->update(array('total' => 0));
     
