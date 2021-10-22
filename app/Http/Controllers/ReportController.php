@@ -158,7 +158,7 @@ class ReportController extends Controller
         })->sum('total');
         
         $akun = Akun::where('name','=','Pendapatan Jasa')->first();
-        $akun->total = $jasa;
+        $akun->total = 0;
 
 
         $response = [
