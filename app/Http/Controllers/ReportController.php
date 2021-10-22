@@ -156,12 +156,14 @@ class ReportController extends Controller
         })->whereHas('stocktransaction',function($stock){
             $stock->whereNull('pending');
         })->sum('total');
-
         
+        $akun = Akun::where('name','=','Pendapatan Jasa')->first();
+        $akun->total = $jasa;
+
 
         $response = [
             'success'=>true,
-            'report'=>$jasa   
+            'report'=>$akun   
         ];
 
         return response($response,200);
