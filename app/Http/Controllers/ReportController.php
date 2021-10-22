@@ -172,6 +172,7 @@ class ReportController extends Controller
         }
         
         array_push($akun,$akunJasa);
+        array_push($akun,$akunPenjualan);
 
         akunRekursif($data,$akun);
 
