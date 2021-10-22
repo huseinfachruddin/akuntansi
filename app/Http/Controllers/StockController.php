@@ -565,7 +565,7 @@ class StockController extends Controller
 
             $akun = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
             $akun = Akun::find($akun->id);
-            $akun->total = $akun->total - (($akun->total - $stock->discount) + $stock->paid);
+            $akun->total = $akun->total - (($totalhpp - $stock->discount) - $stock->paid);
             $akun->save();
 
            Substocktransaction::where('stocktransaction_id','=',$stock->id)->delete();
