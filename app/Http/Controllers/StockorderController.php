@@ -155,7 +155,7 @@ class StockorderController extends Controller
         $credit = new Credit;
         $credit->stocktransaction_id = $stock->id;
         $credit->cashout_id = $request->cashout_id;
-        $credit->total = $request->total;
+        $credit->total = $stock->paid;
         $credit->save();
 
         $response = [
@@ -247,7 +247,7 @@ class StockorderController extends Controller
         $credit = new Credit;
         $credit->stocktransaction_id = $stock->id;
         $credit->cashin_id = $request->cashin_id;
-        $credit->total = $request->total;
+        $credit->total = $stock->paid;
         $credit->save();
         
         $response = [
