@@ -25,6 +25,7 @@ class ReportController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
+                $stock = $stock->where('pending','<>',0);
             })->select(DB::raw("SUM(total)"));
         },'creditout as sum_stockout' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
@@ -35,6 +36,7 @@ class ReportController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
                 }
+                $stock = $stock->where('pending','<>',0);
             })->select(DB::raw("SUM(total)"));    
         },'cashtransactionfrom as sum_cashfrom' =>function($cash) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {

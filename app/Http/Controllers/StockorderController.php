@@ -152,6 +152,12 @@ class StockorderController extends Controller
         $stock->discount = $request->discount;
         $stock->save();
 
+        $credit = new Credit;
+        $credit->stocktransaction_id = $stock->id;
+        $credit->cashout_id = $request->cashout_id;
+        $credit->total = $request->total;
+        $credit->save();
+
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,
@@ -238,6 +244,12 @@ class StockorderController extends Controller
         $akun->total = $akun->total + $stock->paid;
         $akun->save();
 
+        $credit = new Credit;
+        $credit->stocktransaction_id = $stock->id;
+        $credit->cashin_id = $request->cashin_id;
+        $credit->total = $request->total;
+        $credit->save();
+        
         $response = [
             'success'=>true,
             'stockktransaction'=>$stock,
