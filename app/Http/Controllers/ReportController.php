@@ -189,7 +189,7 @@ class ReportController extends Controller
 
         $response = [
             'success'=>true,
-            'report'=>[$akun]  
+            'report'=>$biaya  
         ];
 
         return response($response,200);
