@@ -105,6 +105,7 @@ class ReportController extends Controller
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
+                $valuedata->total = 0;
                 if (!empty($valuedata->children)) {
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
