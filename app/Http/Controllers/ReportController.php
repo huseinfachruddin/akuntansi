@@ -107,9 +107,10 @@ class ReportController extends Controller
             foreach ($data as $key => $valuedata) {
                 if (!empty($valuedata->children)) {
                     foreach ($total as $key => $valuetotal) {
+                        $for += 1;
                         if ($valuedata->name==$valuetotal->name) {
                             $valuedata->total = $valuetotal->total;
-                            break;
+                            break 2;
                         }else{
                             $valuedata->total = 0;
                         }
