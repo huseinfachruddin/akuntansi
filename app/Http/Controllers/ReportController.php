@@ -158,7 +158,7 @@ class ReportController extends Controller
             $stock->whereNull('pending');
         })->sum('total');
 
-        $akun = Akun::where('name','=','Pendapatan Jasa')->first();
+        $akun = Akun::where('name','=','Pendapatan Jasa')->with(str_repeat('children.',10))->first();
         $akun->total = 0;
 
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
@@ -189,7 +189,7 @@ class ReportController extends Controller
 
         $response = [
             'success'=>true,
-            'report'=>$biaya  
+            'report'=>$akun 
         ];
 
         return response($response,200);
