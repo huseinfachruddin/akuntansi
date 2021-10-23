@@ -207,7 +207,7 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->whereNotNull('cashout_id');
+            $stock = $stock->orWhereNotNull('cashout_id')->orWhere('nonmoney','in');
         })->sum('total');
 
         $persediaankeluar = Substocktransaction::whereHas('product',function($product){
