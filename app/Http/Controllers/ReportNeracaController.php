@@ -248,7 +248,7 @@ class ReportNeracaController extends Controller
             $stock = $stock->where('nonmoney','out');
         })->sum('hpp');
 
-        $persediaan = $persediaanmasuk - ( $persediaankeluar - $persediaanhpp);
+        $persediaan = $persediaanmasuk - ( $persediaankeluar + $persediaanhpp);
 
         $uangmukabeli = Stocktransaction::whereNotNull('cashout_id')->where('pending',1);
         if (!empty($request->start_date) && !empty($request->end_date)) {
