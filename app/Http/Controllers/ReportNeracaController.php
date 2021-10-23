@@ -356,7 +356,7 @@ class ReportNeracaController extends Controller
 
         $response = [
             'success'=>true,
-            'akun'=>$data,
+            'akun'=>$cash,
         ];
 
         return response($response,200);
