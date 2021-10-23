@@ -221,7 +221,7 @@ class ReportNeracaController extends Controller
         $akunPiutangJual = Akun::where('name','=','Piutang Penjualan')->first();
         $akunPiutangJual->total = $piutangjual;
         //TOTAL KABEH
-        $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
+        $data = Akun::whereN('perent_id',null)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
                 $valuedata->total = 0;
