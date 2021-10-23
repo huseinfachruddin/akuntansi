@@ -222,7 +222,7 @@ class ReportNeracaController extends Controller
             }
             $stock = $stock->orWhereNotNull('cashin_id')->orWhere('nonmoney','out');
         });
-        $persediaan =$persediaanmasuk - ($persediaankeluar->sum('hpp'));
+        $persediaan =$persediaanmasuk ;
         dd($persediaan);
         //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
