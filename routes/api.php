@@ -81,14 +81,15 @@ Route::get('/test',function(Request $request){
 
 Route::match(['get','post'],'/report/akun/{name}', [ReportController::class,'AkunReport']);
 Route::match(['get','post'],'/report/akun/laba', [ReportController::class,'ReportLaba']);
+Route::match(['get','post'],'/report/{name}', [ReportController::class,'AkunReport']);
 
-Route::get('/report/{name}',[AkunController::class,'reportName']);
+// Route::get('/report/{name}',[AkunController::class,'reportName']);
 Route::get('/report',[AkunController::class,'Report']);
 
 Route::get('/akun',[AkunController::class,'getAkun']);
-Route::get('/akun/list',[AkunController::class,'getAkunList']);
-Route::match(['get','post'],'/akun/list/{name}', [ReportController::class,'AkunReport']);
+Route::get('/akun/list/{name}',[AkunController::class,'getAkunHead']);
 
+Route::get('/akun/list',[AkunController::class,'getAkunList']);
 Route::get('/akun/iscashout',[AkunController::class,'getAkunIsCashOut']);
 Route::get('/akun/iscashin',[AkunController::class,'getAkunIsCashIn']);
 
