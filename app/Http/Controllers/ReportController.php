@@ -234,7 +234,7 @@ class ReportController extends Controller
         foreach ($cash as $key => $value) {
             array_push($akun,$value);
         }
-
+dd($cash);
         foreach ($cashin as $key => $value) {
             array_push($akun,$value);
         }
