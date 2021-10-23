@@ -197,6 +197,34 @@ class ReportNeracaController extends Controller
         }
         $piutangjual = $piutangjual->sum('total')-$piutangjual->sum('discount')-$piutangjual->sum('paid');
 
+        $persediaanmasuk = Substocktransaction::whereHas('product',function($product){
+            $product->where('category','<>','service');
+        })->whereHas('stocktransaction',function($stock) use($request){
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
+            $stock = $stock->whereNotNull('cashout_id')->orWhere('nonmoney','in');
+        })->sum('total');
+
+        $persediaankeluar = Substocktransaction::whereHas('product',function($product){
+            $product->where('category','<>','service');
+        })->whereHas('stocktransaction',function($stock) use($request){
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            }else{
+                $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+            }
+            $stock = $stock->whereNotNull('cashin_id')->orWhere('nonmoney','out');
+        })->sum('total');
+        $persediaan =$persediaanmasuk - $persediaankeluar;
+        dd($persediaan);
+        //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
 
@@ -220,6 +248,9 @@ class ReportNeracaController extends Controller
         
         $akunPiutangJual = Akun::where('name','=','Piutang Penjualan')->first();
         $akunPiutangJual->total = $piutangjual;
+        
+        $akunPersediaan = Akun::where('name','=','Persediaan Barang')->first();
+        $akunPersediaan->total = $piutangjual;
         //TOTAL KABEH
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
