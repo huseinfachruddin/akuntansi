@@ -29,7 +29,7 @@ class AkunController extends Controller
         ]); 
         $data = Akun::where('name','=','Laba Tahun Berjalan')->first();
         $data = Akun::find($data->id);
-        $data->total = $request->total;
+        $data->total = $data->total+$request->total;
         $data->save();
         $response = [
             'success'=>true,

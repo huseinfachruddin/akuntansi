@@ -270,6 +270,17 @@ class ReportNeracaController extends Controller
         }
         $pesanjual = $pesanjual->sum('paid');
 
+        $hutangbeli = Stocktransaction::whereNotNull('cashout_id');
+        if (!empty($request->start_date) && !empty($request->end_date)) {
+            $request->start_date = date('Y-m-d',strtotime($request->start_date));
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $hutangbeli = $hutangbeli->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $hutangbeli = $hutangbeli->whereBetween('date',[date('0000-01-01',time()),date('Y-m-d',time())]);
+        }
+        $hutangbeli = $hutangbeli->sum('total')-$hutangbeli->sum('discount')-$hutangbeli->sum('paid');
+
+
         //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
@@ -304,6 +315,8 @@ class ReportNeracaController extends Controller
         $akunPesanJual = Akun::where('name','=','Hutang Pesanan Penjualan')->first();
         $akunPesanJual->total = $pesanjual;
 
+        $akunPembelian = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
+        $akunPembelian->total = $hutangbeli;
         //TOTAL KABEH
         $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
@@ -350,10 +363,11 @@ class ReportNeracaController extends Controller
         array_push($akun,$akunPersediaan);
         array_push($akun,$akunPesanBeli);
         array_push($akun,$akunPesanJual);
+        array_push($akun,$akunPembelian);
 
         akunRekursif($data,$akun);
 
-
+        
         $response = [
             'success'=>true,
             'akun'=>$data,
