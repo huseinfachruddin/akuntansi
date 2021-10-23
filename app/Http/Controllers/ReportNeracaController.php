@@ -195,9 +195,7 @@ class ReportNeracaController extends Controller
         }else{
             $piutangjual = $piutangjual->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
         }
-        $piutangjual = $piutangjual->sum(function($query){ 
-            return $query->total - $query->discount - $query->paid; 
-        });
+        $piutangjual = $piutangjual->sum('total')-$piutangjual->sum('discount')-$piutangjual->sum('paid');
 
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
