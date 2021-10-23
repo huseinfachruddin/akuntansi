@@ -259,6 +259,17 @@ class ReportNeracaController extends Controller
             $uangmukabeli = $uangmukabeli->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
         }
         $uangmukabeli = $uangmukabeli->sum('paid');
+
+        $pesanjual = Stocktransaction::whereNotNull('cashin_id')->where('pending',1);
+        if (!empty($request->start_date) && !empty($request->end_date)) {
+            $request->start_date = date('Y-m-d',strtotime($request->start_date));
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $pesanjual = $pesanjual->whereBetween('date',[$request->start_date,$request->end_date]);
+        }else{
+            $pesanjual = $pesanjual->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
+        }
+        $pesanjual = $pesanjual->sum('paid');
+
         //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
@@ -289,6 +300,9 @@ class ReportNeracaController extends Controller
 
         $akunPesanBeli = Akun::where('name','=','Uang Muka Pesanan Pembelian')->first();
         $akunPesanBeli->total = $uangmukabeli;
+
+        $akunPesanJual = Akun::where('name','=','Hutang Pesanan Penjualan')->first();
+        $akunPesanJual->total = $pesanjual;
 
         //TOTAL KABEH
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
@@ -335,6 +349,7 @@ class ReportNeracaController extends Controller
         array_push($akun,$akunPiutangJual);
         array_push($akun,$akunPersediaan);
         array_push($akun,$akunPesanBeli);
+        array_push($akun,$akunPesanJual);
 
         akunRekursif($data,$akun);
 
