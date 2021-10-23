@@ -4,16 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Stocktransaction;
-use App\Models\Substocktransaction;
-use App\Models\Product;
-use App\Models\Akun;
-use App\Models\Credit;
-use App\Models\Contact;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-
-class ReportController extends Controller
+class ReportNeracaController extends Controller
 {
     public function AkunReportLaba(Request $request){
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
@@ -187,16 +178,6 @@ class ReportController extends Controller
             $stock = $stock->whereNotNull('cashin_id');
         })->sum('hpp');
 
-        $piutangjual = Stocktransaction::whereNotNull('cashin_id');
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $request->start_date = date('Y-m-d',strtotime($request->start_date));
-            $request->end_date = date('Y-m-d',strtotime($request->end_date));
-            $piutangjual = $piutangjual->whereBetween('date',[$request->start_date,$request->end_date]);
-        }else{
-            $piutangjual = $piutangjual->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
-        }
-        $piutangjual = $piutangjual->sum('total-paid');
-
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
 
@@ -218,9 +199,6 @@ class ReportController extends Controller
         $akunPotonganJual = Akun::where('name','=','Potongan Penjualan')->first();
         $akunPotonganJual->total = $potonganjual;
         
-        $akunPiutangJual = Akun::where('name','=','Piutang Penjualan')->first();
-        $akunPiutangJual->total = $piutangjual;
-
         //TOTAL KABEH
         $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
@@ -263,8 +241,7 @@ class ReportController extends Controller
         array_push($akun,$akunPotonganBeli);
         array_push($akun,$akunPotonganJual);
         array_push($akun,$akunHpp);
-        array_push($akun,$akunPiutangJual);
-        
+
         akunRekursif($data,$akun);
 
 

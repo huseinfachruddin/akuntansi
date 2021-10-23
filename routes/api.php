@@ -31,6 +31,7 @@ use App\Http\Controllers\StockNonMoneyController;
 use App\Http\Controllers\StockorderController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportNeracaController;
 
 use Carbon\Carbon;
 /*
@@ -79,9 +80,8 @@ Route::get('/test',function(Request $request){
     return $data;
 });
 
-Route::match(['get','post'],'/report/akun/{name}', [ReportController::class,'AkunReport']);
-Route::match(['get','post'],'/report/akun/laba', [ReportController::class,'ReportLaba']);
-Route::match(['get','post'],'/report/{name}', [ReportController::class,'AkunReport']);
+Route::match(['get','post'],'/report/{name}', [ReportController::class,'AkunReportLaba']);
+Route::match(['get','post'],'/report/neraca', [ReportController::class,'AkunReportNeraca']);
 
 // Route::get('/report/{name}',[AkunController::class,'reportName']);
 Route::get('/report',[AkunController::class,'Report']);
