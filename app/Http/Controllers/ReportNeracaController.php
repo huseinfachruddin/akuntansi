@@ -26,7 +26,7 @@ class ReportNeracaController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('0000-01-01',time()),date('Y-m-d',time())]);
                 }
-                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
+                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending')->orWhere('pending',1);
             })->select(DB::raw("SUM(total)"));
         },
         // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
@@ -39,7 +39,7 @@ class ReportNeracaController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('0000-01-01',time()),date('Y-m-d',time())]);
                 }
-                $stock = $stock->whereNotNull('cashout_id')->whereNull('pending');
+                $stock = $stock->whereNotNull('cashout_id')->whereNull('pending')->orWhere('pending',1);
             })->select(DB::raw("SUM(total)"));    
         },
         // CASH FROM = menghitung cash sebagai akun
@@ -248,7 +248,7 @@ class ReportNeracaController extends Controller
             $stock = $stock->where('nonmoney','out');
         })->sum('hpp');
 
-        $persediaan = $persediaanmasuk - ( $persediaankeluar + $persediaanhpp);
+        $persediaan = $persediaanmasuk - ($persediaankeluar + $persediaanhpp);
 
         $uangmukabeli = Stocktransaction::whereNotNull('cashout_id')->where('pending',1);
         if (!empty($request->start_date) && !empty($request->end_date)) {
