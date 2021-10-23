@@ -220,7 +220,7 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->whereNotNull('cashin_id')->orWhere('nonmoney','out');
+            $stock = $stock->orWhereNotNull('cashin_id')->orWhere('nonmoney','out');
         })->sum('total');
         $persediaan =$persediaanmasuk - $persediaankeluar;
         dd($persediaan);
