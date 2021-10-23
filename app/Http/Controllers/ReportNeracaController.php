@@ -237,7 +237,7 @@ class ReportNeracaController extends Controller
         })->sum('hpp');
 
         $persediaan =$persediaanmasuk - ($persediaanhpp - $persediaankeluar);
-        dd($persediaan);
+
         //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
@@ -264,7 +264,7 @@ class ReportNeracaController extends Controller
         $akunPiutangJual->total = $piutangjual;
         
         $akunPersediaan = Akun::where('name','=','Persediaan Barang')->first();
-        $akunPersediaan->total = $piutangjual;
+        $akunPersediaan->total = $persediaan;
         //TOTAL KABEH
         $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
@@ -308,6 +308,7 @@ class ReportNeracaController extends Controller
         array_push($akun,$akunPotonganJual);
         array_push($akun,$akunHpp);
         array_push($akun,$akunPiutangJual);
+        array_push($akun,$akunPersediaan);
 
         akunRekursif($data,$akun);
 
