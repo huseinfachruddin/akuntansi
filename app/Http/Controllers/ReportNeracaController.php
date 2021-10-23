@@ -221,8 +221,8 @@ class ReportNeracaController extends Controller
                 $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
             }
             $stock = $stock->orWhereNotNull('cashin_id')->orWhere('nonmoney','out');
-        })->sum('total');
-        $persediaan =$persediaanmasuk - $persediaankeluar;
+        });
+        $persediaan =$persediaanmasuk - ($persediaankeluar->sum('hpp'));
         dd($persediaan);
         //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
