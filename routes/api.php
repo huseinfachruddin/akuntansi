@@ -79,7 +79,7 @@ Route::get('/test',function(Request $request){
     return $data;
 });
 
-Route::match(['get','post'],'/report/akun/cash', [ReportController::class,'CashReport']);
+Route::match(['get','post'],'/report/akun/{name}', [ReportController::class,'CashReport']);
 Route::match(['get','post'],'/report/akun/laba', [ReportController::class,'ReportLaba']);
 
 Route::get('/report/{name}',[AkunController::class,'reportName']);

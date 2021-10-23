@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    public function CashReport(Request $request){
+    public function AkunReport(Request $request){
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
@@ -210,7 +210,7 @@ class ReportController extends Controller
         $akunPotonganJual->total = $potonganjual;
         
         //TOTAL KABEH
-        $data = Akun::where('perent_id',null)->with(str_repeat('children.',10))->get();
+        $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
                 $valuedata->total = 0;
