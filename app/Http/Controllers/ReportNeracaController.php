@@ -26,7 +26,7 @@ class ReportNeracaController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('0000-01-01',time()),date('Y-m-d',time())]);
                 }
-                $stock = $stock->whereNotNull('cashin_id')->where('pending','<>',false);
+                $stock = $stock->whereNotNull('cashin_id');
             })->select(DB::raw("SUM(total)"));
         },
         // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
@@ -39,7 +39,7 @@ class ReportNeracaController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('0000-01-01',time()),date('Y-m-d',time())]);
                 }
-                $stock = $stock->whereNotNull('cashout_id')->where('pending','<>',false);
+                $stock = $stock->whereNotNull('cashout_id');
             })->select(DB::raw("SUM(total)"));    
         },
         // CASH FROM = menghitung cash sebagai akun
