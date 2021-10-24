@@ -208,7 +208,7 @@ class CashController extends Controller
                         rekursif($value->children,$sub,$name);
                     }
                     if ($value->name==$name->name) {
-                        $sub->total = -1*$$sub->total;
+                        $sub->total = -1*$sub->total;
                     }
                 }
             }
