@@ -227,7 +227,7 @@ class CashController extends Controller
 
             $cek=rekursif($akun,$sub,$nama);
             if ($cek==true) {
-                $sub->total=-1*$sub->total;
+                $sub->total=-1;
             }
             $sub->desc = null;
             $sub->save();
