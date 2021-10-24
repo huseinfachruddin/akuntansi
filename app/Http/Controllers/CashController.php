@@ -141,6 +141,19 @@ class CashController extends Controller
             $sub->akun_id = $request->akun_id[$key];
             $sub->desc = null;
             $sub->total = $request->total[$key];
+            $akun = Akun::where('name','Harta')->with(str_repeat('children.',10))->get();
+            $nama = Akun::find($sub->akun_id);
+            function rekursif($akun,$sub,$name){
+                foreach ($akun as $key => $value) {
+                    if (!empty($value->children)) {
+                        rekursif($value->children,$sub,$name);
+                    }
+                    if ($value->name==$name->name) {
+                        $sub->total = -1*$sub->total;
+                    }
+                }
+            }
+            rekursif($akun,$sub,$nama);
             $sub->save();
 
             $subtransaction[]= $sub;
