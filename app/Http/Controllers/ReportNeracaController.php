@@ -712,7 +712,7 @@ class ReportNeracaController extends Controller
         $akunPembelian->total = $hutangbeli;
         //TOTAL KABEH
         $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
-        function akunRekursif1($data,$total){
+        function rekursip($data,$total){
             foreach ($data as $key => $valuedata) {
                 if (!empty($valuedata->children)) {
                     foreach ($total as $key => $valuetotal) {
@@ -720,7 +720,7 @@ class ReportNeracaController extends Controller
                             $valuedata->total = $valuedata->total+$valuetotal->total;
                         }
                     }
-                    akunRekursif1($valuedata->children,$total);
+                    rekursip($valuedata->children,$total);
                 }else{
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
@@ -769,9 +769,9 @@ class ReportNeracaController extends Controller
         $pdptn = Akun::where('name','Pendapatan')->with(str_repeat('children.',10))->get();
         $hpp = Akun::where('name','Hpp')->with(str_repeat('children.',10))->get();
         $biaya = Akun::where('name','Biaya')->with(str_repeat('children.',10))->get();
-        akunRekursif1($pdptn,$akun);
-        akunRekursif1($hpp,$akun);
-        akunRekursif1($biaya,$akun);
+        rekursip($pdptn,$akun);
+        rekursip($hpp,$akun);
+        rekursip($biaya,$akun);
         rekursifTotal1($pdptn);
         rekursifTotal1($hpp);
         rekursifTotal1($biaya);
