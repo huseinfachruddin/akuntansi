@@ -81,7 +81,7 @@ class ReportNeracaController extends Controller
                     $cash = $cash->whereBetween('date',[date('0000-01-01',time()),date('Y-m-d',time())]);
                 }
             })->whereNotNull('cashin_id');
-        }]);
+        }])->get();
         
         foreach ($cashin as $key => $value) {
             $value->total = $value->sum_subcash;
@@ -97,7 +97,7 @@ class ReportNeracaController extends Controller
                     $cash = $cash->whereBetween('date',[date('0000-01-01',time()),date('Y-m-d',time())]);
                 }
             })->whereNotNull('cashout_id');
-        }]);
+        }])->get();
 
         foreach ($cashout as $key => $value) {
             $value->total = $value->sum_subcash;
