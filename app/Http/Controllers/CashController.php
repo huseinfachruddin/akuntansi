@@ -226,7 +226,7 @@ class CashController extends Controller
                 }
             }
             rekursif($akun,$sub,$nama);
-            $sub->desc = $request->desc[$key];
+            $sub->desc = null;
             $sub->save();
 
             $subtransaction[]= $sub;
