@@ -23,11 +23,24 @@ class AkunController extends Controller
         return response($response,200);
     }
 
-    public function setLabaTahun(Request $request){
+    public function setLabaDitahan(Request $request){
         $request->validate([
             'total' =>'required',
         ]); 
-        $data = Akun::where('name','=','Laba Tahun Berjalan')->first();
+        $now=date('Y-m-d',time());
+        $first=date('Y-1-1',time());
+        $last=date('Y-12-31',time());
+        $data = Cashtransaction::whereNotNull('transfer')->whereHas('from',function($query){
+            $query->where('Laba Tahun Berjalan');
+        })->whereHas('to',function($query){
+            $query->where('Laba Ditahan');
+        });
+        $data = $data->whereBetween('date',[$first,$last]);
+        $data = $data->get();
+        if (empty($data)&&date('Y-m-d',time())) {
+
+        }
+        $data = Akun::where('name','=','Laba Ditahan')->first();
         $data = Akun::find($data->id);
         $data->total = $data->total+$request->total;
         $data->save();
