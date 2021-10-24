@@ -407,7 +407,7 @@ class ReportNeracaController extends Controller
     }
 
     public function labaBerjalan($request){
-
+        
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
@@ -415,6 +415,7 @@ class ReportNeracaController extends Controller
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-12-31',strtotime(date("Y-m-d", strtotime($request->end_date)) . " -1 year"));
                     $stock = $stock->whereBetween('date',[date('0001-01-01',time()),$request->end_date]);
+                    dd([date('0001-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('0001-01-01',time()),strtotime(date("Y-12-31", time()) . " -1 year")]);
                 }
