@@ -205,7 +205,7 @@ class CashController extends Controller
                     if (!empty($value->perent)) {
                         rekursif($value->perent,$total);
                     }
-                    if ($value->name=='Kewajiban') {
+                    if ($value->perent=='Kewajiban') {
                         $total = (-1)*$total;
                     }
                 }
