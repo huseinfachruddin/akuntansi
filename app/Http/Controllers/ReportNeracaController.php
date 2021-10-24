@@ -374,7 +374,7 @@ class ReportNeracaController extends Controller
                 if (!empty($value->children)) {
                     rekursifTotal($value->children);
                     foreach ($value->children as $key => $value2) {
-                        $value->children=$value2->total;
+                        $value->total+=$value2->total;
                     }
                 }else {
                     # code...
