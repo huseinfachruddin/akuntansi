@@ -341,6 +341,16 @@ class ReportNeracaController extends Controller
                 }
             }
         }
+        function rekursifTotal($data){
+            foreach ($data as $key => $value) {
+                if (!empty($value->children)) {
+                    rekursifTotal($value->children);
+                    foreach ($value->children as $key => $value2) {
+                        $value->total+=$value2->total;
+                    }
+                }
+            }
+        }
         // masukin
         $akun=[];
         foreach ($cash as $key => $value) {
@@ -367,19 +377,17 @@ class ReportNeracaController extends Controller
         array_push($akun,$akunPesanBeli);
         array_push($akun,$akunPesanJual);
         array_push($akun,$akunPembelian);
+        $pdptn = Akun::where('name','Pendapatan')->with(str_repeat('children.',10))->get();
+        $hpp = Akun::where('name','Hpp')->with(str_repeat('children.',10))->get();
+        $biaya = Akun::where('name','Biaya')->with(str_repeat('children.',10))->get();
+        akunRekursif($data,$pdptn);
+        akunRekursif($data,$hpp);
+        akunRekursif($data,$biaya);
+        $LTB = Akun::where('name','=','Laba Tahun Berjalan')->first();
+        $LTB->total = $pdptn[0]->total - $hpp[0]->total - $biaya[0]->total;
+        array_push($akun,$LTB);
 
         akunRekursif($data,$akun);
-        function rekursifTotal($data){
-            foreach ($data as $key => $value) {
-                if (!empty($value->children)) {
-                    rekursifTotal($value->children);
-                    foreach ($value->children as $key => $value2) {
-                        $value->total+=$value2->total;
-                    }
-                }
-            }
-        }
-
         rekursifTotal($data);
         
         $response = [
