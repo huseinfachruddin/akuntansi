@@ -200,7 +200,7 @@ class CashController extends Controller
             $sub->cashtransaction_id = $cash->id;
             $sub->akun_id = $request->akun_id[$key];
             $akun = Akun::where('id',$sub->akun_id)->with(str_repeat('perent.',10))->get();
-            dd($akun);
+            return $akun;
             function rekursif($akun,$total){
                 foreach ($akun as $key => $value) {
                     if (!empty($value->perent)) {
