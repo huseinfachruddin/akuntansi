@@ -225,6 +225,7 @@ Route::delete('/role/delete/{id}',[RoleController::class,'deleteRole']);
 Route::get('/user',[UserController::class,'getUser']);
 Route::post('/user/role/create/{id}',[UserController::class,'createUserRole']);
 Route::delete('/user/role/delete/{id}',[UserController::class,'deleteUserRole']);
+Route::delete('/user/delete/{id}',[UserController::class,'deleteUser']);
 
 
 Route::post('/register',[Auth::class,'register']);

@@ -39,7 +39,6 @@ class UserController extends Controller
             'user'  =>$user,
         ];
         return response($response,200);
-
     }
 
     public function getUser(){
@@ -89,5 +88,15 @@ class UserController extends Controller
 
     }
 
+    public function deleteUser(Request $request){
 
+        $user = User::find($request->id);
+        $user->delete();
+
+        $response = [
+            'success'=>true,
+            'user'  =>$user,
+        ];
+        return response($response,200);
+    }
 }
