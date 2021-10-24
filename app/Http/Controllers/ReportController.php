@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     public function AkunReportLaba(Request $request){
+        Akun::whereNotNull('name')->update(array('total' => 0));
+
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
@@ -212,18 +214,17 @@ class ReportController extends Controller
         $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
         function akunRekursif($data,$total){
             foreach ($data as $key => $valuedata) {
-                $valuedata->total = 0;
                 if (!empty($valuedata->children)) {
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
-                            $valuedata->total = $valuetotal->total;
+                            $valuedata->total = $valuedata->total + $valuetotal->total;
                         }
                     }
                     akunRekursif($valuedata->children,$total);
                 }else{
                     foreach ($total as $key => $valuetotal) {
                         if ($valuedata->name==$valuetotal->name) {
-                            $valuedata->total = $valuetotal->total;
+                            $valuedata->total =$valuedata->total+ $valuetotal->total;
                         }
                     }
                 }
