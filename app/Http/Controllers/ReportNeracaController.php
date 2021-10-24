@@ -406,7 +406,7 @@ class ReportNeracaController extends Controller
         return response($response,200);
     }
 
-    public function labaBerjalan(Request $request){
+    public function labaBerjalan($request){
 
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
