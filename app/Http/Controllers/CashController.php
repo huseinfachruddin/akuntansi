@@ -120,7 +120,6 @@ class CashController extends Controller
             'date' =>'required',
 
             'akun_id.*' =>'required',
-            'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
         ]);                
 
@@ -193,7 +192,6 @@ class CashController extends Controller
             'date' =>'required',
 
             'akun_id.*' =>'required',
-            'desc.*'  =>'nullable',
             'total.*'  =>'required|numeric',
         ]);                
 
