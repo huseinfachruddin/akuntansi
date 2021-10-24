@@ -202,10 +202,10 @@ class CashController extends Controller
             $akun = Akun::where('id',$sub->akun_id)->with(str_repeat('perent.',10))->get();
             function rekursif($akun,$total){
                 foreach ($akun as $key => $value) {
-                    if (!empty($akun->perent)) {
-                        rekursif($akun->perent,$total);
+                    if (!empty($value->perent)) {
+                        rekursif($value->perent,$total);
                     }
-                    if ($akun->name=='Kewajiban') {
+                    if ($value->name=='Kewajiban') {
                         $total = (-1)*$total;
                     }
                 }
