@@ -227,7 +227,6 @@ class CashController extends Controller
             $nama = Akun::find($sub->akun_id);
 
             rekursif($akun,$sub,$nama);
-            dd($sub->total);
             $sub->save();
 
             $subtransaction[]= $sub;
