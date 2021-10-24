@@ -728,10 +728,10 @@ class ReportNeracaController extends Controller
                 }
             }
         }
-        function rekursifTotal($data){
+        function rekursifTotal22($data){
             foreach ($data as $key => $value) {
                 if (!empty($value->children)) {
-                    rekursifTotal($value->children);
+                    rekursifTotal2($value->children);
                     foreach ($value->children as $key => $value2) {
                         $value->total+=$value2->total;
                     }
@@ -770,9 +770,9 @@ class ReportNeracaController extends Controller
         akunRekursif2($pdptn,$akun);
         akunRekursif2($hpp,$akun);
         akunRekursif2($biaya,$akun);
-        rekursifTotal($pdptn);
-        rekursifTotal($hpp);
-        rekursifTotal($biaya);
+        rekursifTotal2($pdptn);
+        rekursifTotal2($hpp);
+        rekursifTotal2($biaya);
 
         return ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
     }
