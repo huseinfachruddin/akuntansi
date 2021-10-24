@@ -388,7 +388,7 @@ class ReportNeracaController extends Controller
         rekursifTotal($biaya);
         $labaDitahan=$this->labaBerjalan($request);
         $LTB = Akun::where('name','=','Laba Tahun Berjalan')->first();
-        $LTB->total = ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
+        $LTB->total = ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total)-$labaDitahan;
         $LD = Akun::where('name','=','Laba Ditahan')->first();
         $LD->total = $labaDitahan;
 
