@@ -226,7 +226,7 @@ class CashController extends Controller
             $nama = Akun::find($sub->akun_id);
 
             $cek=rekursif($akun,$sub,$nama);
-            return $cek;
+            dd($cek);
             if ($cek==true) {
                 $sub->total=-1*$sub->total;
             }
