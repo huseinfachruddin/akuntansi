@@ -216,7 +216,7 @@ class CashController extends Controller
                     $sub->total = -1*$sub->total;
                 }
             }
-        }
+        }   
         foreach ( $data as $key => $value) {
             $sub = new Subcashtransaction;
             $sub->cashtransaction_id = $cash->id;
