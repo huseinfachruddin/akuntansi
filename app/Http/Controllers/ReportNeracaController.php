@@ -459,7 +459,6 @@ class ReportNeracaController extends Controller
         foreach ($cash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
-        dd($cash);
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
@@ -776,7 +775,7 @@ class ReportNeracaController extends Controller
         rekursifTotal2($pdptn);
         rekursifTotal2($hpp);
         rekursifTotal2($biaya);
-
+        dd($pdptn,$hpp,$biaya);
         return ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
     }
 
