@@ -412,9 +412,9 @@ class ReportNeracaController extends Controller
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
-                    $request->start_date = date('1111-01-01',time());
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                    $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
                 }
@@ -424,10 +424,10 @@ class ReportNeracaController extends Controller
         // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
         'creditout as sum_stockout' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
-                if (!empty($request->start_date) && !empty($request->end_date)) {
-                    $request->start_date = date('1111-01-01',time());
+                if (!empty($request->end_date) && !empty($request->end_date)) {
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                    $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
                 }
@@ -436,10 +436,10 @@ class ReportNeracaController extends Controller
         },
         // CASH FROM = menghitung cash sebagai akun
         'cashtransactionfrom as sum_cashfrom' =>function($cash) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
                 $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+                $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -447,10 +447,10 @@ class ReportNeracaController extends Controller
         },
         // CASH TO = menghitung cash sebagai akun
         'cashtransactionto as sum_cashto' =>function($cash) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -463,10 +463,10 @@ class ReportNeracaController extends Controller
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
-                if (!empty($request->start_date) && !empty($request->end_date)) {
-                    $request->start_date = date('1111-01-01',time());
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                    $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+                if (!empty($request->end_date) && !empty($request->end_date)) {
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                    $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
                 }
@@ -480,10 +480,10 @@ class ReportNeracaController extends Controller
         // SUB CASH OUT
         $cashout = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
-                if (!empty($request->start_date) && !empty($request->end_date)) {
-                    $request->start_date = date('1111-01-01',time());
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                    $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
+                if (!empty($request->end_date) && !empty($request->end_date)) {
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                    $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
                 }
@@ -499,10 +499,10 @@ class ReportNeracaController extends Controller
         $jasa = Substocktransaction::whereHas('product',function($product){
             $product->where('category','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -513,10 +513,10 @@ class ReportNeracaController extends Controller
         $penjualan = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -527,10 +527,10 @@ class ReportNeracaController extends Controller
         $barang = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -541,10 +541,10 @@ class ReportNeracaController extends Controller
         $barangrugi = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -553,10 +553,10 @@ class ReportNeracaController extends Controller
 
         // Potongan beli
         $potonganbeli = Stocktransaction::whereNotNull('cashout_id');
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $request->start_date = date('1111-01-01',time());
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-            $potonganbeli = $potonganbeli->whereBetween('date',[$request->start_date,$request->end_date]);
+        if (!empty($request->end_date) && !empty($request->end_date)) {
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+            $potonganbeli = $potonganbeli->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $potonganbeli = $potonganbeli->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
         }
@@ -565,10 +565,10 @@ class ReportNeracaController extends Controller
         // Potongan jual
 
         $potonganjual = Stocktransaction::whereNotNull('cashin_id');
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $request->start_date = date('1111-01-01',time());
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-            $potonganjual = $potonganjual->whereBetween('date',[$request->start_date,$request->end_date]);
+        if (!empty($request->end_date) && !empty($request->end_date)) {
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+            $potonganjual = $potonganjual->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $potonganjual = $potonganjual->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
         }
@@ -579,10 +579,10 @@ class ReportNeracaController extends Controller
         $hpp = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -592,10 +592,10 @@ class ReportNeracaController extends Controller
         // Piutang jual
 
         $piutangjual = Stocktransaction::whereNotNull('cashin_id');
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $request->start_date = date('1111-01-01',time());
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-            $piutangjual = $piutangjual->whereBetween('date',[$request->start_date,$request->end_date]);
+        if (!empty($request->end_date) && !empty($request->end_date)) {
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+            $piutangjual = $piutangjual->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $piutangjual = $piutangjual->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
         }
@@ -606,10 +606,10 @@ class ReportNeracaController extends Controller
         $persediaanmasuk = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -619,10 +619,10 @@ class ReportNeracaController extends Controller
         $persediaanhpp = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -632,10 +632,10 @@ class ReportNeracaController extends Controller
         $persediaankeluar = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            if (!empty($request->start_date) && !empty($request->end_date)) {
-                $request->start_date = date('1111-01-01',time());
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-                $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
+            if (!empty($request->end_date) && !empty($request->end_date)) {
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
             }
@@ -645,30 +645,30 @@ class ReportNeracaController extends Controller
         $persediaan = $persediaanmasuk - ($persediaankeluar + $persediaanhpp);
 
         $uangmukabeli = Stocktransaction::whereNotNull('cashout_id')->where('pending',1);
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $request->start_date = date('1111-01-01',time());
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-            $uangmukabeli = $uangmukabeli->whereBetween('date',[$request->start_date,$request->end_date]);
+        if (!empty($request->end_date) && !empty($request->end_date)) {
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+            $uangmukabeli = $uangmukabeli->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $uangmukabeli = $uangmukabeli->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
         }
         $uangmukabeli = $uangmukabeli->sum('paid');
 
         $pesanjual = Stocktransaction::whereNotNull('cashin_id')->where('pending',1);
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $request->start_date = date('1111-01-01',time());
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-            $pesanjual = $pesanjual->whereBetween('date',[$request->start_date,$request->end_date]);
+        if (!empty($request->end_date) && !empty($request->end_date)) {
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+            $pesanjual = $pesanjual->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $pesanjual = $pesanjual->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
         }
         $pesanjual = $pesanjual->sum('paid');
 
         $hutangbeli = Stocktransaction::whereNotNull('cashout_id');
-        if (!empty($request->start_date) && !empty($request->end_date)) {
-            $request->start_date = date('1111-01-01',time());
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 years'));
-            $hutangbeli = $hutangbeli->whereBetween('date',[$request->start_date,$request->end_date]);
+        if (!empty($request->end_date) && !empty($request->end_date)) {
+            $request->end_date = date('Y-m-d',strtotime($request->end_date));
+            $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 years'));
+            $hutangbeli = $hutangbeli->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $hutangbeli = $hutangbeli->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 years'))]);
         }
