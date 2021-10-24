@@ -204,7 +204,7 @@ class CashController extends Controller
             function rekursif($akun,$total,$name){
                 foreach ($akun as $key => $value) {
                     if (!empty($value->children)) {
-                        rekursif($value->children,$total,$name->name);
+                        rekursif($value->children,$total,$name);
                     }
                     if ($value->name==$name->name) {
                         $total = (-1)*$total;
