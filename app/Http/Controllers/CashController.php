@@ -213,7 +213,7 @@ class CashController extends Controller
                     rekursif($value->children,$sub,$name);
                 }
                 if ($value->name==$name->name) {
-                    return true;
+                    $sub->total = -1*$sub->total;
                 }
             }
         }
@@ -222,15 +222,11 @@ class CashController extends Controller
             $sub->cashtransaction_id = $cash->id;
             $sub->akun_id = $request->akun_id[$key];
             $sub->total = $request->total[$key];
+            $sub->desc = null;
             $akun = Akun::where('name','Kewajiban')->where('name','Modal')->with(str_repeat('children.',10))->get();
             $nama = Akun::find($sub->akun_id);
 
-            $cek=rekursif($akun,$sub,$nama);
-            dd($nama);
-            if ($cek==true) {
-                $sub->total=-1*$sub->total;
-            }
-            $sub->desc = null;
+            rekursif($akun,$sub,$nama);
             $sub->save();
 
             $subtransaction[]= $sub;
