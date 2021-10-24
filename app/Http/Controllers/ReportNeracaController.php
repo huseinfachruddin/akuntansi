@@ -406,8 +406,8 @@ class ReportNeracaController extends Controller
         return response($response,200);
     }
 
-    public function labaBerjalan(Request $request){
-        dd($request->end_date);
+    public function labaBerjalan($request){
+        dd(date('Y-12-31',$request->end_date));
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
