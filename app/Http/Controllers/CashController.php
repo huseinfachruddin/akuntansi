@@ -223,7 +223,7 @@ class CashController extends Controller
             $sub->akun_id = $request->akun_id[$key];
             $sub->total = $request->total[$key];
             $sub->desc = null;
-            $akun = Akun::where('name','Kewajiban')->where('name','Modal')->with(str_repeat('children.',10))->get();
+            $akun = Akun::('name','Modal')->with(str_repeat('children.',10))->get();
             $nama = Akun::find($sub->akun_id);
 
             rekursif($akun,$sub,$nama);
