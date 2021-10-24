@@ -728,7 +728,7 @@ class ReportNeracaController extends Controller
                 }
             }
         }
-        function rekursifTotal22($data){
+        function rekursifTotal2($data){
             foreach ($data as $key => $value) {
                 if (!empty($value->children)) {
                     rekursifTotal2($value->children);
