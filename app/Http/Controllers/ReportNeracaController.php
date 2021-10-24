@@ -388,7 +388,7 @@ class ReportNeracaController extends Controller
         rekursifTotal($biaya);
         $labaDitahan=$this->labaBerjalan($request);
         $LTB = Akun::where('name','=','Laba Tahun Berjalan')->first();
-        $LTB->total = ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total) - $labaDitahan;
+        $LTB->total = ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total) - ($labaDitahan);
         $LD = Akun::where('name','=','Laba Ditahan')->first();
         $LD->total = $labaDitahan;
 
@@ -407,7 +407,6 @@ class ReportNeracaController extends Controller
     }
 
     public function labaBerjalan(Request $request){
-        Akun::whereNotNull('name')->update(array('total' => 0));
 
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
