@@ -368,7 +368,7 @@ class ReportNeracaController extends Controller
         array_push($akun,$akunPesanJual);
         array_push($akun,$akunPembelian);
 
-        akunRekursif($data,$akun);
+        akunRekursif($data);
         function rekursifTotal($data){
             foreach ($data as $key => $value) {
                 if (empty($value->children)) {
