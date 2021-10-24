@@ -376,8 +376,6 @@ class ReportNeracaController extends Controller
                     foreach ($value->children as $key => $value2) {
                         $value->total+=$value2->total;
                     }
-                }else {
-                    # code...
                 }
             }
         }
