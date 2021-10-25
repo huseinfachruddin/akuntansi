@@ -203,7 +203,7 @@ class ReportNeracaController extends Controller
 
         // Piutang jual
 
-        $piutangjual = Stocktransaction::whereNotNull('cashin_id');
+        $piutangjual = Stocktransaction::whereNotNull('cashin_id')->whereNull('pending');
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
             $request->end_date = date('Y-m-d',strtotime($request->end_date));
