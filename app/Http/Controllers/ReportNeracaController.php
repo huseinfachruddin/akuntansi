@@ -75,6 +75,7 @@ class ReportNeracaController extends Controller
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
+                $cash->whereNotNull('to');
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -82,7 +83,6 @@ class ReportNeracaController extends Controller
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
                 }
-                $cash->whereNotNull('to');
             });
         }])->get();
         
@@ -92,6 +92,7 @@ class ReportNeracaController extends Controller
         // SUB CASH OUT
         $cashout = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
+                $cash->whereNotNull('from');
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -99,7 +100,6 @@ class ReportNeracaController extends Controller
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
                 }
-                $cash->whereNotNull('from');
             });
         }])->get();
 
@@ -125,6 +125,7 @@ class ReportNeracaController extends Controller
         $penjualan = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
+            $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -132,13 +133,13 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
         })->sum('total');
 
         // PENDAPATAN barang
         $barang = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
+            $stock = $stock->where('nonmoney','in');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -146,7 +147,6 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->where('nonmoney','in');
         })->sum('total');
 
         // Kerugian barang
@@ -413,24 +413,24 @@ class ReportNeracaController extends Controller
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
+                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending')->orWhere('pending',1);
                 if (!empty($request->end_date)) {
                    
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date." -1 year"))]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
                 }
-                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending')->orWhere('pending',1);
             })->select(DB::raw("SUM(total)"));
         },
         // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
         'creditout as sum_stockout' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
+                $stock = $stock->whereNotNull('cashout_id')->whereNull('pending')->orWhere('pending',1);
                 if (!empty($request->end_date)) {
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date." -1 year"))]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
                 }
-                $stock = $stock->whereNotNull('cashout_id')->whereNull('pending')->orWhere('pending',1);
             })->select(DB::raw("SUM(total)"));    
         },
         // CASH FROM = menghitung cash sebagai akun
