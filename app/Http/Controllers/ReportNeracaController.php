@@ -523,8 +523,6 @@ class ReportNeracaController extends Controller
             $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
         })->sum('total');
         
-        dd($penjualan);
-
         // PENDAPATAN barang
         $barang = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
@@ -680,6 +678,7 @@ class ReportNeracaController extends Controller
         //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
+        dd($jasa);
 
         $akunPenjualan = Akun::where('name','=','Pendapatan Penjualan')->first();
         $akunPenjualan->total = $penjualan;
