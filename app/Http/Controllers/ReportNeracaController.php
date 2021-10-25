@@ -445,7 +445,7 @@ class ReportNeracaController extends Controller
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
-                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending')->orWhere('pending',1);
+                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
                 if (!empty($request->end_date)) {
                    
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date." -1 year"))]);
@@ -457,7 +457,7 @@ class ReportNeracaController extends Controller
         // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
         'creditout as sum_stockout' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
-                $stock = $stock->whereNotNull('cashout_id')->whereNull('pending')->orWhere('pending',1);
+                $stock = $stock->whereNotNull('cashout_id')->whereNull('pending');
                 if (!empty($request->end_date)) {
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date." -1 year"))]);
                 }else{
@@ -490,12 +490,12 @@ class ReportNeracaController extends Controller
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
+                $cash->whereNotNull('to');
                 if (!empty($request->end_date)) {
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date." -1 year"))]);
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
                 }
-                $cash->whereNotNull('to');
             });
         }])->get();
         
@@ -505,12 +505,12 @@ class ReportNeracaController extends Controller
         // SUB CASH OUT
         $cashout = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
+                $cash->whereNotNull('from');
                 if (!empty($request->end_date)) {
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date." -1 year"))]);
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
                 }
-                $cash->whereNotNull('from');
             });
         }])->get();
 
