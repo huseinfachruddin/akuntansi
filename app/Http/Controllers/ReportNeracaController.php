@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\DB;
 class ReportNeracaController extends Controller
 {
     public function AkunReportNeraca(Request $request){
-        $time=$request;
+        $time=[
+            'end_date'=>$request->end_date,
+            'start_date'=>$request->start_date
+        ];
 
         Akun::whereNotNull('name')->update(array('total' => 0));
 
@@ -389,7 +392,6 @@ class ReportNeracaController extends Controller
         rekursifTotal($hpp);
         rekursifTotal($biaya);
         if (!empty($request->end_date)) {
-            dd($time->end_date);
             $labaDitahan=$this->labaBerjalan($time);
         }else{
             $labaDitahan=$this->labaBerjalan($request);
@@ -413,7 +415,7 @@ class ReportNeracaController extends Controller
         return response($response,200);
     }
 
-    public function labaBerjalan($request){
+    public function labaBerjalan(Request $request){
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
