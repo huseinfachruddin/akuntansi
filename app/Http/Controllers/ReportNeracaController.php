@@ -411,7 +411,7 @@ class ReportNeracaController extends Controller
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
-                if (!empty($request->start_date) && !empty($request->end_date)) {
+                if (!empty($request->end_date) && !empty($request->end_date)) {
                     $request->end_date = date('Y-12-31',strtotime($request->end_date));
                     $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 year'));
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
@@ -460,6 +460,7 @@ class ReportNeracaController extends Controller
         foreach ($cash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
+        dd($cash);
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
