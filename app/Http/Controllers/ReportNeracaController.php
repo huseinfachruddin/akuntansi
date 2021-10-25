@@ -429,7 +429,7 @@ class ReportNeracaController extends Controller
             $credit->whereHas('stocktransaction',function($stock) use($request){
                 if (!empty($request->end_date) && !empty($request->end_date)) {
                     $request->end_date = date('Y-12-31',strtotime($request->end_date));
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 year'));
+                    $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 year'));
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 year'))]);
@@ -441,7 +441,7 @@ class ReportNeracaController extends Controller
         'cashtransactionfrom as sum_cashfrom' =>function($cash) use($request){
             if (!empty($request->end_date) && !empty($request->end_date)) {
                 $request->end_date = date('Y-12-31',strtotime($request->end_date));
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date)).' -1 year'));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 year'));
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 year'))]);
