@@ -487,6 +487,36 @@ class ReportNeracaController extends Controller
         foreach ($cash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
+
+        $pendingCash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
+            $credit->whereHas('stocktransaction',function($stock) use($request){
+                $stock = $stock->whereNotNull('cashin_id')->where('pending',1);
+                if (!empty($request->start_date) && !empty($request->end_date)) {
+                    $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
+                }else{
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                }
+            })->select(DB::raw("SUM(total)"));
+        },
+        // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
+        'creditout as sum_stockout' =>function($credit) use($request){
+            $credit->whereHas('stocktransaction',function($stock) use($request){
+                $stock = $stock->whereNotNull('cashout_id')->where('pending',1);
+                if (!empty($request->start_date) && !empty($request->end_date)) {
+                    $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                    $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
+                }else{
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                }
+            })->select(DB::raw("SUM(total)"));    
+        }])->where('iscash',true)->get();
+    
+        foreach ($cash as $key => $value) {
+            $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
+        }
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
@@ -750,7 +780,10 @@ class ReportNeracaController extends Controller
         foreach ($cashout as $key => $value) {
             array_push($akun,$value);
         }
-
+        
+        foreach ($pendingCash as $key => $value) {
+            array_push($akun,$value);
+        }
         array_push($akun,$akunJasa);
         array_push($akun,$akunPenjualan);
         array_push($akun,$akunBarang);
