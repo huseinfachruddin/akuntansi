@@ -407,13 +407,12 @@ class ReportNeracaController extends Controller
     }
 
     public function labaBerjalan($request){
-dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year")));
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
         
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -426,7 +425,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
             $credit->whereHas('stocktransaction',function($stock) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
         
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -438,7 +437,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         'cashtransactionfrom as sum_cashfrom' =>function($cash) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -449,7 +448,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         'cashtransactionto as sum_cashto' =>function($cash) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -465,7 +464,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
         
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -482,7 +481,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
                 if (!empty($request->start_date) && !empty($request->end_date)) {
         
-                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                    $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -501,7 +500,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -515,7 +514,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -529,7 +528,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -543,7 +542,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -555,7 +554,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         $potonganbeli = Stocktransaction::whereNotNull('cashout_id');
         if (!empty($request->start_date) && !empty($request->end_date)) {
 
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
             $potonganbeli = $potonganbeli->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $potonganbeli = $potonganbeli->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -567,7 +566,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         $potonganjual = Stocktransaction::whereNotNull('cashin_id');
         if (!empty($request->start_date) && !empty($request->end_date)) {
 
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
             $potonganjual = $potonganjual->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $potonganjual = $potonganjual->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -581,7 +580,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -594,7 +593,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         $piutangjual = Stocktransaction::whereNotNull('cashin_id');
         if (!empty($request->start_date) && !empty($request->end_date)) {
 
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
             $piutangjual = $piutangjual->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $piutangjual = $piutangjual->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -608,7 +607,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -621,7 +620,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -634,7 +633,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->start_date) && !empty($request->end_date)) {
     
-                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+                $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -647,7 +646,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         $uangmukabeli = Stocktransaction::whereNotNull('cashout_id')->where('pending',1);
         if (!empty($request->start_date) && !empty($request->end_date)) {
 
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
             $uangmukabeli = $uangmukabeli->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $uangmukabeli = $uangmukabeli->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -657,7 +656,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         $pesanjual = Stocktransaction::whereNotNull('cashin_id')->where('pending',1);
         if (!empty($request->start_date) && !empty($request->end_date)) {
 
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
             $pesanjual = $pesanjual->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $pesanjual = $pesanjual->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
@@ -667,7 +666,7 @@ dd(date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 ye
         $hutangbeli = Stocktransaction::whereNotNull('cashout_id');
         if (!empty($request->start_date) && !empty($request->end_date)) {
 
-            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',srttotime($request->end_date))." -1 year"));
+            $request->end_date = date('Y-12-31', strtotime(date('Y-m-d',strtotime($request->end_date))." -1 year"));
             $hutangbeli = $hutangbeli->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
         }else{
             $hutangbeli = $hutangbeli->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
