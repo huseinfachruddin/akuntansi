@@ -750,9 +750,7 @@ class ReportNeracaController extends Controller
         foreach ($cashout as $key => $value) {
             array_push($akun,$value);
         }
-        foreach ($pendingCash as $key => $value) {
-            array_push($akun,$value);
-        }
+
         array_push($akun,$akunJasa);
         array_push($akun,$akunPenjualan);
         array_push($akun,$akunBarang);
