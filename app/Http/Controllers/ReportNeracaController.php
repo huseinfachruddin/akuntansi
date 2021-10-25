@@ -16,10 +16,8 @@ use Illuminate\Support\Facades\DB;
 class ReportNeracaController extends Controller
 {
     public function AkunReportNeraca(Request $request){
-        $time=[
-            'end_date'=>$request->end_date,
-            'start_date'=>$request->start_date
-        ];
+        $labaDitahan=$this->labaBerjalan($request);
+
 
         Akun::whereNotNull('name')->update(array('total' => 0));
 
@@ -391,11 +389,7 @@ class ReportNeracaController extends Controller
         rekursifTotal($pdptn);
         rekursifTotal($hpp);
         rekursifTotal($biaya);
-        if (!empty($request->end_date)) {
-            $labaDitahan=$this->labaBerjalan($time);
-        }else{
-            $labaDitahan=$this->labaBerjalan($request);
-        }
+
         $LTB = Akun::where('name','=','Laba Tahun Berjalan')->first();
         $LTB->total = ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total)-$labaDitahan;
         $LD = Akun::where('name','=','Laba Ditahan')->first();
