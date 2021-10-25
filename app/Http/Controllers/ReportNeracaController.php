@@ -390,7 +390,7 @@ class ReportNeracaController extends Controller
         rekursifTotal($biaya);
         if (!empty($request->end_date)) {
             $labaDitahan=$this->labaBerjalan($time);
-            dd($time);
+            dd($time->end_date);
         }else{
             $labaDitahan=$this->labaBerjalan($request);
         }
