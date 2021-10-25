@@ -501,7 +501,7 @@ class ReportNeracaController extends Controller
         })->whereHas('stocktransaction',function($stock) use($request){
             if (!empty($request->end_date) && !empty($request->end_date)) {
                 $request->end_date = date('Y-12-31',strtotime($request->end_date));
-                $request->end_date = date('Y-12-31', strtotime($request->end_date.' -1 year'));
+                $request->end_date = date('Y-12-31', strtotime($request->end_date)-(60*60*24*30*12));
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d').' -1 year'))]);
