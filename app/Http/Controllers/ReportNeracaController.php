@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 class ReportNeracaController extends Controller
 {
     public function AkunReportNeraca(Request $request){
+        dd($request->end_date);
+
         Akun::whereNotNull('name')->update(array('total' => 0));
 
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
@@ -386,7 +388,6 @@ class ReportNeracaController extends Controller
         rekursifTotal($pdptn);
         rekursifTotal($hpp);
         rekursifTotal($biaya);
-        dd($request->end_date);
         $labaDitahan=$this->labaBerjalan($request);
         $LTB = Akun::where('name','=','Laba Tahun Berjalan')->first();
         $LTB->total = ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total)-$labaDitahan;
