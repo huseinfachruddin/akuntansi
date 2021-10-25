@@ -23,6 +23,7 @@ class ReportNeracaController extends Controller
         // CREDIT STOCK MASUK = menghitung uang masuk dari stock
         $cash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
             $credit->whereHas('stocktransaction',function($stock) use($request){
+                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending')->orWhere('pending',1);
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -30,7 +31,6 @@ class ReportNeracaController extends Controller
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
                 }
-                $stock = $stock->whereNotNull('cashin_id')->whereNull('pending')->orWhere('pending',1);
             })->select(DB::raw("SUM(total)"));
         },
         // CREDIT STOCK KELUAR = menghitung uang keluar dari stock
