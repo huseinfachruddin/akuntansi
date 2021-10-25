@@ -559,7 +559,7 @@ class ReportNeracaController extends Controller
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
             }
         })->sum('total');
-
+        dd($jasa);
         // penjualan 
         $penjualan = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
@@ -780,7 +780,7 @@ class ReportNeracaController extends Controller
         foreach ($cashout as $key => $value) {
             array_push($akun,$value);
         }
-        
+
         foreach ($pendingCash as $key => $value) {
             array_push($akun,$value);
         }
