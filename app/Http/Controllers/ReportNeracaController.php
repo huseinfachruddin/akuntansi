@@ -804,7 +804,7 @@ class ReportNeracaController extends Controller
         rekursifTotal2($pdptn);
         rekursifTotal2($hpp);
         rekursifTotal2($biaya);
-        dd($akun)
+        dd($akun);
         return ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
     }
 
