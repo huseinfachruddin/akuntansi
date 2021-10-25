@@ -26,7 +26,7 @@ class ReportNeracaController extends Controller
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date))]);
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
                 }
@@ -39,7 +39,7 @@ class ReportNeracaController extends Controller
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date))]);
+                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
                 }else{
                     $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
                 }
