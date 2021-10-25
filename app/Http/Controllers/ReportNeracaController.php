@@ -18,7 +18,6 @@ class ReportNeracaController extends Controller
     public function AkunReportNeraca(Request $request){
 
         $labaDitahan=$this->labaBerjalan($request);
-        dd($labaDitahan);
 
 
         Akun::whereNotNull('name')->update(array('total' => 0));
