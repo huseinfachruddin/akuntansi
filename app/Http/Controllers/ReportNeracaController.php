@@ -460,7 +460,6 @@ class ReportNeracaController extends Controller
         foreach ($cash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
-        dd($cash);
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
             $sub->select(DB::raw("SUM(total)"))->whereHas('cashtransaction',function($cash) use($request){
@@ -523,6 +522,8 @@ class ReportNeracaController extends Controller
             }
             $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
         })->sum('total');
+        
+        dd($penjualan);
 
         // PENDAPATAN barang
         $barang = Substocktransaction::whereHas('product',function($product){
