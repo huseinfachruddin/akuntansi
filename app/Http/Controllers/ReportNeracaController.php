@@ -547,7 +547,6 @@ class ReportNeracaController extends Controller
         foreach ($cashout as $key => $value) {
             $value->total = $value->sum_subcash;
         }
-        dd($cashout);
 
         // PENDAPATAN
         $jasa = Substocktransaction::whereHas('product',function($product){
@@ -805,7 +804,7 @@ class ReportNeracaController extends Controller
         rekursifTotal2($pdptn);
         rekursifTotal2($hpp);
         rekursifTotal2($biaya);
-
+        dd($akun)
         return ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
     }
 
