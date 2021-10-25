@@ -737,7 +737,6 @@ class ReportNeracaController extends Controller
         $akunPembelian = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
         $akunPembelian->total = $hutangbeli;
         //TOTAL KABEH
-        $data = Akun::where('name',$request->name)->with(str_repeat('children.',10))->get();
         function akunRekursif2($data,$total){
             foreach ($data as $key => $valuedata) {
                 if (!empty($valuedata->children)) {
@@ -804,8 +803,14 @@ class ReportNeracaController extends Controller
         rekursifTotal2($pdptn);
         rekursifTotal2($hpp);
         rekursifTotal2($biaya);
-        var_dump($akun);
-        return ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
+
+        $LTB = Akun::where('name','=','Laba Tahun Berjalan')->first();
+        $LTB->total = ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
+        array_push($akun,$LTB);
+
+        $data = Akun::where('name','Laba Tahun Berjalan')->with(str_repeat('children.',10))->get();
+        akunRekursif($data,$akun);
+        return ($data[0]->total);
     }
 
 }
