@@ -60,7 +60,7 @@ class StockorderController extends Controller
             $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
         }
 
-        $data = $data->with('contact','cashout')->orderBy('created_at','DESC')->get();
+        $data = $data->with('contact','cashout')->orderBy('date','DESC')->get();
         
         $response = [
             'success'=>true,
@@ -82,7 +82,7 @@ class StockorderController extends Controller
             $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
         }
 
-        $data = $data->with('contact','cashin','credit')->orderBy('created_at','DESC')->get();
+        $data = $data->with('contact','cashin','credit')->orderBy('date','DESC')->get();
         
         $response = [
             'success'=>true,

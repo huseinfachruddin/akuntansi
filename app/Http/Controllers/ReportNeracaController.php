@@ -568,7 +568,7 @@ class ReportNeracaController extends Controller
 
         // Piutang jual
 
-        $piutangjual = Stocktransaction::whereNotNull('cashin_id');
+        $piutangjual = Stocktransaction::whereNotNull('cashin_id')->whereNull('pending');
         if (!empty($request->end_date)) {
             $piutangjual = $piutangjual->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime($request->end_date." -1 year"))]);
         }else{
