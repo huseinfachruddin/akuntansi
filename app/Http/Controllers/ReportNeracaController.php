@@ -678,7 +678,6 @@ class ReportNeracaController extends Controller
         //AKUN BERNAMA ;
         $akunJasa = Akun::where('name','=','Pendapatan Jasa')->first();
         $akunJasa->total = $jasa;
-        dd($jasa);
 
         $akunPenjualan = Akun::where('name','=','Pendapatan Penjualan')->first();
         $akunPenjualan->total = $penjualan;
@@ -777,7 +776,8 @@ class ReportNeracaController extends Controller
         rekursifTotal2($pdptn);
         rekursifTotal2($hpp);
         rekursifTotal2($biaya);
-        
+
+        dd($pdptn);
         return ($pdptn[0]->total - $hpp[0]->total - $biaya[0]->total);
     }
 
