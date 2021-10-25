@@ -547,6 +547,7 @@ class ReportNeracaController extends Controller
         foreach ($cashout as $key => $value) {
             $value->total = $value->sum_subcash;
         }
+        dd($jasa);
 
         // PENDAPATAN
         $jasa = Substocktransaction::whereHas('product',function($product){
@@ -559,7 +560,6 @@ class ReportNeracaController extends Controller
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
             }
         })->sum('total');
-        dd($jasa);
         // penjualan 
         $penjualan = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
