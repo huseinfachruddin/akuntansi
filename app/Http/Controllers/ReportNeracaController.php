@@ -99,7 +99,7 @@ class ReportNeracaController extends Controller
         }])->where('iscash',true)->get();
     
         foreach ($pendingCash as $key => $value) {
-            $value->total = ($value->sum_stockin - $value->sum_stockout);
+            $value->total = $value->sum_stockin - $value->sum_stockout;
         }
         // SUB CASH IN = menghitung cash sebagai akun
         $cashin = Akun::withCount(['subcashtransaction as sum_subcash' =>function($sub) use($request){
@@ -247,6 +247,7 @@ class ReportNeracaController extends Controller
         $persediaanmasuk = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
+            $stock = $stock->whereNotNull('cashout_id')->orWhere('nonmoney','in')->whereNull('pending');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -254,7 +255,6 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->whereNotNull('cashout_id')->orWhere('nonmoney','in')->whereNull('pending');
         })->sum('total');
 
         $persediaanhpp = Substocktransaction::whereHas('product',function($product){
