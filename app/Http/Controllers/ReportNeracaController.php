@@ -69,7 +69,7 @@ class ReportNeracaController extends Controller
             $cash->select(DB::raw("SUM(cashin+transfer)"));
         }])->where('iscash',true)->get();
     
-        foreach ($cash as $key => $value) {
+        foreach ($pendingCash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
         $pendingCash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
