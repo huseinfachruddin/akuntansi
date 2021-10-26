@@ -154,7 +154,7 @@ class ReportController extends Controller
                 $stock = $stock->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
             }
             $stock = $stock->where('nonmoney','out');
-        })->sum('total');
+        })->sum('hpp');
 
         $potonganbeli = Stocktransaction::whereNotNull('cashout_id');
             if (!empty($request->start_date) && !empty($request->end_date)) {
