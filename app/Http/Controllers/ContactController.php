@@ -59,9 +59,9 @@ class ContactController extends Controller
     public function createContact(Request $request){
         $request->validate([
             'name' =>'required',
-            'desc' =>'required',
-            'address'  =>'required',
-            'contact'  =>'required',
+            'desc' =>'nullable',
+            'address'  =>'nullable',
+            'contact'  =>'nullable',
             'type'  =>'required',
         ]);
 
@@ -84,9 +84,9 @@ class ContactController extends Controller
     public function editContact(Request $request){
         $request->validate([
             'name' =>'required',
-            'desc' =>'required',
-            'address'  =>'required',
-            'contact'  =>'required',
+            'desc' =>'nullable',
+            'address'  =>'nullable',
+            'contact'  =>'nullable',
             'type'  =>'required',
         ]);
 
