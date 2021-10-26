@@ -69,7 +69,7 @@ class ReportNeracaController extends Controller
             $cash->select(DB::raw("SUM(cashin+transfer)"));
         }])->where('iscash',true)->get();
     
-        foreach ($pendingCash as $key => $value) {
+        foreach ($cash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
         $pendingCash = Akun::withCount(['creditin as sum_stockin' =>function($credit) use($request){
@@ -98,7 +98,7 @@ class ReportNeracaController extends Controller
             })->select(DB::raw("SUM(total)"));    
         }])->where('iscash',true)->get();
     
-        foreach ($cash as $key => $value) {
+        foreach ($pendingCash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
         // SUB CASH IN = menghitung cash sebagai akun
@@ -514,7 +514,7 @@ class ReportNeracaController extends Controller
             })->select(DB::raw("SUM(total)"));    
         }])->where('iscash',true)->get();
     
-        foreach ($cash as $key => $value) {
+        foreach ($pendingCash as $key => $value) {
             $value->total = ($value->sum_stockin - $value->sum_stockout)+($value->sum_cashto - $value->sum_cashfrom );
         }
         // SUB CASH IN = menghitung cash sebagai akun
