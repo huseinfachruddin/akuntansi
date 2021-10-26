@@ -273,6 +273,7 @@ class ReportNeracaController extends Controller
         $persediaanhpp = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
+            $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -280,12 +281,12 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->whereNotNull('cashin_id')->whereNull('pending');
         })->sum('hpp');
 
         $persediaankeluar = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
+            $stock = $stock->where('nonmoney','out');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -293,7 +294,6 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
             }
-            $stock = $stock->where('nonmoney','out');
         })->sum('hpp');
         // (penjualan+item masuk)(item keluar+penjualan)
         $persediaan = ($persediaanmasuk+$itemmasuk) - ($persediaankeluar + $persediaanhpp);
