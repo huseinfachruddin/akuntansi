@@ -141,7 +141,6 @@ class StockNonMoneyController extends Controller
 
             'product_id.*' =>'required',
             'qty.*'  =>'required',
-            'total.*'  =>'required|numeric',
         ]); 
 
         $contact = Contact::where('id',$request->contact_id)->first();
@@ -163,7 +162,6 @@ class StockNonMoneyController extends Controller
             $sub->stocktransaction_id = $stock->id;
             $sub->product_id = $request->product_id[$key];
             $sub->qty = $request->qty[$key];
-            $sub->total = $request->total[$key];
             $sub->save();
 
             $substocktransaction[]= $sub;
