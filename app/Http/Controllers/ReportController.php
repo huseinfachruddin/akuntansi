@@ -193,7 +193,7 @@ class ReportController extends Controller
             })->sum('hpp');
     
             // Potongan beli
-            $potonganbeli = Stocktransaction::whereNotNull('cashout_id')->whereNull('pending');
+            $potonganbeli = Stocktransaction::whereNotNull('cashout_id')->where('pending');
                 if (!empty($request->start_date) && !empty($request->end_date)) {
                     $request->start_date = date('Y-m-d',strtotime($request->start_date));
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
@@ -205,7 +205,7 @@ class ReportController extends Controller
     
             // Potongan jual
     
-            $potonganbeli = Stocktransaction::whereNotNull('cashout_id')->whereNull('pending');
+            $potonganjual = Stocktransaction::whereNotNull('cashin_id');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
