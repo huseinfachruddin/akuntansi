@@ -247,7 +247,7 @@ class ReportNeracaController extends Controller
         $persediaanmasuk = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
-            $stock = $stock->whereNotNull('cashout_id')->orWhere('nonmoney','in')->whereNull('pending');
+            $stock = $stock->whereNotNull('cashout_id')->whereNull('pending');
             if (!empty($request->start_date) && !empty($request->end_date)) {
                 $request->start_date = date('Y-m-d',strtotime($request->start_date));
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
