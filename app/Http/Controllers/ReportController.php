@@ -29,7 +29,7 @@ class ReportController extends Controller
                         $request->end_date = date('Y-m-d',strtotime($request->end_date));
                         $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                     }else{
-                        $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                        $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                     }
                 })->select(DB::raw("SUM(total)"));
             },
@@ -42,7 +42,7 @@ class ReportController extends Controller
                         $request->end_date = date('Y-m-d',strtotime($request->end_date));
                         $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                     }else{
-                        $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                        $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                     }
                 })->select(DB::raw("SUM(total)"));    
             },
@@ -53,7 +53,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $cash = $cash->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
                 $cash->select(DB::raw("SUM(cashout+transfer)"));
             },
@@ -64,7 +64,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $cash = $cash->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
                 $cash->select(DB::raw("SUM(cashin+transfer)"));
             }])->where('iscash',true)->get();
@@ -80,7 +80,7 @@ class ReportController extends Controller
                         $request->end_date = date('Y-m-d',strtotime($request->end_date));
                         $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                     }else{
-                        $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                        $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                     }
                 })->select(DB::raw("SUM(total)"));
             },
@@ -93,7 +93,7 @@ class ReportController extends Controller
                         $request->end_date = date('Y-m-d',strtotime($request->end_date));
                         $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                     }else{
-                        $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                        $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                     }
                 })->select(DB::raw("SUM(total)"));    
             }])->where('iscash',true)->get();
@@ -110,7 +110,7 @@ class ReportController extends Controller
                         $request->end_date = date('Y-m-d',strtotime($request->end_date));
                         $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
                     }else{
-                        $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                        $cash = $cash->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                     }
                 });
             }])->get();
@@ -127,7 +127,7 @@ class ReportController extends Controller
                         $request->end_date = date('Y-m-d',strtotime($request->end_date));
                         $cash = $cash->whereBetween('date',[$request->start_date,$request->end_date]);
                     }else{
-                        $cash = $cash->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                        $cash = $cash->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                     }
                 });
             }])->get();
@@ -146,7 +146,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             })->sum('total');
     
@@ -160,7 +160,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             })->sum('total');
     
@@ -174,7 +174,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             })->sum('total');
     
@@ -187,7 +187,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
                 $stock = $stock->where('nonmoney','out');
             })->sum('hpp');
@@ -199,7 +199,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $potonganbeli = $potonganbeli->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $potonganbeli = $potonganbeli->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $potonganbeli = $potonganbeli->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             $potonganbeli = $potonganbeli->sum('discount');
     
@@ -211,7 +211,7 @@ class ReportController extends Controller
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
                 $potonganjual = $potonganjual->whereBetween('date',[$request->start_date,$request->end_date]);
             }else{
-                $potonganjual = $potonganjual->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                $potonganjual = $potonganjual->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
             }
             $potonganjual = $potonganjual->sum('discount');
     
@@ -225,7 +225,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
                 $stock = $stock->whereNotNull('cashin_id');
             })->sum('hpp');
@@ -238,7 +238,7 @@ class ReportController extends Controller
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
                 $piutangjual = $piutangjual->whereBetween('date',[$request->start_date,$request->end_date]);
             }else{
-                $piutangjual = $piutangjual->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                $piutangjual = $piutangjual->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
             }
             $piutangjual = $piutangjual->sum('total')-$piutangjual->sum('discount')-$piutangjual->sum('paid');
     
@@ -253,7 +253,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             })->sum('total');
     
@@ -266,7 +266,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             })->sum('total');
     
@@ -279,7 +279,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             })->sum('hpp');
     
@@ -292,7 +292,7 @@ class ReportController extends Controller
                     $request->end_date = date('Y-m-d',strtotime($request->end_date));
                     $stock = $stock->whereBetween('date',[$request->start_date,$request->end_date]);
                 }else{
-                    $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                    $stock = $stock->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
                 }
             })->sum('hpp');
             // (penjualan+item masuk)(item keluar+penjualan)
@@ -304,7 +304,7 @@ class ReportController extends Controller
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
                 $uangmukabeli = $uangmukabeli->whereBetween('date',[$request->start_date,$request->end_date]);
             }else{
-                $uangmukabeli = $uangmukabeli->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                $uangmukabeli = $uangmukabeli->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
             }
             $uangmukabeli = $uangmukabeli->sum('paid');
     
@@ -314,7 +314,7 @@ class ReportController extends Controller
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
                 $pesanjual = $pesanjual->whereBetween('date',[$request->start_date,$request->end_date]);
             }else{
-                $pesanjual = $pesanjual->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                $pesanjual = $pesanjual->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
             }
             $pesanjual = $pesanjual->sum('paid');
     
@@ -324,7 +324,7 @@ class ReportController extends Controller
                 $request->end_date = date('Y-m-d',strtotime($request->end_date));
                 $hutangbeli = $hutangbeli->whereBetween('date',[$request->start_date,$request->end_date]);
             }else{
-                $hutangbeli = $hutangbeli->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+                $hutangbeli = $hutangbeli->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
             }
             $hutangbeli = $hutangbeli->sum('total')-$hutangbeli->sum('discount')-$hutangbeli->sum('paid');
     
