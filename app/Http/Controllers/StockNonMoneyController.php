@@ -82,7 +82,7 @@ class StockNonMoneyController extends Controller
         
         $stock = new Stocktransaction;
         $stock->staff = $request->staff;
-        $stock->date = $request->date;
+        $stock->date = date("Y-m-d", strtotime($request->date));
 
         $stock->nonmoney = 'in';
         
@@ -148,7 +148,7 @@ class StockNonMoneyController extends Controller
 
         $stock = new Stocktransaction;
         $stock->staff = $request->staff;
-        $stock->date = $request->date;
+        $stock->date = date("Y-m-d", strtotime($request->date));
         $stock->nonmoney = 'out';
 
         $stock->save();
