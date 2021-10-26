@@ -606,7 +606,7 @@ class ReportNeracaController extends Controller
             }else{
                 $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-12-31', strtotime(date('Y-m-d')." -1 year"))]);
             }
-        })->sum('total');
+        })->sum('hpp');
 
         // Potongan beli
         $potonganbeli = Stocktransaction::whereNotNull('cashout_id');
