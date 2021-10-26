@@ -257,6 +257,19 @@ class ReportNeracaController extends Controller
             }
         })->sum('total');
 
+        $itemmasuk = Substocktransaction::whereHas('product',function($product){
+            $product->where('category','<>','service');
+        })->whereHas('stocktransaction',function($stock) use($request){
+            $stock = $stock->whereNotNull('cashout_id')->where('nonmoney','in');
+            if (!empty($request->start_date) && !empty($request->end_date)) {
+                $request->start_date = date('Y-m-d',strtotime($request->start_date));
+                $request->end_date = date('Y-m-d',strtotime($request->end_date));
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),$request->end_date]);
+            }else{
+                $stock = $stock->whereBetween('date',[date('1111-01-01',time()),date('Y-m-d',time())]);
+            }
+        })->sum('total');
+
         $persediaanhpp = Substocktransaction::whereHas('product',function($product){
             $product->where('category','<>','service');
         })->whereHas('stocktransaction',function($stock) use($request){
@@ -283,7 +296,7 @@ class ReportNeracaController extends Controller
             $stock = $stock->where('nonmoney','out');
         })->sum('hpp');
 
-        $persediaan = $persediaanmasuk - ($persediaankeluar + $persediaanhpp);
+        $persediaan = ($persediaanmasuk+$itemmasuk) - ($persediaankeluar + $persediaanhpp);
 
         $uangmukabeli = Stocktransaction::whereNotNull('cashout_id')->where('pending',1);
         if (!empty($request->start_date) && !empty($request->end_date)) {
