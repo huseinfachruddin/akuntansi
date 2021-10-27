@@ -163,7 +163,7 @@ class StockController extends Controller
             ]); 
         }
         if (empty($request->cashout_id)) {
-            $request->cashout_id = Akun::where('iscash')->first()->id;
+            $request->cashout_id = Akun::where('iscash',true)->first()->id;
         }
         if (!empty($request->id)) {
             $this->pendingToIn($request);
@@ -266,7 +266,7 @@ class StockController extends Controller
             ]); 
         }
         if (empty($request->cashin_id)) {
-            $request->cashin_id = Akun::where('iscash')->first()->id;
+            $request->cashin_id = Akun::where('iscash',true)->first()->id;
         }
         $paid=0;
         if (!empty($request->id)) {
