@@ -57,7 +57,7 @@ class StockorderController extends Controller
             $request->end_date = date('Y-m-d',strtotime($request->end_date));
             $data = $data->whereBetween('date',[$request->start_date,$request->end_date]);
         }else{
-            $data = $data->whereBetween('date',[date('Y-01-01',time()),date('Y-m-d',time())]);
+            $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
         }
 
         $data = $data->with('contact','cashout','credit')->orderBy('date','DESC')->get();
