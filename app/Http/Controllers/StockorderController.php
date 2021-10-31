@@ -50,7 +50,7 @@ class StockorderController extends Controller
 
     public function getStockIn(Request $request){
         
-        $data = Stocktransaction::whereNotNull('cashout_id')->where('pending',1);
+        $data = Stocktransaction::with('contact','cashout','credit')->whereNotNull('cashout_id')->where('pending',1);
         
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
@@ -60,7 +60,7 @@ class StockorderController extends Controller
             $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
         }
 
-        $data = $data->with('contact','cashout','credit')->orderBy('date','DESC')->get();
+        $data = $data->orderBy('date','DESC')->get();
         
         $response = [
             'success'=>true,
@@ -72,7 +72,7 @@ class StockorderController extends Controller
     }
    
     public function getStockOut(Request $request){
-        $data = Stocktransaction::whereNotNull('cashin_id')->where('pending',1);
+        $data = Stocktransaction::with('contact','cashin','credit')->whereNotNull('cashin_id')->where('pending',1);
 
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
@@ -82,7 +82,7 @@ class StockorderController extends Controller
             $data = $data->whereBetween('date',[date('Y-m-01',time()),date('Y-m-d',time())]);
         }
 
-        $data = $data->with('contact','cashin','credit')->orderBy('date','DESC')->get();
+        $data = $data->orderBy('date','DESC')->get();
         
         $response = [
             'success'=>true,
