@@ -50,7 +50,7 @@ class StockorderController extends Controller
 
     public function getStockIn(Request $request){
         
-        $data = Stocktransaction::whereNotNull('cashout_id')->where('pending',1);
+        $data = Stocktransaction::whereNotNull('cashout_id');
         
         if (!empty($request->start_date) && !empty($request->end_date)) {
             $request->start_date = date('Y-m-d',strtotime($request->start_date));
