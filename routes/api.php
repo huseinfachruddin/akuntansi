@@ -31,7 +31,7 @@ use App\Http\Controllers\StockNonMoneyController;
 use App\Http\Controllers\StockorderController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\ReportNeracaController;
+use App\Http\Controllers\LicenceController;
 
 use Carbon\Carbon;
 /*
@@ -44,6 +44,10 @@ use Carbon\Carbon;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::match(['get','post'],'/licence', [LicenceController::class,'getLicence']);
+Route::match(['get','post'],'/licence/create', [LicenceController::class,'createLicence']);
+Route::match(['get','post'],'/licence/delete/{id}', [LicenceController::class,'deleteLicence']);
 
 Route::get('/setup/awal',function(Request $request){
     $role = new Role;
