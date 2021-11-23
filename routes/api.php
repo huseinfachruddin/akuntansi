@@ -31,8 +31,8 @@ use App\Http\Controllers\StockNonMoneyController;
 use App\Http\Controllers\StockorderController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportNeracaController;
 use App\Http\Controllers\LicenceController;
-
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
