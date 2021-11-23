@@ -22,11 +22,7 @@ class LicenceController extends Controller
     }
 
     public function createLicence(Request $request){
-        $request->validate([
-            'licence' =>'required',
-            'company' =>'required',
-            'address'  =>'required',
-        ]);
+
         $data = Licence::whereNotNull('id')->get()->delete();
         
         $data = new Licence;
