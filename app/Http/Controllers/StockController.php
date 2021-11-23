@@ -218,6 +218,7 @@ class StockController extends Controller
             $this->pendingToIn($request);
             $pending = Stocktransaction::find($request->id);
             $paid=$pending->paid;
+            
             $credit = new Credit;
             $credit->stocktransaction_id = $stock->id;
             $credit->cashout_id = $pending->cashout_id;
