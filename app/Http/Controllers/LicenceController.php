@@ -22,7 +22,11 @@ class LicenceController extends Controller
     }
 
     public function createLicence(Request $request){
-        
+        $request->validate([
+            'licence' =>'required',
+            'company' =>'required',
+            'address'  =>'required',
+        ]);
         $data = new Licence;
         $data->licence = $request->licence;
         $data->company = base64_encode($request->company);
