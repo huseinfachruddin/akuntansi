@@ -27,7 +27,8 @@ class LicenceController extends Controller
             'company' =>'required',
             'address'  =>'required',
         ]);
-                
+        $data = Licence::whereNotNull('id')->get()->delete();
+        
         $data = new Licence;
         $data->licence = $request->licence;
         $data->company = base64_encode($request->company);
