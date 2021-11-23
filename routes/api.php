@@ -82,7 +82,8 @@ Route::get('/test',function(Request $request){
 });
 
 Route::get('/licence',[LicenceController::class,'getLicence']);
-Route::post('/licence/tambah',[LicenceController::class,'createLicence']);
+Route::post('/licence/create',[LicenceController::class,'createLicence']);
+Route::put('/licence/edit',[LicenceController::class,'editLicence']);
 Route::delete('/licence/delete/{id}',[LicenceController::class,'deleteLicence']);
 
 Route::match(['get','post'],'/report/{name}', [ReportController::class,'AkunReportLaba']);
