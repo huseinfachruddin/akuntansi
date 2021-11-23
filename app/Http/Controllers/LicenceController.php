@@ -42,6 +42,26 @@ class LicenceController extends Controller
         return response($response,200);
     }
 
+    public function editLicence(Request $request){
+        $request->validate([
+            'licence' =>'required',
+            'company' =>'required',
+            'address'  =>'required',
+        ]);
+        $data = new Licence;
+        $data->licence = $request->licence;
+        $data->company = base64_encode($request->company);
+        $data->address = base64_encode($request->address);
+        $data->save();
+
+        $response = [
+            'success'=>true,
+            'licence'=>$data,
+        ];
+        
+        return response($response,200);
+    }
+
     public function deleteLicence(Request $request){
         $data = Licence::find($request->id)->delete();
 
