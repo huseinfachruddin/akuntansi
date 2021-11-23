@@ -22,8 +22,6 @@ class LicenceController extends Controller
     }
 
     public function createLicence(Request $request){
-
-        $data = Licence::whereNotNull('id')->get()->delete();
         
         $data = new Licence;
         $data->licence = $request->licence;
