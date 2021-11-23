@@ -11,6 +11,7 @@ class LicenceController extends Controller
         $data = Licence::first();
         if ($data) {
             $data->company = base64_decode($data->company);
+            $data->address = base64_decode($data->address);
         }
         $response = [
             'success'=>true,
