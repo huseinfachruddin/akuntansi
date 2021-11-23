@@ -46,7 +46,7 @@ use Carbon\Carbon;
 */
 
 Route::get('/licence',[LicenceController::class,'getLicence']);
-Route::post('/licence/create',[LicenceController::class,'createLicence']);
+Route::post('/licence/create',[LicenceController::class,'getLicence']);
 Route::delete('/licence/delete/{id}',[LicenceController::class,'deleteLicence']);
 
 Route::get('/setup/awal',function(Request $request){
