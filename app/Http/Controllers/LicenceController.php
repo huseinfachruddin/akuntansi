@@ -23,9 +23,11 @@ class LicenceController extends Controller
 
     public function createLicence(Request $request){
         $request->validate([
-            'licence' =>'required',
-            'company' =>'required',
-            'address'  =>'required',
+            'name' =>'required|unique:contacttypes,name',
+            'category' =>'required',
+            'maxdebt' =>'nullable',
+            'max_paydue' =>'nullable',
+
         ]);
         $data = new Licence;
         $data->licence = $request->licence;
