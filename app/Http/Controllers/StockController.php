@@ -280,11 +280,18 @@ class StockController extends Controller
         foreach ( $request->total as $key => $value) {
             $sum = $sum + $request->total[$key];
         }
-
+        $paid=0;
+        if (!empty($request->id)) {
+            $pending = Stocktransaction::find($request->id);
+            $paid=$pending->paid;
+        }
+        $request->paid=$request->paid+$paid;
         $hutang = ($sum - $request->discount) - $request->paid ;
         if ($hutang > $contact->type()->first()->maxdebt) {
             return response(['error'=>'Hutang melebihi batas'],400);
         }
+        $request->paid=$request->paid-$paid;
+
         if (!empty($request->id)) {
             $this->pendingToOut($request);
         }
