@@ -165,13 +165,6 @@ class StockController extends Controller
         if (empty($request->cashout_id)) {
             $request->cashout_id = Akun::where('iscash',true)->first()->id;
         }
-        if (!empty($request->id)) {
-            $this->pendingToIn($request);
-            $stock = Stocktransaction::find($request->id);
-            $paid = $stock->paid;
-        }
-
-        $request->paid= $request->paid + $paid;
 
         $stock = new Stocktransaction;  
         $stock->contact_id = $request->contact_id;
@@ -181,7 +174,6 @@ class StockController extends Controller
         $stock->date = date("Y-m-d", strtotime($request->date));
         $stock->paid = $request->paid;
         $stock->payment_due = date("Y-m-d", strtotime($request->payment_due));
-        
         $stock->save();
 
         $data = $request->product_id;
@@ -221,6 +213,18 @@ class StockController extends Controller
         $credit->total = $stock->paid;
         $credit->save();
 
+        $paid=0;
+        if (!empty($request->id)) {
+            $this->pendingToIn($request);
+            $pending = Stocktransaction::find($request->id);
+            $paid=$pending->paid;
+            $credit = new Credit;
+            $credit->stocktransaction_id = $stock->id;
+            $credit->cashout_id = $pending->cashout_id;
+            $credit->total = $pending->paid;
+            $credit->save();
+        }
+        
         $akun = Akun::where('name','=','Hutang Pembelian Non Tunai')->first();
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total + (($total - $request->discount) - $stock->paid);
@@ -234,6 +238,7 @@ class StockController extends Controller
         $stock = Stocktransaction::find($stock->id);
         $stock->discount = $stock->discount + $request->discount;
         $stock->total = $total;
+        $stock->paid = $stock->paid+$paid;
         $stock->save();
         $response = [
             'success'=>true,
@@ -268,12 +273,7 @@ class StockController extends Controller
         if (empty($request->cashin_id)) {
             $request->cashin_id = Akun::where('iscash',true)->first()->id;
         }
-        $paid=0;
-        if (!empty($request->id)) {
-            $stock = Stocktransaction::find($request->id);
-            $paid=$stock->paid;
-        }
-        $request->paid= $request->paid + $paid;
+
         $contact = Contact::where('id',$request->contact_id)->first();
         $sum = 0;
 
@@ -398,10 +398,6 @@ class StockController extends Controller
         $akun->total = $akun->total + $request->discount;
         $akun->save();
 
-        $stock = Stocktransaction::find($stock->id);
-        $stock->discount = $stock->discount + $request->discount;
-        $stock->total = $total;
-        $stock->save();
         
         $akun = Akun::find($request->cashin_id);
         $akun->total = $akun->total + $stock->paid;
@@ -411,12 +407,30 @@ class StockController extends Controller
         $akun = Akun::find($akun->id);
         $akun->total = $akun->total + (($total - $request->discount) - $stock->paid);
         $akun->save();
-
+        
         $credit = new Credit;
         $credit->stocktransaction_id = $stock->id;
         $credit->cashin_id = $stock->cashin_id;
         $credit->total = $stock->paid;
         $credit->save();
+        
+        $paid=0;
+        if (!empty($request->id)) {
+            $pending = Stocktransaction::find($request->id);
+            $paid=$pending->paid;
+
+            $credit = new Credit;
+            $credit->stocktransaction_id = $stock->id;
+            $credit->cashin_id = $pending->cashin_id;
+            $credit->total = $pending->paid;
+            $credit->save();
+        }
+
+        $stock = Stocktransaction::find($stock->id);
+        $stock->discount = $stock->discount + $request->discount;
+        $stock->total = $total;
+        $stock->paid = $stock->paid+$paid;
+        $stock->save();
 
         $response = [
             'success'=>true,
