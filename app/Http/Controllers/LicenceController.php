@@ -9,8 +9,10 @@ class LicenceController extends Controller
 {
     public function getLicence(Request $request){
         $data = Licence::first();
-        $data->company = base64_decode($data->company);
-        $data->address = base64_decode($data->addres);
+        if ($data) {
+            $data->company = base64_decode($data->company);
+            $data->address = base64_decode($data->addres);
+        }
         $response = [
             'success'=>true,
             'licence'=>$data,
