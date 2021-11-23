@@ -64,7 +64,7 @@ class LicenceController extends Controller
     }
 
     public function deleteLicence(Request $request){
-        $data = Licence::find($request->id)->delete();
+        $data = Licence::whereNotNull('id')->delete();
 
         $response = [
             'success'=>true,
