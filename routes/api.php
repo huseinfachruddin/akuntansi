@@ -45,26 +45,23 @@ use Carbon\Carbon;
 |
 */
 
-Route::get('/licence',[LicenceController::class,'getLicence']);
-Route::post('/licence/create',[LicenceController::class,'getLicence']);
-Route::delete('/licence/delete/{id}',[LicenceController::class,'deleteLicence']);
 
 Route::get('/setup/awal',function(Request $request){
     $role = new Role;
     $role->name='admin';
     $role->save();
-
-
+    
+    
     $user = User::create([
         'name' => 'admin awal',
         'email' => 'admin@admin.com',
         'password' => bcrypt('password123'),
     ]);
-
+    
     $user->syncRoles($role->name);
-
+    
     return 'Ok';
-    });
+});
 Route::get('/clean',function(Request $request){
     $akun = Product::whereNotNull('name')->where('category','<>','service')->update(array('qty' => 0));
     $akun = Stocktransaction::whereNotNull('id')->delete();
@@ -83,6 +80,10 @@ Route::get('/test',function(Request $request){
     $data =Akun::where('iscashin',true)->first()->id;
     return $data;
 });
+
+Route::get('/licence',[LicenceController::class,'getLicence']);
+Route::post('/licence/create',[LicenceController::class,'createLicence']);
+Route::delete('/licence/delete/{id}',[LicenceController::class,'deleteLicence']);
 
 Route::match(['get','post'],'/report/{name}', [ReportController::class,'AkunReportLaba']);
 Route::match(['get','post'],'/report/akun/neraca', [ReportNeracaController::class,'AkunReportNeraca']);
