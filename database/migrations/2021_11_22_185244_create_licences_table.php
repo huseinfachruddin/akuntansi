@@ -16,6 +16,7 @@ class CreateLicencesTable extends Migration
         Schema::create('licences', function (Blueprint $table) {
             $table->id();
             $table->string('licence');
+            $table->string('code');
             $table->string('company');
             $table->string('address');
             $table->timestamps();

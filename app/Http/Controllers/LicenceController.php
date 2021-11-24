@@ -24,6 +24,7 @@ class LicenceController extends Controller
     public function createLicence(Request $request){
         $request->validate([
             'licence' =>'required',
+            'product_code' =>'required',
             'company' =>'required',
             'address'  =>'required',
         ]);
@@ -31,6 +32,7 @@ class LicenceController extends Controller
         
         $data = new Licence;
         $data->licence = $request->licence;
+        $data->code = $request->product_code;
         $data->company = base64_encode($request->company);
         $data->address = base64_encode($request->address);
         $data->save();
@@ -46,11 +48,13 @@ class LicenceController extends Controller
     public function editLicence(Request $request){
         $request->validate([
             'licence' =>'required',
+            'product_code' =>'required',
             'company' =>'required',
             'address'  =>'required',
         ]);
         $data = new Licence;
         $data->licence = $request->licence;
+        $data->code = $request->product_code;
         $data->company = base64_encode($request->company);
         $data->address = base64_encode($request->address);
         $data->save();
