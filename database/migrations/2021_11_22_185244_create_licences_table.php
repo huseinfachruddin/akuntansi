@@ -17,8 +17,8 @@ class CreateLicencesTable extends Migration
             $table->id();
             $table->string('licence');
             $table->string('code');
-            $table->string('company');
-            $table->string('address');
+            $table->longText('company');
+            $table->longText('address');
             $table->timestamps();
         });
     }
