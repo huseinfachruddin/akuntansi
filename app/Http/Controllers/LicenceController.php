@@ -9,15 +9,9 @@ class LicenceController extends Controller
 {
     public function getLicence(Request $request){
         $data = Licence::first();
-        dd(base64_decode($data->company,true));
         if ($data) {
-            if (base64_decode($data->company,true) && base64_decode($data->address,true)) {
                 $data->company = base64_decode($data->company);
                 $data->address = base64_decode($data->address);
-            }else{
-                $data->company = 'INVALID DATA';
-                $data->address = 'INVALID DATA';
-            }
         }
         $response = [
             'success'=>true,
