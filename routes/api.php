@@ -62,17 +62,7 @@ Route::get('/setup/awal',function(Request $request){
     
     return 'Ok';
 });
-Route::get('/clean',function(Request $request){
-    $akun = Product::whereNotNull('name')->where('category','<>','service')->update(array('qty' => 0));
-    $akun = Stocktransaction::whereNotNull('id')->delete();
-    $akun = Substocktransaction::whereNotNull('id')->delete();
-    $akun = Cashtransaction::whereNotNull('id')->delete();
-    $akun = Subcashtransaction::whereNotNull('id')->delete();
-    $akun = Credit::whereNotNull('id')->delete();
-    $akun = Akun::whereNotNull('name')->update(array('total' => 0));
-    
-    return $akun;
-});
+
 
 Route::get('/test',function(Request $request){
     // $stock = Stocktransaction::first()->date;
@@ -244,7 +234,17 @@ Route::group(['middleware'=>'auth:sanctum'],function(){
     
     Route::get('/logout',[Auth::class,'logout']);
     Route::get('/profile',[UserController::class,'Profile']);
-    
+    Route::get('/clean',function(Request $request){
+        $akun = Product::whereNotNull('name')->where('category','<>','service')->update(array('qty' => 0));
+        $akun = Stocktransaction::whereNotNull('id')->delete();
+        $akun = Substocktransaction::whereNotNull('id')->delete();
+        $akun = Cashtransaction::whereNotNull('id')->delete();
+        $akun = Subcashtransaction::whereNotNull('id')->delete();
+        $akun = Credit::whereNotNull('id')->delete();
+        $akun = Akun::whereNotNull('name')->update(array('total' => 0));
+        
+        return $akun;
+    });
     
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/admin',function(Request $request){
